@@ -24,14 +24,20 @@ public class GlobalServerListeners {
         onPlayerDisconnects();
     }
 
+    //TODO FIXEAR ERROR DE BOSSBAR DE UNA FORMA MENOS CUTRE.
     private void onPlayerConnects() {
-        ServerPlayerConnectionEvents.OnServerPlayerConnect.EVENT.register(player -> {
+        ServerPlayerConnectionEvents.OnServerPlayerConnect.EVENT.register((player, server) -> {
             var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
             var bossBar = bloodMoonManager.getBloodMoonListener().bossBar();
 
-            if (bloodMoonManager.isActive()) {
-                if (!bossBar.getPlayers().contains(player))
-                    bossBar.addPlayer(player);
+            if (server.isDedicated()) {
+                if (bloodMoonManager.isActive()) {
+                    if (!bossBar.getPlayers().contains(player)) {
+                        bossBar.addPlayer(player);
+                    }
+                }
+            } else {
+                bloodMoonManager.load();
             }
 
             return ActionResult.PASS;
@@ -39,12 +45,11 @@ public class GlobalServerListeners {
     }
 
     private void onPlayerDisconnects() {
-        ServerPlayerConnectionEvents.OnServerPlayerDisconnect.EVENT.register(player -> {
+        ServerPlayerConnectionEvents.OnServerPlayerDisconnect.EVENT.register((player, server) -> {
             var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
             var bossBar = bloodMoonManager.getBloodMoonListener().bossBar();
 
-            if (bossBar.getPlayers().contains(player))
-                bossBar.removePlayer(player);
+            bossBar.removePlayer(player);
 
             return ActionResult.PASS;
         });

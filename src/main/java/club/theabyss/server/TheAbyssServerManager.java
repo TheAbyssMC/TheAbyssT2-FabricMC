@@ -35,8 +35,6 @@ public class TheAbyssServerManager {
             this.globalServerListeners = new GlobalServerListeners(this).load(globalEnabled);
             globalEnabled = true;
 
-            serverGameManager.bloodMoonManager().load();
-
             TheAbyssManager.getLogger().info("The server has been loaded successfully.");
         }));
         ServerLifecycleEvents.SERVER_STOPPED.register((server -> {
@@ -45,8 +43,6 @@ public class TheAbyssServerManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            this.serverGameManager = null;
 
             TheAbyssManager.getLogger().info("The server has been unloaded successfully.");
         }));
