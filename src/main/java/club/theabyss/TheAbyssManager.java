@@ -4,6 +4,7 @@ import club.theabyss.client.TheAbyssClientManager;
 import club.theabyss.global.registers.CommandRegister;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.global.data.adapters.LocalDateSerializer;
+import club.theabyss.server.game.ServerGameManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
@@ -38,6 +39,10 @@ public class TheAbyssManager implements ModInitializer {
 		CommandRegister.registerCommands();
 
 		getLogger().info("The mod has been enabled successfully.");
+	}
+
+	public ServerGameManager serverGameManager() {
+		return serverCore.serverGameManager();
 	}
 
 	/**

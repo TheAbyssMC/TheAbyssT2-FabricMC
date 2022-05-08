@@ -1,7 +1,7 @@
 package club.theabyss.server.global.commands;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.global.utils.ChatFormatter;
+import club.theabyss.global.utils.chat.ChatFormatter;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

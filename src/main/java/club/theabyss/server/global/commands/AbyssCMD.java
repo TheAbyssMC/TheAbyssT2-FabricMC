@@ -1,7 +1,7 @@
 package club.theabyss.server.global.commands;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.global.utils.ChatFormatter;
+import club.theabyss.global.utils.chat.ChatFormatter;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -12,7 +12,22 @@ public class AbyssCMD {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
         dispatcher.register(CommandManager.literal("abyss")
                 .then(CommandManager.literal("day").executes(AbyssCMD::runDay))
+                .then(CommandManager.literal("bloodmoon")
+                        .then(CommandManager.literal("remain")
+                                .executes(AbyssCMD::runRemainBloodmoon)))
         );
+    }
+
+    private static int runRemainBloodmoon(CommandContext<ServerCommandSource> commandContext) throws CommandSyntaxException {
+        var player = commandContext.getSource().getPlayer();
+        var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+
+        if (bloodMoonManager.isActive()) {
+            player.sendMessage(ChatFormatter.textFormatWithPrefix("&7Quedan " + bloodMoonManager.getFormattedRemainingTime() + " de BloodMoon."), false);
+        } else {
+            player.sendMessage(ChatFormatter.textFormatWithPrefix("&cNo hay una BloodMoon activa."), false);
+        }
+        return 1;
     }
 
     private static int runDay(CommandContext<ServerCommandSource> commandContext) throws CommandSyntaxException {

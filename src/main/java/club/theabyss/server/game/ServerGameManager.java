@@ -10,11 +10,12 @@ import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.GameRules;
 
 public class ServerGameManager implements Restorable {
 
     private final TheAbyssServerManager serverCore;
-    private final @Getter MinecraftServer server;
+    private final MinecraftServer server;
 
     private GameData gameData;
 
@@ -29,6 +30,8 @@ public class ServerGameManager implements Restorable {
 
         this.globalServerListeners = new GlobalServerListeners(serverCore);
         this.bloodMoonManager = new BloodMoonManager(serverCore, bloodMoonEnabled);
+
+        server.getWorlds().forEach(w -> w.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, server));
     }
 
     @Override
@@ -55,6 +58,13 @@ public class ServerGameManager implements Restorable {
      */
     public GameData gameData() {
         return this.gameData;
+    }
+
+    /**
+     * @return the game server.
+     */
+    public MinecraftServer minecraftServer() {
+        return this.server;
     }
 
     /**

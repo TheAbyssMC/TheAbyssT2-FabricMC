@@ -29,11 +29,13 @@ public class TheAbyssServerManager {
                 e.printStackTrace();
             }
 
-            this.serverGameManager = new ServerGameManager(this, server.getCommandSource().getServer(), bloodMoonEnabled);
+            this.serverGameManager = new ServerGameManager(this, server, bloodMoonEnabled);
             bloodMoonEnabled = true;
 
             this.globalServerListeners = new GlobalServerListeners(this).load(globalEnabled);
             globalEnabled = true;
+
+            if (server.isDedicated()) serverGameManager.bloodMoonManager().load();
 
             TheAbyssManager.getLogger().info("The server has been loaded successfully.");
         }));

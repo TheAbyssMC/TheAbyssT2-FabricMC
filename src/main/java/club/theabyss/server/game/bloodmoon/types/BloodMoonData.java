@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *
+ * Class designed to hold all the data related to the BloodMoon event.
  */
 public class BloodMoonData {
 

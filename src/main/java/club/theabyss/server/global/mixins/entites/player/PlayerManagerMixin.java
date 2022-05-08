@@ -1,4 +1,4 @@
-package club.theabyss.server.global.mixins;
+package club.theabyss.server.global.mixins.entites.player;
 
 import club.theabyss.server.global.events.ServerPlayerConnectionEvents;
 import net.minecraft.network.ClientConnection;

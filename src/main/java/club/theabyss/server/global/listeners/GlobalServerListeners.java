@@ -1,8 +1,11 @@
 package club.theabyss.server.global.listeners;
 
+import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.global.events.ServerPlayerConnectionEvents;
 import net.minecraft.util.ActionResult;
+
+import java.util.Date;
 
 public class GlobalServerListeners {
 
@@ -40,6 +43,12 @@ public class GlobalServerListeners {
                 bloodMoonManager.load();
             }
 
+            var name = player.getName().asString();
+            var queue = TimedTitle.titleQueue.get(name);
+            if (queue != null) {
+                if (queue.task == null) TimedTitle.processTitles(name);
+            }
+
             return ActionResult.PASS;
         });
     }
@@ -50,6 +59,26 @@ public class GlobalServerListeners {
             var bossBar = bloodMoonManager.getBloodMoonListener().bossBar();
 
             bossBar.removePlayer(player);
+
+            String name = player.getName().asString();
+            TimedTitle.Queue queue = TimedTitle.titleQueue.get(name);
+            if (!(queue == null || queue.task == null || queue.titles.size() == 0)) {
+                queue.task.cancel();
+                queue.task = null;
+                long timePassed = new Date().getTime() - queue.lastTask;
+                TimedTitle.Title current = queue.titles.get(0);
+                if (timePassed >= current.fadeIn) {
+                    current.fadeIn = 0;
+                    if (timePassed < current.minimumStayTime) { // Should never happen
+                        current.minimumStayTime -= timePassed;
+                        current.stayTime -= timePassed;
+                    } else {
+                        queue.titles.remove(0);
+                    }
+                } else {
+                    current.fadeIn -= timePassed; // This is not a perfect solution, but is the best possible one
+                }
+            }
 
             return ActionResult.PASS;
         });

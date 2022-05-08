@@ -1,7 +1,8 @@
 package club.theabyss.server.game.bloodmoon;
 
-import club.theabyss.global.utils.ChatFormatter;
-import club.theabyss.global.utils.SendTitle;
+import club.theabyss.global.utils.chat.ChatFormatter;
+import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
+import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.game.bloodmoon.events.BloodMoonEvents;
 import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListener;
@@ -89,7 +90,7 @@ public class BloodMoonManager {
             if (isActive || !enableAnimation) {
                 startBloodMoon(playEffect);
             } else {
-                startAnimation(144, 5, playEffect);
+                startAnimation(24, 5, playEffect);
             }
         }
     }
@@ -105,7 +106,7 @@ public class BloodMoonManager {
         if (animationIsActive) return;
         animationIsActive = true;
 
-        var world = serverCore.serverGameManager().getServer().getOverworld();
+        var world = serverCore.serverGameManager().minecraftServer().getOverworld();
 
         final long gameTime = world.getTime();
         final int totalIterations = seconds * fps;
@@ -127,14 +128,14 @@ public class BloodMoonManager {
                 total[0] += gameTimeStep;
                 world.setTimeOfDay((long) (gameTime + total[0]));
             }
-        }, 0, 1000 / fps);
+        }, 0, 50L / fps); //???
     }
 
     /**
      * Starts the BloodMoon.
      */
     public void startBloodMoon(boolean playEffect) {
-        var world = serverCore.serverGameManager().getServer().getOverworld();
+        var world = serverCore.serverGameManager().minecraftServer().getOverworld();
 
         world.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false, world.getServer());
 
@@ -156,7 +157,11 @@ public class BloodMoonManager {
             online.playSound(SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.MASTER, 1F, -18F);
             online.playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.MASTER, 100F, -9.0F);
 
-            SendTitle.send(online, ChatFormatter.textFormat("&5&k| &cBLOODMOON &5&k|"), ChatFormatter.textFormat("&cComienza una &4Bloodmoon&c con duración de &c" + finalSubtitle + "&c."), 10, 70, 20);
+            try {
+                TimedTitle.send(online, ChatFormatter.format("&5&k| &cBLOODMOON &5&k|"), ChatFormatter.format("&cComienza una &4Bloodmoon&c con duración de &c" + finalSubtitle + "&c."), 10, 70, 20);
+            } catch (InvalidTitleTimings e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -164,7 +169,7 @@ public class BloodMoonManager {
      * Ends the BloodMoon.
      */
     public void end() {
-        var world = serverCore.serverGameManager().getServer().getOverworld();
+        var world = serverCore.serverGameManager().minecraftServer().getOverworld();
 
         bloodMoonData().setEndsIn(0);
         bloodMoonData().setTotalTime(0);
