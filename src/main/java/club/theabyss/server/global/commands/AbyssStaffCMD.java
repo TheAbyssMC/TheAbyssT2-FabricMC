@@ -31,7 +31,7 @@ public class AbyssStaffCMD {
 
     public static int changeDay(CommandContext<ServerCommandSource> commandContext, int day) {
         if (day < 0) {
-            commandContext.getSource().sendFeedback(ChatFormatter.textFormatWithPrefix("&c¡Introduce un valor igual o por encima de 0!"), false);
+            commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&c¡Introduce un valor igual o por encima de 0!"), false);
             return -1;
         }
         setDays(commandContext, day);
@@ -43,10 +43,10 @@ public class AbyssStaffCMD {
 
         if (bloodMoonManager.isActive()) {
             bloodMoonManager.end();
-            commandContext.getSource().sendFeedback(ChatFormatter.textFormatWithPrefix("&7La BloodMoon ha sido desactivada."), false);
+            commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7La BloodMoon ha sido desactivada."), false);
             return 1;
         } else {
-            commandContext.getSource().sendFeedback(ChatFormatter.textFormatWithPrefix("&cNo hay una BloodMoon activa."), false);
+            commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&cNo hay una BloodMoon activa."), false);
             return -1;
         }
     }
@@ -55,7 +55,7 @@ public class AbyssStaffCMD {
         var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
 
         bloodMoonManager.start(duration / 60f, !bloodMoonManager.isActive());
-        commandContext.getSource().sendFeedback(ChatFormatter.textFormatWithPrefix("&7La BloodMoon ha sido activada con una duración de &b" + duration + " &7minutos."), false);
+        commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7La BloodMoon ha sido activada con una duración de &b" + duration + " &7minutos."), false);
         return 1;
     }
 
@@ -65,7 +65,7 @@ public class AbyssStaffCMD {
         try {
             numberOfDay = Math.max(0, Math.min(60, date));
         } catch (NumberFormatException ex) {
-            commandContext.getSource().sendFeedback(ChatFormatter.textFormatWithPrefix("&cNecesitas ingresar un número válido."), false);
+            commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&cNecesitas ingresar un número válido."), false);
             return;
         }
 
@@ -87,7 +87,7 @@ public class AbyssStaffCMD {
             s = s + day;
         }
 
-        commandContext.getSource().sendFeedback(ChatFormatter.textFormatWithPrefix("&7El día ha sido actualizado a &6" + numberOfDay + "&7."), false);
+        commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El día ha sido actualizado a &6" + numberOfDay + "&7."), false);
         TheAbyssManager.getInstance().serverCore().serverGameManager().gameData().setStartDate(LocalDate.parse(s));
     }
 

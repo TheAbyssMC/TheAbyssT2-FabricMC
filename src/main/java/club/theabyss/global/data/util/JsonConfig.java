@@ -63,7 +63,7 @@ public class JsonConfig {
      * @return A new {@link JsonConfig} object.
      * @throws Exception If the file cannot be created.
      */
-    public static JsonConfig svConfig(String filename, MinecraftServer server) throws Exception {
+    public static JsonConfig serverConfig(String filename, MinecraftServer server) throws Exception {
         return new JsonConfig(filename, server.getRunDirectory().getAbsolutePath() + File.separatorChar + TheAbyssManager.class.getSimpleName());
     }
 

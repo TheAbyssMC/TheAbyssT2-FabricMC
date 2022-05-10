@@ -160,7 +160,7 @@ public class BloodMoonManager {
             online.playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.MASTER, 100F, -9.0F);
 
             try {
-                TimedTitle.send(online, ChatFormatter.format("&5&k| &cBLOODMOON &5&k|"), ChatFormatter.format("&cComienza una &4Bloodmoon&c con duración de &c" + finalSubtitle + "&c."), 10, 70, 20);
+                TimedTitle.send(online, ChatFormatter.stringFormatToString("&5&k| &cBLOODMOON &5&k|"), ChatFormatter.stringFormatToString("&cComienza una &4Bloodmoon&c con duración de &c" + finalSubtitle + "&c."), 10, 70, 20);
             } catch (InvalidTitleTimings e) {
                 e.printStackTrace();
             }

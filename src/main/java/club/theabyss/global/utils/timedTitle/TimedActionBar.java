@@ -79,7 +79,7 @@ public class TimedActionBar {
                     queue.task.cancel();
                     queue.actionBars.remove(0);
                     if (queue.actionBars.size() == 0)
-                        p.sendMessage(ChatFormatter.textFormat(""), true);
+                        p.sendMessage(ChatFormatter.stringFormatToText(""), true);
                     processActionBars(name);
                 } else if (time % 1000 == 0) {
                     p.sendMessage(current.text, true);

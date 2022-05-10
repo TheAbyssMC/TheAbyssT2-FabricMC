@@ -3,6 +3,7 @@ package club.theabyss.server;
 import club.theabyss.TheAbyssManager;
 import club.theabyss.server.data.DataManager;
 import club.theabyss.server.game.ServerGameManager;
+import club.theabyss.server.game.deathmessages.DeathMessagesManager;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -13,6 +14,7 @@ public class TheAbyssServerManager {
 
     private DataManager dataManager;
     private ServerGameManager serverGameManager;
+    private DeathMessagesManager deathMessagesManager;
 
     private @Getter GlobalServerListeners globalServerListeners;
 
@@ -35,6 +37,8 @@ public class TheAbyssServerManager {
             this.globalServerListeners = new GlobalServerListeners(this).load(globalEnabled);
             globalEnabled = true;
 
+            this.deathMessagesManager = new DeathMessagesManager(this);
+
             if (server.isDedicated()) serverGameManager.bloodMoonManager().load();
 
             TheAbyssManager.getLogger().info("The server has been loaded successfully.");
@@ -51,7 +55,7 @@ public class TheAbyssServerManager {
     }
 
     /**
-     * @return the core.
+     * @return the mod core.
      */
     public TheAbyssManager core() {
         return core;
@@ -69,6 +73,14 @@ public class TheAbyssServerManager {
      */
     public ServerGameManager serverGameManager() {
         return serverGameManager;
+    }
+
+    /**
+     *
+     * @return the DeathMessagesManager.
+     */
+    public DeathMessagesManager deathMessagesManager() {
+        return deathMessagesManager;
     }
 
 }

@@ -6,7 +6,6 @@ import club.theabyss.global.utils.customGlyphs.NoSuchAnimationException;
 import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
-import club.theabyss.global.utils.titles.SendActionBar;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.events.BloodMoonEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -58,11 +57,17 @@ public class BloodMoonListener {
 
             var day = bloodMoonManager.getServerCore().serverGameManager().day();
 
+            var deathMessages = bloodMoonManager.getServerCore().deathMessagesManager().deathMessages();
+            var deathMessage = deathMessages.deathMessage(player);
+
             player.changeGameMode(GameMode.SPECTATOR);
 
             world.getPlayers().forEach(online -> {
 
-                online.sendMessage(ChatFormatter.textFormat("&7&lEl alma de &c&l" + name + " &7&lha caído ante el &8&lABISMO&7&l."), false);
+                online.sendMessage(ChatFormatter.stringFormatToText("&7&lEl alma de &c&l" + name + " &7&lha caído ante el &8&lABISMO&7&l."), false);
+
+                online.sendMessage(ChatFormatter.stringFormatToText("&8" + deathMessage), false);
+
                 online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 50F, -8.0F);
 
                 try {
@@ -100,7 +105,7 @@ public class BloodMoonListener {
         endBloodMoonTask = executorService.scheduleAtFixedRate(() -> {
             var remainBloodMoon = bloodMoonManager.getFormattedRemainingTime();
 
-            title = ChatFormatter.textFormat("&c&ka &r☠ &c&lBLOODMOON: " + Formatting.YELLOW + (remainBloodMoon.equals("") ? "No hay una BloodMoon activa en este momento." : remainBloodMoon) + " &r☠ &c&ka");
+            title = ChatFormatter.stringFormatToText("&c&ka &r☠ &c&lBLOODMOON: " + Formatting.YELLOW + (remainBloodMoon.equals("") ? "No hay una BloodMoon activa en este momento." : remainBloodMoon) + " &r☠ &c&ka");
             serverBossbar.setName(title);
             serverBossbar.setPercent((float) Math.max(0d, Math.min(1d, (double) bloodMoonManager.getMillisToEnd() / bloodMoonManager.bloodMoonData().getTotalTime())));
         }, 0, 1, TimeUnit.SECONDS);

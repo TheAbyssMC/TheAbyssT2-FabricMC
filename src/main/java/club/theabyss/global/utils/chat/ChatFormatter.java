@@ -6,8 +6,8 @@ import org.apache.commons.lang3.Validate;
 
 public class ChatFormatter {
 
-    public static final String name = ChatFormatter.format("&c&lThe&6&lAbyss&r");
-    public static final String prefix = ChatFormatter.format(name + " &7>> ");
+    public static final String name = ChatFormatter.stringFormatToString("&c&lThe&6&lAbyss&r");
+    public static final String prefix = ChatFormatter.stringFormatToString(name + " &7>> ");
 
     /**
      * Function to translate the given text into Formatting format.
@@ -15,7 +15,7 @@ public class ChatFormatter {
      * @param text to translate.
      * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
      */
-    public static Text textFormat(String text) {return Text.of(translateAlternateColorCodes('&', text));}
+    public static Text stringFormatToText(String text) {return Text.of(translateAlternateColorCodes('&', text));}
 
     /**
      * Function to translate the given text into Formatting format.
@@ -23,7 +23,7 @@ public class ChatFormatter {
      * @param text to translate.
      * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
      */
-    public static Text textFormatWithPrefix(String text) {return Text.of(prefix + format(text));}
+    public static Text stringFormatWithPrefixToText(String text) {return Text.of(prefix + stringFormatToString(text));}
 
     /**
      * Function to translate the given text into Formatting format.
@@ -31,7 +31,7 @@ public class ChatFormatter {
      * @param text to translate.
      * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
      */
-    public static String format(String text) {return translateAlternateColorCodes('&', text);}
+    public static String stringFormatToString(String text) {return translateAlternateColorCodes('&', text);}
 
     /**
      * Function to translate the given text into Formatting format.
@@ -39,7 +39,23 @@ public class ChatFormatter {
      * @param text to translate.
      * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
      */
-    public static String formatWithPrefix(String text) {return prefix + format(text);}
+    public static String stringFormatWithPrefixToString(String text) {return prefix + stringFormatToString(text);}
+
+    public static String textFormatToString(Text text) {
+        return text.getString();
+    }
+
+    public static String textFormatWithPrefixToString(Text text) {
+        return prefix + textFormatToString(text);
+    }
+
+    public static Text textFormatToText(Text text) {
+        return Text.of(translateAlternateColorCodes('&', text.getString()));
+    }
+
+    public static Text textFormatWithPrefixToText(Text text) {
+        return textFormatToText(Text.of(prefix + text));
+    }
 
     /**
      * Translates a string using an alternate color code character into a
