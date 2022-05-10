@@ -8,6 +8,7 @@ import club.theabyss.server.game.bloodmoon.events.BloodMoonEvents;
 import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListener;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import lombok.Getter;
+import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.GameRules;
@@ -90,45 +91,46 @@ public class BloodMoonManager {
             if (isActive || !enableAnimation) {
                 startBloodMoon(playEffect);
             } else {
-                startAnimation(24, 5, playEffect);
+                startAnimation(5, playEffect);
             }
         }
     }
 
-    //TODO FIX ANIMATION.
     /**
      * Starts the BloodMoon animation.
      *
-     * @param fps of the animation.
      * @param seconds of duration.
      */
-    private void startAnimation(int fps, int seconds, boolean playEffect) {
+    private void startAnimation(int seconds, boolean playEffect) {
         if (animationIsActive) return;
         animationIsActive = true;
 
         var world = serverCore.serverGameManager().minecraftServer().getOverworld();
 
-        final long gameTime = world.getTime();
-        final int totalIterations = seconds * fps;
-        final float gameTimeStep = ((gameTime <= 18_000 ? 18_000f : 42_000f) - gameTime) / totalIterations;
+        final double realTime = 1000.0 / 20;
+        final long gameTime = world.getTimeOfDay();
+        final int totalFrames = seconds * 20;
+        final float gameTimeStep = ((gameTime <= 18_000 ? 18_000f : 42_000f) - gameTime) / totalFrames;
 
-        final float[] total = {0};
-        final int[] iterations = {0};
+        final float[] nightIncrement = {0};
+        final int[] frame = {0};
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                iterations[0]++;
-                if (iterations[0] >= totalIterations) {
+                frame[0]++;
+                if (frame[0] >= totalFrames) {
                     this.cancel();
                     startBloodMoon(playEffect);
                     animationIsActive = false;
                     world.setTimeOfDay(18_000);
                     return;
                 }
-                total[0] += gameTimeStep;
-                world.setTimeOfDay((long) (gameTime + total[0]));
+                nightIncrement[0] += gameTimeStep;
+                world.setTimeOfDay((long) (gameTime + nightIncrement[0]));
+
+                world.getPlayers().forEach(p -> p.networkHandler.sendPacket(new WorldTimeUpdateS2CPacket(world.getTime(), world.getTimeOfDay(), world.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE))));
             }
-        }, 0, 50L / fps); //???
+        }, 0, (long) realTime);
     }
 
     /**
