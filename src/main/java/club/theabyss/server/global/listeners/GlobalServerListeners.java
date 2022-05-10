@@ -1,5 +1,6 @@
 package club.theabyss.server.global.listeners;
 
+import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.global.events.ServerPlayerConnectionEvents;
@@ -43,10 +44,18 @@ public class GlobalServerListeners {
                 bloodMoonManager.load();
             }
 
-            var name = player.getName().asString();
-            var queue = TimedTitle.titleQueue.get(name);
-            if (queue != null) {
-                if (queue.task == null) TimedTitle.processTitles(name);
+            // Process TimedTitle.
+            var titleName = player.getName().asString();
+            var titleQueue = TimedTitle.titleQueue.get(titleName);
+            if (titleQueue != null) {
+                if (titleQueue.task == null) TimedTitle.processTitles(titleName);
+            }
+
+            // Process TimedActionBar.
+            var actionBarName = player.getName().asString();
+            var actionBarQueue = TimedActionBar.actionBarQueue.get(actionBarName);
+            if (actionBarQueue != null) {
+                if (actionBarQueue.task == null) TimedActionBar.processActionBars(actionBarName);
             }
 
             return ActionResult.PASS;
@@ -60,23 +69,39 @@ public class GlobalServerListeners {
 
             bossBar.removePlayer(player);
 
-            String name = player.getName().asString();
-            TimedTitle.Queue queue = TimedTitle.titleQueue.get(name);
-            if (!(queue == null || queue.task == null || queue.titles.size() == 0)) {
-                queue.task.cancel();
-                queue.task = null;
-                long timePassed = new Date().getTime() - queue.lastTask;
-                TimedTitle.Title current = queue.titles.get(0);
-                if (timePassed >= current.fadeIn) {
-                    current.fadeIn = 0;
-                    if (timePassed < current.minimumStayTime) { // Should never happen
-                        current.minimumStayTime -= timePassed;
-                        current.stayTime -= timePassed;
+            // Process TimedTitle.
+            var titleName = player.getName().asString();
+            var titleQueue = TimedTitle.titleQueue.get(titleName);
+            if (!(titleQueue == null || titleQueue.task == null || titleQueue.titles.size() == 0)) {
+                titleQueue.task.cancel();
+                titleQueue.task = null;
+                var titleTimePassed = new Date().getTime() - titleQueue.lastTask;
+                var titleCurrent = titleQueue.titles.get(0);
+                if (titleTimePassed >= titleCurrent.fadeIn) {
+                    titleCurrent.fadeIn = 0;
+                    if (titleTimePassed < titleCurrent.minimumStayTime) { // Should never happen
+                        titleCurrent.minimumStayTime -= titleTimePassed;
+                        titleCurrent.stayTime -= titleTimePassed;
                     } else {
-                        queue.titles.remove(0);
+                        titleQueue.titles.remove(0);
                     }
                 } else {
-                    current.fadeIn -= timePassed; // This is not a perfect solution, but is the best possible one
+                    titleCurrent.fadeIn -= titleTimePassed; // This is not a perfect solution, but is the best possible one
+                }
+            }
+
+            // Process TimedActionBar.
+            var actionBarName = player.getName().asString();
+            var actionBarQueue = TimedActionBar.actionBarQueue.get(actionBarName);
+            if (!(actionBarQueue == null || actionBarQueue.task == null || actionBarQueue.actionBars.size() == 0)) {
+                actionBarQueue.task.cancel();
+                actionBarQueue.task = null;
+                var actionBarTimePassed = new Date().getTime() - actionBarQueue.lastTask;
+                var current = actionBarQueue.actionBars.get(0);
+                if (actionBarTimePassed < current.stayTime) { // Should never happen
+                    current.stayTime -= actionBarTimePassed;
+                } else {
+                    actionBarQueue.actionBars.remove(0);
                 }
             }
 

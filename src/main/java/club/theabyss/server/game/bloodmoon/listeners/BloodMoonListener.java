@@ -5,6 +5,8 @@ import club.theabyss.global.utils.customGlyphs.Animation;
 import club.theabyss.global.utils.customGlyphs.NoSuchAnimationException;
 import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
+import club.theabyss.global.utils.timedTitle.TimedActionBar;
+import club.theabyss.global.utils.titles.SendActionBar;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.events.BloodMoonEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -61,15 +63,14 @@ public class BloodMoonListener {
             world.getPlayers().forEach(online -> {
 
                 online.sendMessage(ChatFormatter.textFormat("&7&lEl alma de &c&l" + name + " &7&lha caído ante el &8&lABISMO&7&l."), false);
-
                 online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 50F, -8.0F);
 
                 try {
                     Animation.play(online, "bloodmoonanimation", 20, 0);
+                    TimedActionBar.send(online, damageSource.getDeathMessage(player), 1000 * 6);
                 } catch (NoSuchAnimationException | InvalidTitleTimings | MinimumStayTimeIsGreaterThatStayTime e) {
                     e.printStackTrace();
                 }
-                //SendTitle.send(online, ChatFormatter.textFormat("&5&k| &cTheAbyss &5&k|"), ChatFormatter.textFormat("&b¡" + name + " ha muerto!"), 10, 70, 20);
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
