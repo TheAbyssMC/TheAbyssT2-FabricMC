@@ -10,7 +10,7 @@ public class ChatFormatter {
     public static final String prefix = ChatFormatter.stringFormatToString(name + " &7>> ");
 
     /**
-     * Function to translate the given text into Formatting format.
+     * Function to translate the given String into Text Formatting format.
      *
      * @param text to translate.
      * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
@@ -18,10 +18,10 @@ public class ChatFormatter {
     public static Text stringFormatToText(String text) {return Text.of(translateAlternateColorCodes('&', text));}
 
     /**
-     * Function to translate the given text into Formatting format.
+     * Function to translate the given String into Text Formatting format with the mod prefix.
      *
      * @param text to translate.
-     * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
+     * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&' with the mod prefix.
      */
     public static Text stringFormatWithPrefixToText(String text) {return Text.of(prefix + stringFormatToString(text));}
 
@@ -34,25 +34,49 @@ public class ChatFormatter {
     public static String stringFormatToString(String text) {return translateAlternateColorCodes('&', text);}
 
     /**
-     * Function to translate the given text into Formatting format.
+     * Function to translate the given String into Formatting format with the mod prefix.
      *
      * @param text to translate.
-     * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
+     * @return String containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&' with the mod prefix.
      */
     public static String stringFormatWithPrefixToString(String text) {return prefix + stringFormatToString(text);}
 
+    /**
+     * Function to translate the given Text into Formatting format.
+     *
+     * @param text to translate.
+     * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&' with the mod prefix.
+     */
     public static String textFormatToString(Text text) {
         return text.getString();
     }
 
+    /**
+     * Function to translate the given Text into Formatting format with the mod prefix.
+     *
+     * @param text to translate.
+     * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&' with the mod prefix.
+     */
     public static String textFormatWithPrefixToString(Text text) {
         return prefix + textFormatToString(text);
     }
 
+    /**
+     * Function to translate the given Text into Formatting format.
+     *
+     * @param text to translate.
+     * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&'.
+     */
     public static Text textFormatToText(Text text) {
         return Text.of(translateAlternateColorCodes('&', text.getString()));
     }
 
+    /**
+     * Function to translate the given Text into Formatting format with the mod prefix.
+     *
+     * @param text to translate.
+     * @return Text containing the Formatting.FORMATTING_CODE_PREFIX color code character replaced by '&' with the mod prefix.
+     */
     public static Text textFormatWithPrefixToText(Text text) {
         return textFormatToText(Text.of(prefix + text));
     }

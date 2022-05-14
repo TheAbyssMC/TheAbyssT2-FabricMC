@@ -6,9 +6,8 @@ import java.util.stream.Collectors;
 
 public class AbsolutePositionToAmberWatMargins {
     private static int getStringWidth(String str, HashMap<Character, Integer> widths) {
-        return str.chars().mapToObj(o -> (char)o).collect(Collectors.toList()).stream().reduce(0, (total, currentElem) -> total + (int) widths.get(currentElem), Integer::sum);
+        return str.chars().mapToObj(o -> (char) o).toList().stream().reduce(0, (total, currentElem) -> total + (int) widths.get(currentElem), Integer::sum);
     }
-
 
     public static void textInTheCenterOfTheScreen(ArrayList<Object> result, HashMap<Character, Integer> widths) {
         int resultSize = result.size();

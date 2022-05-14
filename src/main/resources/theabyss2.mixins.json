@@ -4,14 +4,38 @@
   "package": "club.theabyss.server.global.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "entites.neutral.BeeEntityMixin",
+    "entites.neutral.DolphinEntityMixin",
+    "entites.neutral.GoatEntityMixin",
+    "entites.neutral.IronGolemEntityMixin",
+    "entites.neutral.LlamaEntityMixin",
+    "entites.neutral.PandaEntityMixin",
+    "entites.neutral.PolarBearEntityMixin",
+    "entites.neutral.WolfEntityMixin",
+    "entites.neutral.ZombifiedPiglinEntityMixin",
+    "entites.peaceful.AxolotlEntityMixin",
+    "entites.peaceful.BatEntityMixin",
+    "entites.peaceful.CatEntityMixin",
+    "entites.peaceful.ChickenEntityMixin",
+    "entites.peaceful.CowEntityMixin",
+    "entites.peaceful.FishEntityMixin",
+    "entites.peaceful.FoxEntityMixin",
+    "entites.peaceful.HorseBaseEntityMixin",
+    "entites.peaceful.OcelotEntityMixin",
+    "entites.peaceful.ParrotEntityMixin",
     "entites.peaceful.PigEntityMixin",
+    "entites.peaceful.RabbitEntityMixin",
+    "entites.peaceful.SheepEntityMixin",
+    "entites.peaceful.SquidEntityMixin",
+    "entites.peaceful.StriderEntityMixin",
+    "entites.peaceful.TurtleEntityMixin",
+    "entites.peaceful.VillagerEntityMixin",
     "entites.player.PlayerManagerMixin",
     "entites.player.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
   ],
   "server": [
-
   ],
   "injectors": {
     "defaultRequire": 1
