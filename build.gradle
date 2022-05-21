@@ -1,3 +1,7 @@
+import org.apache.commons.io.Charsets
+
+import java.nio.charset.StandardCharsets
+
 plugins {
 	id 'fabric-loom' version '0.11-SNAPSHOT'
 	id 'maven-publish'
@@ -55,6 +59,19 @@ java {
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
+	}
+}
+
+tasks {
+	compileJava {
+		options.encoding = StandardCharsets.UTF_8
+		options.release.set(17)
+	}
+	javadoc {
+		options.encoding = StandardCharsets.UTF_8.name()
+	}
+	processResources {
+		filteringCharset = StandardCharsets.UTF_8.name()
 	}
 }
 

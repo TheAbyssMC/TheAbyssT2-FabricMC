@@ -8,6 +8,12 @@ import net.minecraft.text.Text;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+/**
+ * Class designed to stack several title tasks.
+ *
+ * @author <a href="https://github.com/Clipi-12">Clipi</a>
+ * @author <a href="https://github.com/zLofro">Lofro</a>
+ */
 public class TimedTitle {
 
     public static final HashMap<String, Queue> titleQueue = new HashMap<>(0, 1);

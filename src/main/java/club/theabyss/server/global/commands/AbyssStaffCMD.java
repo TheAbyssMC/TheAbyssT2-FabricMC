@@ -2,14 +2,24 @@ package club.theabyss.server.global.commands;
 
 import club.theabyss.TheAbyssManager;
 import club.theabyss.global.utils.chat.ChatFormatter;
+import club.theabyss.server.global.events.GameDateEvents;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.spongepowered.asm.mixin.injection.selectors.TargetSelector;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 public class AbyssStaffCMD {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
@@ -35,6 +45,7 @@ public class AbyssStaffCMD {
             return -1;
         }
         setDays(commandContext, day);
+        GameDateEvents.DayHasElapsedEvent.EVENT.invoker().changeDay(day);
         return 1;
     }
 

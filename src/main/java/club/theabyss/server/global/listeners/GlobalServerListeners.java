@@ -3,9 +3,16 @@ package club.theabyss.server.global.listeners;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.global.events.GameDateEvents;
 import club.theabyss.server.global.events.ServerPlayerConnectionEvents;
+import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.ActionResult;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
 
 public class GlobalServerListeners {
@@ -26,6 +33,48 @@ public class GlobalServerListeners {
     private void registerCallbacks() {
         onPlayerConnects();
         onPlayerDisconnects();
+        onDayHasElapsed();
+    }
+
+    private void onDayHasElapsed() {
+        GameDateEvents.DayHasElapsedEvent.EVENT.register(day -> {
+            var worlds = serverCore.minecraftServer().getWorlds();
+            boolean[] hasFailed = {false};
+
+            worlds.forEach(world -> world.iterateEntities().forEach(e -> {
+                if (e instanceof MobEntity mobEntity) {
+                    try {
+                        Field goalSelector = mobEntity.getClass().getField("goalSelector");
+                        goalSelector.setAccessible(true);
+
+                        Field targetSelector = mobEntity.getClass().getField("targetSelector");
+                        targetSelector.setAccessible(true);
+
+                        var goalSelectorInstance = ((GoalSelector)goalSelector.get(mobEntity));
+                        var targetSelectorInstance = ((GoalSelector)targetSelector.get(mobEntity));
+
+                        goalSelectorInstance.getRunningGoals().forEach(PrioritizedGoal::stop);
+                        targetSelectorInstance.getRunningGoals().forEach(PrioritizedGoal::stop);
+
+                        goalSelectorInstance.clear();
+                        targetSelectorInstance.clear();
+
+                        Method initGoals = e.getClass().getMethod("initGoals");
+                        initGoals.setAccessible(true);
+
+                        initGoals.invoke(e);
+                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NoSuchFieldException ex) {
+                        hasFailed[0] = true;
+                        ex.printStackTrace();
+                    }
+                }
+            }));
+            if (hasFailed[0]) {
+                return ActionResult.FAIL;
+            } else {
+                return ActionResult.SUCCESS;
+            }
+        });
     }
 
     //TODO FIXEAR ERROR DE BOSSBAR DE UNA FORMA MENOS CUTRE.

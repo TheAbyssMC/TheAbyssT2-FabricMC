@@ -7,7 +7,7 @@ import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
-import club.theabyss.server.game.bloodmoon.events.BloodMoonEvents;
+import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;

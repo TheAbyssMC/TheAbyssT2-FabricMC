@@ -1,4 +1,4 @@
-package club.theabyss.server.data.types;
+package club.theabyss.server.data.storage;
 
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import lombok.Setter;
@@ -18,8 +18,7 @@ public class GameData {
     }
 
     public GameData(BloodMoonData bloodMoonData) {
-        this.bloodMoonData = bloodMoonData;
-        this.startDate = LocalDate.now();
+        this(bloodMoonData, LocalDate.now());
     }
 
     /**

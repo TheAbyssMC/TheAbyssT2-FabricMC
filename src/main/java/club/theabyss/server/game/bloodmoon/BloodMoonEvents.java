@@ -1,4 +1,4 @@
-package club.theabyss.server.game.bloodmoon.events;
+package club.theabyss.server.game.bloodmoon;
 
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import net.fabricmc.fabric.api.event.Event;

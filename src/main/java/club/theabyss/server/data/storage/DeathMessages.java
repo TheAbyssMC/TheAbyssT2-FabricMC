@@ -1,4 +1,4 @@
-package club.theabyss.server.data.types;
+package club.theabyss.server.data.storage;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 

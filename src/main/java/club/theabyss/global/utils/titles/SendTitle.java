@@ -7,7 +7,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 /**
- * Utility class designed to make the process of sending titles to players easier.
+ * Utility class designed to make the process of sending titles to players easier using packets.
  * @author <a href="https://github.com/zLofro">Lofro</a>
  */
 public class SendTitle {

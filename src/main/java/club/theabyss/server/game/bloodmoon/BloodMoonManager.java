@@ -4,7 +4,6 @@ import club.theabyss.global.utils.chat.ChatFormatter;
 import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
-import club.theabyss.server.game.bloodmoon.events.BloodMoonEvents;
 import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListener;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import lombok.Getter;

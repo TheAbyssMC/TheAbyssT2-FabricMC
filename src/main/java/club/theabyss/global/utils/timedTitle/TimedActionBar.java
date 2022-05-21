@@ -8,6 +8,12 @@ import net.minecraft.text.Text;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+/**
+ * Class designed to stack several action bar tasks.
+ *
+ * @author <a href="https://github.com/Clipi-12">Clipi</a>
+ * @author <a href="https://github.com/zLofro">Lofro</a>
+ */
 public class TimedActionBar {
 
     public static final HashMap<String, Queue> actionBarQueue = new HashMap<>(0, 1);

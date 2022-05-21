@@ -4,7 +4,6 @@ import club.theabyss.global.data.util.JsonConfig;
 
 /**
  * An interface that holds common methods for all Restore-able Managers.
- *
  */
 public interface Restorable {
 

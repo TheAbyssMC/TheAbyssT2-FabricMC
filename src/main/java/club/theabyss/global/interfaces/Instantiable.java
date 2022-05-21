@@ -2,7 +2,6 @@ package club.theabyss.global.interfaces;
 
 /**
  * A class that adds utility method to all managers classes.
- *
  */
 public abstract class Instantiable<T> {
     private final T instance;
@@ -21,7 +20,7 @@ public abstract class Instantiable<T> {
      * 
      * @return The plugin instance.
      */
-    public T instance() {
+    protected T instance() {
         return instance;
     }
 

@@ -7,6 +7,7 @@ import club.theabyss.server.game.deathmessages.DeathMessagesManager;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.server.MinecraftServer;
 
 public class TheAbyssServerManager {
 
@@ -18,6 +19,8 @@ public class TheAbyssServerManager {
 
     private @Getter GlobalServerListeners globalServerListeners;
 
+    private MinecraftServer minecraftServer;
+
     private boolean bloodMoonEnabled = false;
     private boolean globalEnabled = false;
 
@@ -25,6 +28,8 @@ public class TheAbyssServerManager {
         this.core = core;
 
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
+            this.minecraftServer = server;
+
             try {
                 this.dataManager = new DataManager(core, server.getCommandSource().getServer());
             } catch (Exception e) {
@@ -69,6 +74,13 @@ public class TheAbyssServerManager {
     }
 
     /**
+     * @return the current Minecraft Server.
+     */
+    public MinecraftServer minecraftServer() {
+        return minecraftServer;
+    }
+
+    /**
      * @return the ServerGameManager.
      */
     public ServerGameManager serverGameManager() {
@@ -76,7 +88,6 @@ public class TheAbyssServerManager {
     }
 
     /**
-     *
      * @return the DeathMessagesManager.
      */
     public DeathMessagesManager deathMessagesManager() {

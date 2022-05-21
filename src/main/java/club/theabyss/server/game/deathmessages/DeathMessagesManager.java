@@ -4,7 +4,7 @@ import club.theabyss.TheAbyssManager;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.global.interfaces.Restorable;
 import club.theabyss.server.TheAbyssServerManager;
-import club.theabyss.server.data.types.DeathMessages;
+import club.theabyss.server.data.storage.DeathMessages;
 
 public class DeathMessagesManager implements Restorable {
 
