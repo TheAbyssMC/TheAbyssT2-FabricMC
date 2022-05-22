@@ -4,6 +4,7 @@ import club.theabyss.TheAbyssManager;
 import club.theabyss.server.data.DataManager;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.deathmessages.DeathMessagesManager;
+import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -16,6 +17,7 @@ public class TheAbyssServerManager {
     private DataManager dataManager;
     private ServerGameManager serverGameManager;
     private DeathMessagesManager deathMessagesManager;
+    private SkillTreeManager skillTreeManager;
 
     private @Getter GlobalServerListeners globalServerListeners;
 
@@ -43,6 +45,8 @@ public class TheAbyssServerManager {
             globalEnabled = true;
 
             this.deathMessagesManager = new DeathMessagesManager(this);
+
+            this.skillTreeManager = new SkillTreeManager(this);
 
             if (server.isDedicated()) serverGameManager.bloodMoonManager().load();
 
@@ -78,6 +82,13 @@ public class TheAbyssServerManager {
      */
     public MinecraftServer minecraftServer() {
         return minecraftServer;
+    }
+
+    /**
+     * @return the skill tree manager.
+     */
+    public SkillTreeManager skillTreeManager() {
+        return skillTreeManager;
     }
 
     /**
