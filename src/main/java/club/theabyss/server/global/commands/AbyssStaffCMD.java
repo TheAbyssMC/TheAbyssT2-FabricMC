@@ -2,6 +2,7 @@ package club.theabyss.server.global.commands;
 
 import club.theabyss.TheAbyssManager;
 import club.theabyss.global.utils.chat.ChatFormatter;
+import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.game.skilltree.enums.Skills;
 import club.theabyss.server.global.commands.arguments.SkillsArgumentType;
 import club.theabyss.server.global.events.GameDateEvents;
@@ -96,6 +97,7 @@ public class AbyssStaffCMD {
                 playerSkills.put(uuid, skillMap);
             }
 
+            SkillTreeManager.updatePlayer(player);
             commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El nivel del jugador &6" + player.getName().asString() + " &7para la habilidad &6" + skill.name() + " &7ha sido actualizado a &6" + level + "&7."), false);
 
             return 1;

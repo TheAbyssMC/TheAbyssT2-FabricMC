@@ -3,6 +3,7 @@ package club.theabyss.server.global.listeners;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.events.GameDateEvents;
 import club.theabyss.server.global.events.ServerPlayerConnectionEvents;
 import net.minecraft.entity.ai.goal.GoalSelector;
@@ -10,9 +11,7 @@ import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.ActionResult;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Date;
 
 public class GlobalServerListeners {
@@ -41,13 +40,13 @@ public class GlobalServerListeners {
             var worlds = serverCore.minecraftServer().getWorlds();
             boolean[] hasFailed = {false};
 
-            worlds.forEach(world -> world.iterateEntities().forEach(e -> {
-                if (e instanceof MobEntity mobEntity) {
+            worlds.forEach(world -> world.iterateEntities().forEach(entity -> {
+                if (entity instanceof MobEntity mobEntity) {
                     try {
-                        Field goalSelector = mobEntity.getClass().getField("goalSelector");
+                        var goalSelector = mobEntity.getClass().getField("goalSelector");
                         goalSelector.setAccessible(true);
 
-                        Field targetSelector = mobEntity.getClass().getField("targetSelector");
+                        var targetSelector = mobEntity.getClass().getField("targetSelector");
                         targetSelector.setAccessible(true);
 
                         var goalSelectorInstance = ((GoalSelector)goalSelector.get(mobEntity));
@@ -59,10 +58,10 @@ public class GlobalServerListeners {
                         goalSelectorInstance.clear();
                         targetSelectorInstance.clear();
 
-                        Method initGoals = e.getClass().getMethod("initGoals");
+                        var initGoals = entity.getClass().getMethod("initGoals");
                         initGoals.setAccessible(true);
 
-                        initGoals.invoke(e);
+                        initGoals.invoke(entity);
                     } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NoSuchFieldException ex) {
                         hasFailed[0] = true;
                         ex.printStackTrace();
@@ -89,7 +88,7 @@ public class GlobalServerListeners {
                         bossBar.addPlayer(player);
                     }
                 }
-            } else {
+            } else if (!bloodMoonManager.isActive()) {
                 bloodMoonManager.load();
             }
 
@@ -106,6 +105,8 @@ public class GlobalServerListeners {
             if (actionBarQueue != null) {
                 if (actionBarQueue.task == null) TimedActionBar.processActionBars(actionBarName);
             }
+
+            SkillTreeManager.updatePlayer(player);
 
             return ActionResult.PASS;
         });

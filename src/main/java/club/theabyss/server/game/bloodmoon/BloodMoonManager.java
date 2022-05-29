@@ -127,7 +127,7 @@ public class BloodMoonManager {
                 nightIncrement[0] += gameTimeStep;
                 world.setTimeOfDay((long) (gameTime + nightIncrement[0]));
 
-                world.getPlayers().forEach(p -> p.networkHandler.sendPacket(new WorldTimeUpdateS2CPacket(world.getTime(), world.getTimeOfDay(), world.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE))));
+                //world.getPlayers().forEach(p -> p.networkHandler.sendPacket(new WorldTimeUpdateS2CPacket(world.getTime(), world.getTimeOfDay(), world.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE))));
             }
         }, 0, (long) realTime);
     }

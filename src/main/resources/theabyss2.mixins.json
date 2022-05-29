@@ -30,8 +30,10 @@
     "entites.peaceful.StriderEntityMixin",
     "entites.peaceful.TurtleEntityMixin",
     "entites.peaceful.VillagerEntityMixin",
+    "entites.player.PlayerEntityMixin",
     "entites.player.PlayerManagerMixin",
-    "entites.player.ServerPlayNetworkHandlerMixin"
+    "entites.player.ServerPlayNetworkHandlerMixin",
+    "world.ServerWorldMixin"
   ],
   "client": [
   ],

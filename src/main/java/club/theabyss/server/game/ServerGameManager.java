@@ -7,7 +7,6 @@ import club.theabyss.server.data.storage.GameData;
 import club.theabyss.global.interfaces.Restorable;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
-import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.events.GameDateEvents;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import lombok.Getter;
@@ -73,6 +72,13 @@ public class ServerGameManager implements Restorable {
             GameDateEvents.DayHasElapsedEvent.EVENT.invoker().changeDay(day());
             timer();
         }, 1 + ChronoUnit.MINUTES.between(LocalDateTime.now(), LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1)), TimeUnit.MINUTES);
+    }
+
+    /**
+     * @return the server manager.
+     */
+    public TheAbyssServerManager serverManager() {
+        return serverCore;
     }
 
     /**

@@ -20,6 +20,8 @@ public class AbyssCMD {
                         .then(CommandManager.literal("set")
                                 .then(CommandManager.argument("deathMessage", StringArgumentType.string())
                                         .executes(context -> setDeathMessage(context, StringArgumentType.getString(context, "deathMessage")))))
+                        .then(CommandManager.literal("clear")
+                                .executes(AbyssCMD::clearDeathMessage))
                         .executes(AbyssCMD::getDeathMessage))
         );
     }
@@ -62,6 +64,19 @@ public class AbyssCMD {
         try {
             deathMessages.put(commandContext.getSource().getPlayer().getUuid(), message);
             commandContext.getSource().getPlayer().sendMessage(ChatFormatter.stringFormatWithPrefixToText("&7Tu mensaje de muerte ha sido actualizado a: &8" + message + "&7."), false);
+            return 1;
+        } catch (CommandSyntaxException e) {
+            commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&cEl command source no es un jugador."), false);
+            return -1;
+        }
+    }
+
+    private static int clearDeathMessage(CommandContext<ServerCommandSource> commandContext) {
+        var deathMessages = TheAbyssManager.getInstance().serverCore().deathMessagesManager().deathMessages().deathMessages();
+
+        try {
+            deathMessages.remove(commandContext.getSource().getPlayer().getUuid());
+            commandContext.getSource().getPlayer().sendMessage(ChatFormatter.stringFormatWithPrefixToText("&7Tu mensaje de muerte ha sido eliminado con éxito."), false);
             return 1;
         } catch (CommandSyntaxException e) {
             commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&cEl command source no es un jugador."), false);

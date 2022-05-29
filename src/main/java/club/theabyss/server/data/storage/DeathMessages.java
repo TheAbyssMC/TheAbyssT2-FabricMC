@@ -18,7 +18,6 @@ public class DeathMessages {
     }
 
     /**
-     *
      * @return the death messages.
      */
     public HashMap<UUID, String> deathMessages() {
@@ -30,7 +29,6 @@ public class DeathMessages {
     }
 
     /**
-     *
      * @return the default death message.
      */
     public String defaultMessage() {

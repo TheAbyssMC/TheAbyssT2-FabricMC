@@ -34,11 +34,14 @@ public enum Skills {
     }
 
     public long getLevel(ServerPlayerEntity player) {
-        return skillData().getPlayerSkills().get(player.getUuid()).get(this.toString());
+        var uuid = player.getUuid();
+        var playerSkills = skillData().getPlayerSkills();
+
+        return (playerSkills.containsKey(uuid) && playerSkills.get(uuid).containsKey(this.toString())) ? playerSkills.get(player.getUuid()).get(this.toString()) : 0;
     }
 
     public boolean isAvailable() {
-        return day >= TheAbyssManager.getInstance().serverGameManager().day();
+        return TheAbyssManager.getInstance().serverGameManager().day() >= day;
     }
 
     public static SkillTreeData skillData() {
