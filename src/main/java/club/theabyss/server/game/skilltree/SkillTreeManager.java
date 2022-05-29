@@ -15,7 +15,7 @@ public class SkillTreeManager implements Restorable {
 
     private SkillTreeData skillTreeData;
 
-    public SkillTreeManager(final TheAbyssServerManager serverManager, boolean skillTreeEnabled) {
+    public SkillTreeManager(final TheAbyssServerManager serverManager) {
         this.serverManager = serverManager;
 
         restore(serverManager.dataManager().skillTree());

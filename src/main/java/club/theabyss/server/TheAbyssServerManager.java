@@ -47,8 +47,7 @@ public class TheAbyssServerManager {
 
             this.deathMessagesManager = new DeathMessagesManager(this);
 
-            this.skillTreeManager = new SkillTreeManager(this, skillTreeEnabled);
-            skillTreeEnabled = true;
+            this.skillTreeManager = new SkillTreeManager(this);
 
             if (server.isDedicated()) serverGameManager.bloodMoonManager().load();
 
