@@ -3,15 +3,12 @@ package club.theabyss.server.global.listeners;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.events.GameDateEvents;
 import club.theabyss.server.global.events.ServerPlayerConnectionEvents;
-import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.ai.goal.PrioritizedGoal;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.ActionResult;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 public class GlobalServerListeners {
@@ -30,44 +27,14 @@ public class GlobalServerListeners {
     }
 
     private void registerCallbacks() {
-        onPlayerConnects();
-        onPlayerDisconnects();
+        onPlayerConnect();
+        onPlayerDisconnect();
         onDayHasElapsed();
     }
 
     private void onDayHasElapsed() {
         GameDateEvents.DayHasElapsedEvent.EVENT.register(day -> {
-            var worlds = serverCore.minecraftServer().getWorlds();
-            boolean[] hasFailed = {false};
-
-            worlds.forEach(world -> world.iterateEntities().forEach(entity -> {
-                if (entity instanceof MobEntity mobEntity) {
-                    try {
-                        var goalSelector = mobEntity.getClass().getField("goalSelector");
-                        goalSelector.setAccessible(true);
-
-                        var targetSelector = mobEntity.getClass().getField("targetSelector");
-                        targetSelector.setAccessible(true);
-
-                        var goalSelectorInstance = ((GoalSelector)goalSelector.get(mobEntity));
-                        var targetSelectorInstance = ((GoalSelector)targetSelector.get(mobEntity));
-
-                        goalSelectorInstance.getRunningGoals().forEach(PrioritizedGoal::stop);
-                        targetSelectorInstance.getRunningGoals().forEach(PrioritizedGoal::stop);
-
-                        goalSelectorInstance.clear();
-                        targetSelectorInstance.clear();
-
-                        var initGoals = entity.getClass().getMethod("initGoals");
-                        initGoals.setAccessible(true);
-
-                        initGoals.invoke(entity);
-                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | NoSuchFieldException ex) {
-                        hasFailed[0] = true;
-                        ex.printStackTrace();
-                    }
-                }
-            }));
+            var hasFailed = EntityManager.reloadEntityPathfinders();
             if (hasFailed[0]) {
                 return ActionResult.FAIL;
             } else {
@@ -77,7 +44,7 @@ public class GlobalServerListeners {
     }
 
     //TODO FIXEAR ERROR DE BOSSBAR DE UNA FORMA MENOS CUTRE.
-    private void onPlayerConnects() {
+    private void onPlayerConnect() {
         ServerPlayerConnectionEvents.OnServerPlayerConnect.EVENT.register((player, server) -> {
             var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
             var bossBar = bloodMoonManager.getBloodMoonListener().bossBar();
@@ -106,13 +73,13 @@ public class GlobalServerListeners {
                 if (actionBarQueue.task == null) TimedActionBar.processActionBars(actionBarName);
             }
 
-            SkillTreeManager.updatePlayer(player);
+            SkillTreeManager.updatePlayerHealth(player);
 
             return ActionResult.PASS;
         });
     }
 
-    private void onPlayerDisconnects() {
+    private void onPlayerDisconnect() {
         ServerPlayerConnectionEvents.OnServerPlayerDisconnect.EVENT.register((player, server) -> {
             var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
             var bossBar = bloodMoonManager.getBloodMoonListener().bossBar();

@@ -1,9 +1,12 @@
 package club.theabyss.server;
 
 import club.theabyss.TheAbyssManager;
+import club.theabyss.global.utils.customGlyphs.Animation;
+import club.theabyss.global.utils.customGlyphs.NoFramesException;
 import club.theabyss.server.data.DataManager;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.deathmessages.DeathMessagesManager;
+import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import lombok.Getter;
@@ -25,7 +28,6 @@ public class TheAbyssServerManager {
 
     private boolean bloodMoonEnabled = false;
     private boolean globalEnabled = false;
-    private boolean skillTreeEnabled = false;
 
     public TheAbyssServerManager(final TheAbyssManager core) {
         this.core = core;
@@ -50,6 +52,16 @@ public class TheAbyssServerManager {
             this.skillTreeManager = new SkillTreeManager(this);
 
             if (server.isDedicated()) serverGameManager.bloodMoonManager().load();
+
+            for (String animation : new String[] {
+                    "bloodmoonanimation.json"
+            }) {
+                try {
+                    Animation.load(animation, server);
+                } catch (NoFramesException e) {
+                    e.printStackTrace();
+                }
+            }
 
             TheAbyssManager.getLogger().info("The server has been loaded successfully.");
         }));

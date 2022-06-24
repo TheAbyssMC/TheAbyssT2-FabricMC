@@ -17,6 +17,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class AbyssStaffCMD {
@@ -35,10 +36,10 @@ public class AbyssStaffCMD {
                                         .executes(context -> startBloodMoon(context, IntegerArgumentType.getInteger(context, "minutes"))))))
                 .then(CommandManager.literal("skillTree")
                         .then(CommandManager.literal("setLevel")
-                                .then(CommandManager.argument("player", EntityArgumentType.player())
+                                .then(CommandManager.argument("player", EntityArgumentType.players())
                                         .then(CommandManager.argument("skill", SkillsArgumentType.skills())
                                                 .then(CommandManager.argument("level", LongArgumentType.longArg())
-                                                        .executes(context -> setSkillLevel(context, EntityArgumentType.getPlayer(context, "player"),
+                                                        .executes(context -> setSkillLevel(context, EntityArgumentType.getPlayers(context, "player"),
                                                                 SkillsArgumentType.getSkill(context, "skill"),
                                                                 LongArgumentType.getLong(context, "level")))))))
                         .then(CommandManager.literal("getLevel")
@@ -81,24 +82,30 @@ public class AbyssStaffCMD {
         return 1;
     }
 
-    public static int setSkillLevel(CommandContext<ServerCommandSource> commandContext, ServerPlayerEntity player, Skills skill, long level) {
+    public static int setSkillLevel(CommandContext<ServerCommandSource> commandContext, Collection<ServerPlayerEntity> players, Skills skill, long level) {
         try {
-            var playerSkills = Skills.skillData().getPlayerSkills();
-            var uuid = player.getUuid();
+            players.forEach(player -> {
+                var playerSkills = Skills.skillData().getPlayerSkills();
+                var uuid = player.getUuid();
 
-            if (playerSkills.containsKey(uuid)) {
-                var skillMap = playerSkills.get(uuid);
+                if (playerSkills.containsKey(uuid)) {
+                    var skillMap = playerSkills.get(uuid);
 
-                skillMap.put(skill.name(), level);
-            } else {
-                var skillMap = new HashMap<String, Long>();
+                    skillMap.put(skill.name(), level);
+                } else {
+                    var skillMap = new HashMap<String, Long>();
 
-                skillMap.put(skill.name(), level);
-                playerSkills.put(uuid, skillMap);
-            }
+                    skillMap.put(skill.name(), level);
+                    playerSkills.put(uuid, skillMap);
+                }
+                SkillTreeManager.updatePlayerHealth(player);
 
-            SkillTreeManager.updatePlayer(player);
-            commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El nivel del jugador &6" + player.getName().asString() + " &7para la habilidad &6" + skill.name() + " &7ha sido actualizado a &6" + level + "&7."), false);
+                if (players.size() > 1) {
+                    commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El nivel de &6" + players.size() + " &7jugadores para la habilidad &6" + skill.name() + " &7ha sido actualizado a &6" + level + "&7."), true);
+                } else {
+                    commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El nivel del jugador &6" + player.getName().asString() + " &7para la habilidad &6" + skill.name() + " &7ha sido actualizado a &6" + level + "&7."), true);
+                }
+            });
 
             return 1;
         } catch (Exception ex) {

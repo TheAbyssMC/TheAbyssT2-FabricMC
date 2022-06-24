@@ -1,11 +1,13 @@
 package club.theabyss.global.utils.customGlyphs;
 
+import club.theabyss.TheAbyssManager;
 import club.theabyss.global.utils.titles.SendActionBar;
 import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
@@ -18,13 +20,12 @@ public class Animation {
 
     private static final HashMap<String, Character[]> animations = new HashMap<>(0, 1);
 
-    public static void load(String animation) throws ArrayStoreException, IndexOutOfBoundsException, NoFramesException {
+    public static void load(String animation, MinecraftServer server) throws ArrayStoreException, IndexOutOfBoundsException, NoFramesException {
         animation = normalizeAnimation(animation);
         if (animations.get(animation) != null) return;
 
         ArrayList<Character> frames = new ArrayList<>(0);
         try {
-            //TODO Make it global.
             var animationFile = "E:\\REPOSITORIOS\\TheAbyssT2-FabricMC\\src\\main\\resources\\assets\\theabyss2\\animations\\"+animation;
             JsonArray rawFrames = ((JsonArray) JsonParser.parseReader(new FileReader(animationFile)));
 
@@ -53,7 +54,7 @@ public class Animation {
         animation = normalizeAnimation(animation);
         Character[] frames = get(animation);
 
-            send(p, position, frames[0], fadeIn, 20, 0, 1);
+        send(p, position, frames[0], fadeIn, 20, 0, 1);
 
         int penultimateIndex = frames.length-2;
         if (penultimateIndex != -1) {

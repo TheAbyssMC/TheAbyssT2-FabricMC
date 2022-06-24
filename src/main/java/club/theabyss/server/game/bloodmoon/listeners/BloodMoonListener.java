@@ -8,6 +8,7 @@ import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTim
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
+import club.theabyss.server.game.skilltree.SkillTreeManager;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
@@ -94,7 +95,12 @@ public class BloodMoonListener {
                     }
                 }
             }, 3*1000);
+
             return true;
+        });
+
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+            SkillTreeManager.updatePlayerHealth(newPlayer);
         });
     }
 

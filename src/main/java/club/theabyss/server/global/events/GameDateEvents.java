@@ -6,6 +6,7 @@ import net.minecraft.util.ActionResult;
 
 public class GameDateEvents {
 
+    @FunctionalInterface
     public interface DayHasElapsedEvent {
         Event<GameDateEvents.DayHasElapsedEvent> EVENT = EventFactory.createArrayBacked(GameDateEvents.DayHasElapsedEvent.class,
                 (listeners) -> (day) -> {

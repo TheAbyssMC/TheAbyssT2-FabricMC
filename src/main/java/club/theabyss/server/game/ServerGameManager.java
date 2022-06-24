@@ -7,6 +7,7 @@ import club.theabyss.server.data.storage.GameData;
 import club.theabyss.global.interfaces.Restorable;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
+import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.global.events.GameDateEvents;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class ServerGameManager implements Restorable {
     private GameData gameData;
 
     private final BloodMoonManager bloodMoonManager;
+    private final EntityManager entityManager;
 
     private final @Getter GlobalServerListeners globalServerListeners;
 
@@ -41,11 +43,23 @@ public class ServerGameManager implements Restorable {
         this.restore(serverCore.dataManager().gameDataConfig());
 
         this.globalServerListeners = new GlobalServerListeners(serverCore);
+
         this.bloodMoonManager = new BloodMoonManager(serverCore, bloodMoonEnabled);
+
+        this.entityManager = new EntityManager(this);
 
         timer();
 
         server.getWorlds().forEach(w -> w.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, server));
+
+        /*
+        Reloads the pathfinders from all the loaded MobEntities. It is executed a second after the game loads
+        to make sure all the entities are affected, because this class (ServerGameManager) is loaded right before
+        the server is ready to tick for the first time (this means the entities are not loaded at that time).
+         */
+        executorService.schedule(() -> {
+            EntityManager.reloadEntityPathfinders();
+        }, 1, TimeUnit.SECONDS);
     }
 
     @Override
