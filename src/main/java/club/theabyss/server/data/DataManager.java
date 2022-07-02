@@ -14,15 +14,10 @@ public class DataManager extends Instantiable<TheAbyssServerManager> {
 
     public DataManager(final TheAbyssManager core, MinecraftServer server) throws Exception {
         super(core.serverCore());
-        if (!server.isDedicated()) {
-            this.gameDataConfig = JsonConfig.savesConfig("gameDataConfig.json", server);
-            this.deathMessages = JsonConfig.savesConfig("deathMessages.json", server);
-            this.skillTree = JsonConfig.savesConfig("skillTree.json", server);
-        } else {
-            this.gameDataConfig = JsonConfig.serverConfig("gameDataConfig.json", server);
-            this.deathMessages = JsonConfig.serverConfig("deathMessages.json", server);
-            this.skillTree = JsonConfig.serverConfig("skillTree.json", server);
-        }
+
+        this.gameDataConfig = (server.isDedicated()) ? JsonConfig.serverConfig("gameDataConfig.json", server) : JsonConfig.savesConfig("gameDataConfig.json", server);
+        this.deathMessages = (server.isDedicated()) ? JsonConfig.serverConfig("deathMessages.json", server) : JsonConfig.savesConfig("deathMessages.json", server);
+        this.skillTree = (server.isDedicated()) ? JsonConfig.serverConfig("skillTree.json", server) : JsonConfig.savesConfig("skillTree.json", server);
     }
 
     /**

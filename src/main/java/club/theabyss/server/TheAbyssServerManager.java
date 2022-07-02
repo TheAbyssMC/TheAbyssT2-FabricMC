@@ -54,7 +54,7 @@ public class TheAbyssServerManager {
 
             serverGameManager.bloodMoonManager().load();
 
-            TheAbyssManager.getLogger().info("The server has been loaded successfully.");
+            TheAbyssManager.getLogger().info("The mod's server has been loaded successfully.");
         }));
         ServerLifecycleEvents.SERVER_STOPPED.register((server -> {
             try {
@@ -67,7 +67,7 @@ public class TheAbyssServerManager {
 
             bloodMoonManager.cancelBossBarTask(server);
 
-            TheAbyssManager.getLogger().info("The server has been unloaded successfully.");
+            TheAbyssManager.getLogger().info("The mod's server has been unloaded successfully.");
         }));
     }
 
