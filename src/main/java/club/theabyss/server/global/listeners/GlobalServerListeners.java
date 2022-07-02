@@ -1,38 +1,29 @@
 package club.theabyss.server.global.listeners;
 
+import club.theabyss.TheAbyssManager;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
-import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.events.GameDateEvents;
-import club.theabyss.server.global.events.ServerPlayerConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.util.ActionResult;
 
 import java.util.Date;
 
 public class GlobalServerListeners {
 
-    private final TheAbyssServerManager serverCore;
-
-    public GlobalServerListeners(final TheAbyssServerManager serverCore) {
-        this.serverCore = serverCore;
+    public static void init() {
+        registerCallbacks();
     }
 
-    public GlobalServerListeners load(boolean globalEnabled) {
-        if (!globalEnabled) {
-            registerCallbacks();
-        }
-        return this;
-    }
-
-    private void registerCallbacks() {
+    private static void registerCallbacks() {
         onPlayerConnect();
         onPlayerDisconnect();
         onDayHasElapsed();
     }
 
-    private void onDayHasElapsed() {
+    private static void onDayHasElapsed() {
         GameDateEvents.DayHasElapsedEvent.EVENT.register(day -> {
             var hasFailed = EntityManager.reloadEntityPathfinders();
             if (hasFailed[0]) {
@@ -43,20 +34,17 @@ public class GlobalServerListeners {
         });
     }
 
-    //TODO FIXEAR ERROR DE BOSSBAR DE UNA FORMA MENOS CUTRE.
-    private void onPlayerConnect() {
-        ServerPlayerConnectionEvents.OnServerPlayerConnect.EVENT.register((player, server) -> {
-            var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
-            var bossBar = bloodMoonManager.getBloodMoonListener().bossBar();
+    private static void onPlayerConnect() {
+        ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
+            var player = networkHandler.getPlayer();
 
-            if (server.isDedicated()) {
-                if (bloodMoonManager.isActive()) {
-                    if (!bossBar.getPlayers().contains(player)) {
-                        bossBar.addPlayer(player);
-                    }
-                }
-            } else if (!bloodMoonManager.isActive()) {
-                bloodMoonManager.load();
+            var serverCore = TheAbyssManager.getInstance().serverCore();
+
+            var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
+
+            // Process BloodMoon boss-bar.
+            if (bloodMoonManager.isActive()) {
+                bloodMoonManager.showBossBar(player);
             }
 
             // Process TimedTitle.
@@ -74,17 +62,17 @@ public class GlobalServerListeners {
             }
 
             SkillTreeManager.updatePlayerHealth(player);
-
-            return ActionResult.PASS;
         });
     }
 
-    private void onPlayerDisconnect() {
-        ServerPlayerConnectionEvents.OnServerPlayerDisconnect.EVENT.register((player, server) -> {
-            var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
-            var bossBar = bloodMoonManager.getBloodMoonListener().bossBar();
+    private static void onPlayerDisconnect() {
+        ServerPlayConnectionEvents.DISCONNECT.register((networkHandler, server) -> {
+            var player = networkHandler.getPlayer();
 
-            bossBar.removePlayer(player);
+            var serverCore = TheAbyssManager.getInstance().serverCore();
+            var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
+
+            bloodMoonManager.hideBossBar(player);
 
             // Process TimedTitle.
             var titleName = player.getName().asString();
@@ -121,8 +109,6 @@ public class GlobalServerListeners {
                     actionBarQueue.actionBars.remove(0);
                 }
             }
-
-            return ActionResult.PASS;
         });
     }
 

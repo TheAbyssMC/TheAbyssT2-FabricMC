@@ -32,8 +32,6 @@ public class ServerGameManager implements Restorable {
     private final BloodMoonManager bloodMoonManager;
     private final EntityManager entityManager;
 
-    private final @Getter GlobalServerListeners globalServerListeners;
-
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public ServerGameManager(final TheAbyssServerManager serverCore, MinecraftServer server, boolean bloodMoonEnabled) {
@@ -42,9 +40,7 @@ public class ServerGameManager implements Restorable {
 
         this.restore(serverCore.dataManager().gameDataConfig());
 
-        this.globalServerListeners = new GlobalServerListeners(serverCore);
-
-        this.bloodMoonManager = new BloodMoonManager(serverCore, bloodMoonEnabled);
+        this.bloodMoonManager = new BloodMoonManager(serverCore);
 
         this.entityManager = new EntityManager(this);
 

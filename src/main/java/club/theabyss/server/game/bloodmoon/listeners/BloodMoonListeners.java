@@ -1,58 +1,35 @@
 package club.theabyss.server.game.bloodmoon.listeners;
 
+import club.theabyss.TheAbyssManager;
 import club.theabyss.global.utils.chat.ChatFormatter;
 import club.theabyss.global.utils.customGlyphs.Animation;
 import club.theabyss.global.utils.customGlyphs.NoSuchAnimationException;
 import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
-import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.minecraft.entity.boss.BossBar;
-import net.minecraft.entity.boss.ServerBossBar;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.GameMode;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
-public class BloodMoonListener {
+public class BloodMoonListeners {
 
-    private final BloodMoonManager bloodMoonManager;
-
-    private final ServerBossBar serverBossbar = new ServerBossBar(Text.of(""), BossBar.Color.RED, BossBar.Style.NOTCHED_6);
-
-    private Text title;
-
-    private static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private static ScheduledFuture<?> endBloodMoonTask = null;
-
-    public BloodMoonListener(final BloodMoonManager bloodMoonManager) {
-        this.bloodMoonManager = bloodMoonManager;
+    public static void init() {
+        onPlayerDeath();
+        onBloodMoonStart();
+        onBloodMoonEnd();
     }
 
-    public BloodMoonListener load(boolean enabled) {
-        if (!enabled) {
-            onPlayerDeath();
-            onBloodMoonStart();
-            onBloodMoonEnd();
-        }
-        return this;
-    }
-
-    private void onPlayerDeath() {
+    private static void onPlayerDeath() {
         ServerPlayerEvents.ALLOW_DEATH.register((player, damageSource, damageAmount) -> {
+            var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+
             var world = player.getWorld();
             var name = player.getName().asString();
 
@@ -104,66 +81,27 @@ public class BloodMoonListener {
         });
     }
 
-    /**
-     * Creates the task that updates the BloodMoon boss-bar each second.
-     */
-    private void endBloodMoonTask() {
-        endBloodMoonTask = executorService.scheduleAtFixedRate(() -> {
-            var remainBloodMoon = bloodMoonManager.getFormattedRemainingTime();
-
-            title = ChatFormatter.stringFormatToText("&c&ka &r☠ &c&lBLOODMOON: " + Formatting.YELLOW + (remainBloodMoon.equals("") ? "No hay una BloodMoon activa en este momento." : remainBloodMoon) + " &r☠ &c&ka");
-            serverBossbar.setName(title);
-            serverBossbar.setPercent((float) Math.max(0d, Math.min(1d, (double) bloodMoonManager.getMillisToEnd() / bloodMoonManager.bloodMoonData().getTotalTime())));
-        }, 0, 1, TimeUnit.SECONDS);
-    }
-
-    private void onBloodMoonStart() {
+    private static void onBloodMoonStart() {
         BloodMoonEvents.BloodMoonStarted.EVENT.register(manager -> {
-            if (endBloodMoonTask == null) endBloodMoonTask();
-            var world = manager.getServerCore().serverGameManager().minecraftServer().getOverworld();
+            var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
 
-            world.getPlayers().forEach(player -> {
-                if (!serverBossbar.getPlayers().contains(player)) {
-                    serverBossbar.addPlayer(player);
-                }
-            });
+            if (bloodMoonManager.endBossBarTask == null) bloodMoonManager.updateBossBarTask();
+
+            bloodMoonManager.showBossBarToAll(manager.getServerCore().minecraftServer());
             return ActionResult.PASS;
         });
     }
 
-    private void onBloodMoonEnd() {
+    private static void onBloodMoonEnd() {
         BloodMoonEvents.BloodMoonEnded.EVENT.register(manager -> {
+            var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+
             var server = manager.getServerCore().serverGameManager().minecraftServer();
 
-            if (endBloodMoonTask != null) {
-                endBloodMoonTask.cancel(false);
-                endBloodMoonTask = null;
-            }
-
-            disable(server);
+            bloodMoonManager.cancelBossBarTask(server);
 
             return ActionResult.PASS;
         });
-    }
-
-    /**
-     * Disables the boss-bar.
-     */
-    public void disable(MinecraftServer server) {
-        var players = server.getOverworld().getPlayers();
-        players.forEach(player -> {
-            if (serverBossbar.getPlayers().contains(player)) {
-                serverBossbar.removePlayer(player);
-            }
-        });
-    }
-
-    /**
-     *
-     * @return the BloodMoon ServerBossBar.
-     */
-    public ServerBossBar bossBar() {
-        return serverBossbar;
     }
 
 }

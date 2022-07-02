@@ -6,10 +6,7 @@ import club.theabyss.global.utils.customGlyphs.NoFramesException;
 import club.theabyss.server.data.DataManager;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.deathmessages.DeathMessagesManager;
-import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
-import club.theabyss.server.global.listeners.GlobalServerListeners;
-import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 
@@ -22,12 +19,9 @@ public class TheAbyssServerManager {
     private DeathMessagesManager deathMessagesManager;
     private SkillTreeManager skillTreeManager;
 
-    private @Getter GlobalServerListeners globalServerListeners;
-
     private MinecraftServer minecraftServer;
 
     private boolean bloodMoonEnabled = false;
-    private boolean globalEnabled = false;
 
     public TheAbyssServerManager(final TheAbyssManager core) {
         this.core = core;
@@ -44,14 +38,9 @@ public class TheAbyssServerManager {
             this.serverGameManager = new ServerGameManager(this, server, bloodMoonEnabled);
             bloodMoonEnabled = true;
 
-            this.globalServerListeners = new GlobalServerListeners(this).load(globalEnabled);
-            globalEnabled = true;
-
             this.deathMessagesManager = new DeathMessagesManager(this);
 
             this.skillTreeManager = new SkillTreeManager(this);
-
-            if (server.isDedicated()) serverGameManager.bloodMoonManager().load();
 
             for (String animation : new String[] {
                     "bloodmoonanimation.json"
@@ -63,6 +52,8 @@ public class TheAbyssServerManager {
                 }
             }
 
+            serverGameManager.bloodMoonManager().load();
+
             TheAbyssManager.getLogger().info("The server has been loaded successfully.");
         }));
         ServerLifecycleEvents.SERVER_STOPPED.register((server -> {
@@ -71,6 +62,10 @@ public class TheAbyssServerManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            var bloodMoonManager = serverGameManager.bloodMoonManager();
+
+            bloodMoonManager.cancelBossBarTask(server);
 
             TheAbyssManager.getLogger().info("The server has been unloaded successfully.");
         }));

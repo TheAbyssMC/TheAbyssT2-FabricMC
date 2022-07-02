@@ -4,12 +4,16 @@ import club.theabyss.global.utils.chat.ChatFormatter;
 import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
-import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListener;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import lombok.Getter;
-import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.GameRules;
 
 import java.util.Date;
@@ -23,19 +27,22 @@ import java.util.concurrent.TimeUnit;
 public class BloodMoonManager {
 
     private final @Getter TheAbyssServerManager serverCore;
-    private final @Getter BloodMoonListener bloodMoonListener;
 
     private long lastTimeChecked;
 
     private boolean animationIsActive = false;
 
-    private static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    public ServerBossBar serverBossBar;
+
+    private Text title;
+
+    public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture<?> endBloodMoonTask = null;
+    public ScheduledFuture<?> endBossBarTask = null;
 
-    public BloodMoonManager(final TheAbyssServerManager serverCore, boolean enabled) {
+    public BloodMoonManager(final TheAbyssServerManager serverCore) {
         this.serverCore = serverCore;
-
-        this.bloodMoonListener = new BloodMoonListener(this).load(enabled);
+        this.serverBossBar = new ServerBossBar(Text.of(""), BossBar.Color.RED, BossBar.Style.NOTCHED_6);
     }
 
     public void load() {
@@ -217,6 +224,70 @@ public class BloodMoonManager {
             return ((days > 0) ? (String.format("%02d", days) + ":") : "") + String.format("%02d:%02d:%02d", hours, mins, secs);
         } else {
             return "";
+        }
+    }
+
+    /**
+     * Creates the task that updates the BloodMoon boss-bar each second.
+     */
+    public void updateBossBarTask() {
+        endBossBarTask = BloodMoonManager.executorService.scheduleAtFixedRate(() -> {
+            var remainBloodMoon = getFormattedRemainingTime();
+
+            title = ChatFormatter.stringFormatToText("&c&ka &r☠ &c&lBLOODMOON: " + Formatting.YELLOW + (remainBloodMoon.equals("") ? "No hay una BloodMoon activa en este momento." : remainBloodMoon) + " &r☠ &c&ka");
+            serverBossBar.setName(title);
+            serverBossBar.setPercent((float) Math.max(0d, Math.min(1d, (double) getMillisToEnd() / bloodMoonData().getTotalTime())));
+        }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Cancels the task that updates the BloodMoon boss-bar.
+     * @param server the Minecraft Server the boss-bar is being cancelled.
+     */
+    public void cancelBossBarTask(MinecraftServer server) {
+        if (endBossBarTask != null) {
+            endBossBarTask.cancel(false);
+            endBossBarTask = null;
+        }
+
+        hideBossBarToAll(server);
+    }
+
+    /**
+     * Hides the BloodMoon boss-bar to all the players in the given server.
+     * @param server the Minecraft Server the function will affect.
+     */
+    public void hideBossBarToAll(MinecraftServer server) {
+        var players = server.getPlayerManager().getPlayerList();
+        players.forEach(this::hideBossBar);
+    }
+
+    /**
+     * Shows the BloodMoon boss-bar to a player.
+     * @param player the boss-bar will be showed to.
+     */
+    public void hideBossBar(ServerPlayerEntity player) {
+        if (serverBossBar.getPlayers().contains(player)) {
+            serverBossBar.removePlayer(player);
+        }
+    }
+
+    /**
+     * Shows the BloodMoon boss-bar to all the players in the given server.
+     * @param server the Minecraft Server the function will affect.
+     */
+    public void showBossBarToAll(MinecraftServer server) {
+        var players = server.getPlayerManager().getPlayerList();
+        players.forEach(this::showBossBar);
+    }
+
+    /**
+     * Hides the BloodMoon boss-bar to a player.
+     * @param player the boss-bar will be hidden to.
+     */
+    public void showBossBar(ServerPlayerEntity player) {
+        if (!serverBossBar.getPlayers().contains(player)) {
+            serverBossBar.addPlayer(player);
         }
     }
 

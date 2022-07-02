@@ -5,7 +5,9 @@ import club.theabyss.global.registers.CommandRegister;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.global.data.adapters.LocalDateSerializer;
 import club.theabyss.server.game.ServerGameManager;
+import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListeners;
 import club.theabyss.server.global.commands.arguments.SkillsArgumentType;
+import club.theabyss.server.global.listeners.GlobalServerListeners;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
@@ -40,6 +42,9 @@ public class TheAbyssManager implements ModInitializer {
 		this.clientManager = new TheAbyssClientManager();
 
 		CommandRegister.registerCommands();
+
+		GlobalServerListeners.init();
+		BloodMoonListeners.init();
 
 		ArgumentTypes.register("theabyss2:skills", SkillsArgumentType.class, new ConstantArgumentSerializer<>(SkillsArgumentType::skills));
 
