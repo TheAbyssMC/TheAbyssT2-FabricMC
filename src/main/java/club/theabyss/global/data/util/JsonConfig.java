@@ -27,6 +27,7 @@ public class JsonConfig {
     private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
             .serializeNulls()
+            .setPrettyPrinting()
             .create();
 
     private @Getter @Setter JsonObject jsonObject = new JsonObject();
@@ -51,8 +52,8 @@ public class JsonConfig {
      * @return A new {@link JsonConfig} object.
      * @throws Exception If the file cannot be created.
      */
-    public static JsonConfig savesConfig(String filename, MinecraftServer server) throws Exception {
-        return new JsonConfig(filename, server.getRunDirectory().toPath().resolve("saves").resolve(server.getSavePath(WorldSavePath.ROOT)).toFile().getAbsolutePath() + File.separatorChar + TheAbyssManager.class.getSimpleName());
+    public static JsonConfig savesConfig(String filename, String folderName, MinecraftServer server) throws Exception {
+        return new JsonConfig(filename, server.getRunDirectory().toPath().resolve("saves").resolve(server.getSavePath(WorldSavePath.ROOT)).toFile().getAbsolutePath() + File.separatorChar + folderName);
     }
 
     /**
@@ -63,8 +64,20 @@ public class JsonConfig {
      * @return A new {@link JsonConfig} object.
      * @throws Exception If the file cannot be created.
      */
-    public static JsonConfig serverConfig(String filename, MinecraftServer server) throws Exception {
-        return new JsonConfig(filename, server.getRunDirectory().getAbsolutePath() + File.separatorChar + TheAbyssManager.class.getSimpleName());
+    public static JsonConfig serverConfig(String filename, String folderName, MinecraftServer server) throws Exception {
+        return new JsonConfig(filename, server.getRunDirectory().getAbsolutePath() + File.separatorChar + folderName);
+    }
+
+    /**
+     * A static constructor that creates a new {@link JsonConfig} object in the
+     * specified mod's folder.
+     *
+     * @param filename The name of the file to create.
+     * @return A new {@link JsonConfig} object.
+     * @throws Exception If the file cannot be created.
+     */
+    public static JsonConfig modConfig(String filename, String folderName) throws Exception {
+        return new JsonConfig(filename, folderName);
     }
 
     /**

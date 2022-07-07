@@ -9,8 +9,6 @@ import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.global.events.GameDateEvents;
-import club.theabyss.server.global.listeners.GlobalServerListeners;
-import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
 
@@ -44,7 +42,8 @@ public class ServerGameManager implements Restorable {
 
         this.entityManager = new EntityManager(this);
 
-        timer();
+        elapseDayTimer();
+        autoSaveTimer(1);
 
         server.getWorlds().forEach(w -> w.getGameRules().get(GameRules.DO_IMMEDIATE_RESPAWN).set(true, server));
 
@@ -77,11 +76,18 @@ public class ServerGameManager implements Restorable {
         }
     }
 
-    private void timer() {
+    private void elapseDayTimer() {
         executorService.schedule(() -> {
             GameDateEvents.DayHasElapsedEvent.EVENT.invoker().changeDay(day());
-            timer();
+            elapseDayTimer();
         }, 1 + ChronoUnit.MINUTES.between(LocalDateTime.now(), LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1)), TimeUnit.MINUTES);
+    }
+
+    private void autoSaveTimer(int rate) {
+        executorService.scheduleAtFixedRate(() -> {
+            serverCore.dataManager().save();
+            TheAbyssManager.getLogger().info("The mod's game data has been automatically saved.");
+        }, rate, rate, TimeUnit.MINUTES);
     }
 
     /**

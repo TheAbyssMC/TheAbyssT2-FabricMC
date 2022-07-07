@@ -26,7 +26,7 @@ public class Animation {
 
         ArrayList<Character> frames = new ArrayList<>(0);
         try {
-            var animationFile = "E:\\REPOSITORIOS\\TheAbyssT2-FabricMC\\src\\main\\resources\\assets\\theabyss2\\animations\\"+animation;
+            /* TODO */ var animationFile = "E:\\REPOSITORIOS\\TheAbyssT2-FabricMC\\src\\main\\resources\\assets\\theabyss2\\animations\\"+animation;
             JsonArray rawFrames = ((JsonArray) JsonParser.parseReader(new FileReader(animationFile)));
 
             rawFrames.forEach(i -> frames.add((char)i.getAsInt()));
