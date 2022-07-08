@@ -21,8 +21,6 @@ public class TheAbyssServerManager {
 
     private MinecraftServer minecraftServer;
 
-    private boolean bloodMoonEnabled = false;
-
     public TheAbyssServerManager(final TheAbyssManager core) {
         this.core = core;
 
@@ -30,16 +28,13 @@ public class TheAbyssServerManager {
             this.minecraftServer = server;
 
             try {
-                this.dataManager = new DataManager(core, server.getCommandSource().getServer());
+                this.dataManager = new DataManager(core, server);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            this.serverGameManager = new ServerGameManager(this, server, bloodMoonEnabled);
-            bloodMoonEnabled = true;
-
+            this.serverGameManager = new ServerGameManager(this, server);
             this.deathMessagesManager = new DeathMessagesManager(this);
-
             this.skillTreeManager = new SkillTreeManager(this);
 
             for (String animation : new String[] {

@@ -85,7 +85,7 @@ public class BloodMoonListeners {
         BloodMoonEvents.BloodMoonStarted.EVENT.register(manager -> {
             var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
 
-            if (bloodMoonManager.endBossBarTask == null) bloodMoonManager.updateBossBarTask();
+            if (bloodMoonManager.updateBossBarTask == null) bloodMoonManager.updateBossBarTask();
 
             bloodMoonManager.showBossBarToAll(manager.getServerCore().minecraftServer());
             return ActionResult.PASS;

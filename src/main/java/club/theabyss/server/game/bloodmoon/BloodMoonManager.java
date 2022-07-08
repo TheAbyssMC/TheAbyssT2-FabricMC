@@ -32,13 +32,15 @@ public class BloodMoonManager {
 
     private boolean animationIsActive = false;
 
+    private boolean paused = false;
+
     public ServerBossBar serverBossBar;
 
     private Text title;
 
-    public static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    public static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     private static ScheduledFuture<?> endBloodMoonTask = null;
-    public ScheduledFuture<?> endBossBarTask = null;
+    public ScheduledFuture<?> updateBossBarTask = null;
 
     public BloodMoonManager(final TheAbyssServerManager serverCore) {
         this.serverCore = serverCore;
@@ -231,12 +233,14 @@ public class BloodMoonManager {
      * Creates the task that updates the BloodMoon boss-bar each second.
      */
     public void updateBossBarTask() {
-        endBossBarTask = BloodMoonManager.executorService.scheduleAtFixedRate(() -> {
+        if (updateBossBarTask != null) return;
+        updateBossBarTask = BloodMoonManager.executorService.scheduleAtFixedRate(() -> {
             var remainBloodMoon = getFormattedRemainingTime();
 
             title = ChatFormatter.stringFormatToText("&c&ka &r☠ &c&lBLOODMOON: " + Formatting.YELLOW + (remainBloodMoon.equals("") ? "No hay una BloodMoon activa en este momento." : remainBloodMoon) + " &r☠ &c&ka");
             serverBossBar.setName(title);
             serverBossBar.setPercent((float) Math.max(0d, Math.min(1d, (double) getMillisToEnd() / bloodMoonData().getTotalTime())));
+
         }, 0, 1, TimeUnit.SECONDS);
     }
 
@@ -245,12 +249,43 @@ public class BloodMoonManager {
      * @param server the Minecraft Server the boss-bar is being cancelled.
      */
     public void cancelBossBarTask(MinecraftServer server) {
-        if (endBossBarTask != null) {
-            endBossBarTask.cancel(false);
-            endBossBarTask = null;
+        if (updateBossBarTask != null) {
+            updateBossBarTask.cancel(false);
+            updateBossBarTask = null;
         }
 
         hideBossBarToAll(server);
+    }
+
+    /**
+     * Resumes all the BloodMoon logic if it has been paused before.
+     */
+    public void resume() {
+        if (!paused) return;
+        lastTimeChecked = new Date().getTime();
+        getMillisToEnd();
+        assert executorService == null;
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        assert endBloodMoonTask == null;
+        endBloodMoonTask = executorService.schedule(this::end, bloodMoonData().getEndsIn() / 1000, TimeUnit.SECONDS);
+        assert updateBossBarTask == null;
+        updateBossBarTask();
+        paused = false;
+    }
+
+    /**
+     * Pauses all the BloodMoon logic.
+     */
+    public void pause() {
+        if (paused) return;
+        if (endBloodMoonTask != null) endBloodMoonTask.cancel(false);
+        if (updateBossBarTask != null) updateBossBarTask.cancel(false);
+        endBloodMoonTask = null;
+        updateBossBarTask = null;
+        executorService.shutdownNow();
+        executorService = null;
+        getMillisToEnd();
+        paused = true;
     }
 
     /**

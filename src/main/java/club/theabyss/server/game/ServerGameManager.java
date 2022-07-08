@@ -32,7 +32,7 @@ public class ServerGameManager implements Restorable {
 
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-    public ServerGameManager(final TheAbyssServerManager serverCore, MinecraftServer server, boolean bloodMoonEnabled) {
+    public ServerGameManager(final TheAbyssServerManager serverCore, MinecraftServer server) {
         this.serverCore = serverCore;
         this.server = server;
 
