@@ -76,6 +76,9 @@ public class ServerGameManager implements Restorable {
         }
     }
 
+    /**
+     * Creates a task that updates the mod's new time every day.
+     */
     private void elapseDayTimer() {
         executorService.schedule(() -> {
             GameDateEvents.DayHasElapsedEvent.EVENT.invoker().changeDay(day());
@@ -83,6 +86,10 @@ public class ServerGameManager implements Restorable {
         }, 1 + ChronoUnit.MINUTES.between(LocalDateTime.now(), LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1)), TimeUnit.MINUTES);
     }
 
+    /**
+     * Creates a task that saves all the mod's game data every {@param rate}.
+     * @param rate of time which the function will be executed.
+     */
     private void autoSaveTimer(int rate) {
         executorService.scheduleAtFixedRate(() -> {
             serverCore.dataManager().save();

@@ -1,17 +1,15 @@
 package club.theabyss.global.utils.customGlyphs;
 
-import club.theabyss.TheAbyssManager;
 import club.theabyss.global.utils.titles.SendActionBar;
 import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.global.utils.timedTitle.TimedTitle;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,16 +18,19 @@ public class Animation {
 
     private static final HashMap<String, Character[]> animations = new HashMap<>(0, 1);
 
-    public static void load(String animation, MinecraftServer server) throws ArrayStoreException, IndexOutOfBoundsException, NoFramesException {
+    public static void load(String animation) throws ArrayStoreException, IndexOutOfBoundsException, NoFramesException {
         animation = normalizeAnimation(animation);
         if (animations.get(animation) != null) return;
 
         ArrayList<Character> frames = new ArrayList<>(0);
         try {
-            /* TODO */ var animationFile = "E:\\REPOSITORIOS\\TheAbyssT2-FabricMC\\src\\main\\resources\\assets\\theabyss2\\animations\\"+animation;
-            JsonArray rawFrames = ((JsonArray) JsonParser.parseReader(new FileReader(animationFile)));
+            var inputStreamAnimation = Animation.class.getResourceAsStream("/data/theabyss2/animations/"+animation);
 
-            rawFrames.forEach(i -> frames.add((char)i.getAsInt()));
+            assert inputStreamAnimation != null;
+
+            JsonArray rawFrames = ((JsonArray) JsonParser.parseReader(new InputStreamReader(inputStreamAnimation)));
+
+            rawFrames.forEach(f -> frames.add((char)f.getAsInt()));
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new ArrayStoreException("An attempt was made to cast an element of the JSONArray to a Character. However, this action failed because the element was NOT an Integer.");

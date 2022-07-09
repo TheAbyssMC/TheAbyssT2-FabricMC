@@ -41,7 +41,7 @@ public class TheAbyssServerManager {
                     "bloodmoonanimation.json"
             }) {
                 try {
-                    Animation.load(animation, server);
+                    Animation.load(animation);
                 } catch (NoFramesException e) {
                     e.printStackTrace();
                 }
