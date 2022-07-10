@@ -1,11 +1,12 @@
 package club.theabyss;
 
 import club.theabyss.client.TheAbyssClientManager;
-import club.theabyss.global.registers.CommandRegister;
+import club.theabyss.global.registers.CommandRegistries;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.global.data.adapters.LocalDateSerializer;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListeners;
+import club.theabyss.server.game.entity.entities.AbyssEntityRegistries;
 import club.theabyss.server.global.commands.arguments.SkillsArgumentType;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import com.google.gson.Gson;
@@ -41,10 +42,12 @@ public class TheAbyssManager implements ModInitializer {
 		this.serverCore = new TheAbyssServerManager(this);
 		this.clientManager = new TheAbyssClientManager();
 
-		CommandRegister.registerCommands();
+		CommandRegistries.registerCommands();
 
 		GlobalServerListeners.init();
 		BloodMoonListeners.init();
+
+		AbyssEntityRegistries.register();
 
 		ArgumentTypes.register("theabyss2:skills", SkillsArgumentType.class, new ConstantArgumentSerializer<>(SkillsArgumentType::skills));
 

@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-//TODO AÑADIR TASK DE ATAQUE CON EL BRAIN EN VEZ DE CON PATHFINDING.
 @Mixin(AxolotlEntity.class)
 public class AxolotlEntityMixin extends MobEntity {
 
