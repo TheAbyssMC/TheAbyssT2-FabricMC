@@ -32,6 +32,7 @@
     "server.entites.peaceful.TurtleEntityMixin",
     "server.entites.peaceful.VillagerEntityMixin",
     "server.entites.player.PlayerEntityMixin",
+    "server.entites.player.ServerPlayerEntityMixin",
     "server.world.ServerWorldMixin"
   ],
   "client": [

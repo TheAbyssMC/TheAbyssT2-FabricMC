@@ -8,6 +8,7 @@ import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
+import club.theabyss.server.game.entity.events.ServerPlayerEntityEvents;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.sound.SoundCategory;
@@ -27,7 +28,7 @@ public class BloodMoonListeners {
     }
 
     private static void onPlayerDeath() {
-        ServerPlayerEvents.ALLOW_DEATH.register((player, damageSource, damageAmount) -> {
+        ServerPlayerEntityEvents.PlayerDeath.EVENT.register((player, damageSource) -> {
             var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
 
             var world = player.getWorld();
@@ -73,7 +74,7 @@ public class BloodMoonListeners {
                 }
             }, 3*1000);
 
-            return true;
+            return ActionResult.PASS;
         });
 
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {

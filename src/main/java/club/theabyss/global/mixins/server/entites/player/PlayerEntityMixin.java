@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.*;
 public class PlayerEntityMixin {
 
     @ModifyVariable(method = "applyDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
-    public float modifyAmount(float amount) {
+    private float modifyAmount(float amount) {
         var serverManager = TheAbyssManager.getInstance().serverCore();
         var skillTreeManager = serverManager.skillTreeManager();
 
@@ -31,7 +31,7 @@ public class PlayerEntityMixin {
     }
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
-    public float modifyAttackDamageForE(float amount) {
+    private float modifyAttackDamageForE(float amount) {
         var serverManager = TheAbyssManager.getInstance().serverCore();
         var skillTreeManager = serverManager.skillTreeManager();
 
