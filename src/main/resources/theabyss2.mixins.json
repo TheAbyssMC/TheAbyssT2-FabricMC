@@ -1,9 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "club.theabyss.server.global.mixins",
+  "package": "club.theabyss.global.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "server.entites.MobEntityMixin",
     "server.entites.neutral.BeeEntityMixin",
     "server.entites.neutral.DolphinEntityMixin",
     "server.entites.neutral.GoatEntityMixin",

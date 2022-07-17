@@ -25,12 +25,8 @@ public class GlobalServerListeners {
 
     private static void onDayHasElapsed() {
         GameDateEvents.DayHasElapsedEvent.EVENT.register(day -> {
-            var hasFailed = EntityManager.reloadEntityPathfinders();
-            if (hasFailed[0]) {
-                return ActionResult.FAIL;
-            } else {
-                return ActionResult.SUCCESS;
-            }
+            EntityManager.reloadGoals();
+            return ActionResult.PASS;
         });
     }
 

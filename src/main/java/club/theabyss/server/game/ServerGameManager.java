@@ -4,7 +4,7 @@ import club.theabyss.TheAbyssManager;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.data.storage.GameData;
-import club.theabyss.global.interfaces.Restorable;
+import club.theabyss.global.interfaces.data.Restorable;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import club.theabyss.server.game.entity.EntityManager;
@@ -52,9 +52,7 @@ public class ServerGameManager implements Restorable {
         to make sure all the entities are affected, because this class (ServerGameManager) is loaded right before
         the server is ready to tick for the first time (this means the entities are not loaded at that time).
          */
-        executorService.schedule(() -> {
-            EntityManager.reloadEntityPathfinders();
-        }, 1, TimeUnit.SECONDS);
+        executorService.schedule(EntityManager::reloadGoals, 1, TimeUnit.SECONDS);
     }
 
     @Override

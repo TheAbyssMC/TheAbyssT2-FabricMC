@@ -51,7 +51,7 @@ public class TheAbyssManager implements ModInitializer {
 
 		ArgumentTypes.register("theabyss2:skills", SkillsArgumentType.class, new ConstantArgumentSerializer<>(SkillsArgumentType::skills));
 
-		getLogger().info("The mod has been enabled successfully.");
+		logger.info("The mod has been enabled successfully.");
 	}
 
 	public ServerGameManager serverGameManager() {

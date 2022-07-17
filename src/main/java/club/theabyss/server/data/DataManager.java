@@ -2,7 +2,7 @@ package club.theabyss.server.data;
 
 import club.theabyss.TheAbyssManager;
 import club.theabyss.global.data.util.JsonConfig;
-import club.theabyss.global.interfaces.Instantiable;
+import club.theabyss.global.interfaces.data.Instantiable;
 import club.theabyss.server.TheAbyssServerManager;
 import net.minecraft.server.MinecraftServer;
 

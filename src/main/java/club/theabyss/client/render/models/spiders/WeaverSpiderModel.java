@@ -35,6 +35,7 @@ public class WeaverSpiderModel extends EntityModel<WeaverSpiderEntity> {
     }
 
     public static TexturedModelData getTexturedModelData() {
+
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
         ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(32, 6).cuboid(-4.0F, -2.0F, -8.0F, 8.0F, 3.0F, 8.0F, new Dilation(0.0F))
