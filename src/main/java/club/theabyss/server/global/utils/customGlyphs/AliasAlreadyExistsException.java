@@ -1,4 +1,4 @@
-package club.theabyss.global.utils.customGlyphs;
+package club.theabyss.server.global.utils.customGlyphs;
 
 class AliasAlreadyExistsException extends Exception {
     AliasAlreadyExistsException(String alias_1, char glyph_1, String alias_2) {

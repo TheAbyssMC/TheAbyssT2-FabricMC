@@ -1,4 +1,4 @@
-package club.theabyss.global.utils.timedTitle;
+package club.theabyss.server.global.utils.timedTitle;
 
 public class InvalidTitleTimings extends Exception {
     InvalidTitleTimings(TimedTitle.Title title) {

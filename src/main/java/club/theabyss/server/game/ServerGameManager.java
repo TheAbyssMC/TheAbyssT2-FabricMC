@@ -52,7 +52,7 @@ public class ServerGameManager implements Restorable {
         to make sure all the entities are affected, because this class (ServerGameManager) is loaded right before
         the server is ready to tick for the first time (this means the entities are not loaded at that time).
          */
-        executorService.schedule(EntityManager::reloadGoals, 1, TimeUnit.SECONDS);
+        executorService.schedule(EntityManager::reloadEntities, 1, TimeUnit.SECONDS);
     }
 
     @Override

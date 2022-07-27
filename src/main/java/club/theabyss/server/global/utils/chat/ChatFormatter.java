@@ -1,4 +1,4 @@
-package club.theabyss.global.utils.chat;
+package club.theabyss.server.global.utils.chat;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;

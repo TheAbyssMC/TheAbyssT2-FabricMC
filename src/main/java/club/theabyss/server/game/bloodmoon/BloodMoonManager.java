@@ -1,8 +1,8 @@
 package club.theabyss.server.game.bloodmoon;
 
-import club.theabyss.global.utils.chat.ChatFormatter;
-import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
-import club.theabyss.global.utils.timedTitle.TimedTitle;
+import club.theabyss.server.global.utils.chat.ChatFormatter;
+import club.theabyss.server.global.utils.timedTitle.InvalidTitleTimings;
+import club.theabyss.server.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import lombok.Getter;

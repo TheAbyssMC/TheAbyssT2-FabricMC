@@ -4,7 +4,9 @@
   "package": "club.theabyss.global.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "server.data.DataTrackerMixin",
     "server.entites.MobEntityMixin",
+    "server.entites.hostile.CreeperEntityMixin",
     "server.entites.neutral.BeeEntityMixin",
     "server.entites.neutral.DolphinEntityMixin",
     "server.entites.neutral.GoatEntityMixin",

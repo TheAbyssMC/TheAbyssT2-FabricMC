@@ -1,9 +1,9 @@
-package club.theabyss.global.utils.customGlyphs;
+package club.theabyss.server.global.utils.customGlyphs;
 
-import club.theabyss.global.utils.titles.SendActionBar;
-import club.theabyss.global.utils.timedTitle.InvalidTitleTimings;
-import club.theabyss.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
-import club.theabyss.global.utils.timedTitle.TimedTitle;
+import club.theabyss.server.global.utils.titles.SendActionBar;
+import club.theabyss.server.global.utils.timedTitle.InvalidTitleTimings;
+import club.theabyss.server.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
+import club.theabyss.server.global.utils.timedTitle.TimedTitle;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import net.minecraft.server.network.ServerPlayerEntity;

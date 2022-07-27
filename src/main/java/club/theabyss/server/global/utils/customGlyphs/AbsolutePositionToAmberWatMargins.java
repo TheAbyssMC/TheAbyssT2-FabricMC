@@ -1,8 +1,7 @@
-package club.theabyss.global.utils.customGlyphs;
+package club.theabyss.server.global.utils.customGlyphs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 public class AbsolutePositionToAmberWatMargins {
     private static int getStringWidth(String str, HashMap<Character, Integer> widths) {

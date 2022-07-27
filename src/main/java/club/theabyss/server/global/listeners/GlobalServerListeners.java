@@ -1,8 +1,8 @@
 package club.theabyss.server.global.listeners;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.global.utils.timedTitle.TimedActionBar;
-import club.theabyss.global.utils.timedTitle.TimedTitle;
+import club.theabyss.server.global.utils.timedTitle.TimedActionBar;
+import club.theabyss.server.global.utils.timedTitle.TimedTitle;
 import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.events.GameDateEvents;
@@ -25,7 +25,7 @@ public class GlobalServerListeners {
 
     private static void onDayHasElapsed() {
         GameDateEvents.DayHasElapsedEvent.EVENT.register(day -> {
-            EntityManager.reloadGoals();
+            EntityManager.reloadEntities();
             return ActionResult.PASS;
         });
     }

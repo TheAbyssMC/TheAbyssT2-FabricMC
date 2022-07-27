@@ -1,7 +1,7 @@
 package club.theabyss.server.global.commands;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.global.utils.chat.ChatFormatter;
+import club.theabyss.server.global.utils.chat.ChatFormatter;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.game.skilltree.enums.Skills;
 import club.theabyss.server.global.commands.arguments.SkillsArgumentType;

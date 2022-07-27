@@ -1,4 +1,4 @@
-package club.theabyss.global.utils.customGlyphs;
+package club.theabyss.server.global.utils.customGlyphs;
 
 public class NoSuchAnimationException extends Exception {
     public NoSuchAnimationException(String animation) {

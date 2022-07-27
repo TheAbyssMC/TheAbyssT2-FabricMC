@@ -1,8 +1,8 @@
 package club.theabyss.server;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.global.utils.customGlyphs.Animation;
-import club.theabyss.global.utils.customGlyphs.NoFramesException;
+import club.theabyss.server.global.utils.customGlyphs.Animation;
+import club.theabyss.server.global.utils.customGlyphs.NoFramesException;
 import club.theabyss.server.data.DataManager;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.deathmessages.DeathMessagesManager;

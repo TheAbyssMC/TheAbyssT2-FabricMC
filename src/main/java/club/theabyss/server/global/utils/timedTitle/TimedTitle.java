@@ -1,7 +1,7 @@
-package club.theabyss.global.utils.timedTitle;
+package club.theabyss.server.global.utils.timedTitle;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.global.utils.titles.SendTitle;
+import club.theabyss.server.global.utils.titles.SendTitle;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 

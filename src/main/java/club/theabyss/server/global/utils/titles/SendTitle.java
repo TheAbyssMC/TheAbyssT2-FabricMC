@@ -1,4 +1,4 @@
-package club.theabyss.global.utils.titles;
+package club.theabyss.server.global.utils.titles;
 
 import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
 import net.minecraft.network.packet.s2c.play.TitleFadeS2CPacket;
