@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "server.data.DataTrackerMixin",
+    "server.entites.EntityMixin",
     "server.entites.MobEntityMixin",
     "server.entites.hostile.CreeperEntityMixin",
     "server.entites.neutral.BeeEntityMixin",
