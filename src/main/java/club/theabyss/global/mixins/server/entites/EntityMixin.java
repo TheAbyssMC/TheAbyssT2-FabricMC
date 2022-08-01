@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public class EntityMixin {
 
-    @Inject(method = "isImmuneToExplosion", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isImmuneToExplosion", at = @At("TAIL"), cancellable = true)
     private void modifyExplosionImmunity(CallbackInfoReturnable<Boolean> cir) {
         var day = GlobalGameManager.getNowDay();
         cir.setReturnValue(day >= 7 ? !(((Entity)(Object)this).getType().equals(EntityType.PLAYER)) : cir.getReturnValue());

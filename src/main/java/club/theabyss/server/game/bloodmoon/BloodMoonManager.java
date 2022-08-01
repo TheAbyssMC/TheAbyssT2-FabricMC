@@ -38,12 +38,13 @@ public class BloodMoonManager {
 
     private Text title;
 
-    public static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    public static ScheduledExecutorService executorService;
     private static ScheduledFuture<?> endBloodMoonTask = null;
     public ScheduledFuture<?> updateBossBarTask = null;
 
     public BloodMoonManager(final TheAbyssServerManager serverCore) {
         this.serverCore = serverCore;
+        executorService = Executors.newSingleThreadScheduledExecutor();
         this.serverBossBar = new ServerBossBar(Text.of(""), BossBar.Color.RED, BossBar.Style.NOTCHED_6);
     }
 
@@ -157,12 +158,16 @@ public class BloodMoonManager {
         if (endBloodMoonTask != null) endBloodMoonTask.cancel(false);
         endBloodMoonTask = executorService.schedule(this::end, endsIn / 1000, TimeUnit.SECONDS);
 
+        world.setTimeOfDay(18000);
+
+        if (!playEffect) return;
+
         var subtitle = getFormattedRemainingTime().replaceFirst(".{3}$", "")+"m";
         if (subtitle.length() > 6) subtitle = subtitle.replaceFirst(":", "d:");
         subtitle = new StringBuilder(subtitle).insert(subtitle.length()-4, "h").toString();
 
         String finalSubtitle = subtitle;
-        if (!playEffect) return;
+
         world.getPlayers().forEach(online -> {
             online.playSound(SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.MASTER, 1F, -18F);
             online.playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.MASTER, 100F, -9.0F);
@@ -186,7 +191,7 @@ public class BloodMoonManager {
 
         endBloodMoonTask = null;
 
-        world.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false, world.getServer());
+        world.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(true, world.getServer());
 
         BloodMoonEvents.BloodMoonEnded.EVENT.invoker().end(this);
     }

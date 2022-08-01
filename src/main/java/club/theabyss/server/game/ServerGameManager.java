@@ -2,9 +2,9 @@ package club.theabyss.server.game;
 
 import club.theabyss.TheAbyssManager;
 import club.theabyss.global.data.util.JsonConfig;
+import club.theabyss.global.interfaces.data.Restorable;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.data.storage.GameData;
-import club.theabyss.global.interfaces.data.Restorable;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import club.theabyss.server.game.entity.EntityManager;
@@ -30,11 +30,13 @@ public class ServerGameManager implements Restorable {
     private final BloodMoonManager bloodMoonManager;
     private final EntityManager entityManager;
 
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService executorService;
 
     public ServerGameManager(final TheAbyssServerManager serverCore, MinecraftServer server) {
         this.serverCore = serverCore;
         this.server = server;
+
+        executorService = Executors.newSingleThreadScheduledExecutor();
 
         this.restore(serverCore.dataManager().gameDataConfig());
 
@@ -72,6 +74,11 @@ public class ServerGameManager implements Restorable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void shutDownExecutor() {
+        executorService.shutdownNow();
+        executorService = null;
     }
 
     /**

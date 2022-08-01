@@ -62,6 +62,8 @@ public class TheAbyssServerManager {
 
             bloodMoonManager.cancelBossBarTask(server);
 
+            serverGameManager.shutDownExecutor();
+
             TheAbyssManager.getLogger().info("The mod's server has been unloaded successfully.");
         }));
     }
