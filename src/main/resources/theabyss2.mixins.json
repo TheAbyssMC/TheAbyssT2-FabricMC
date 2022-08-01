@@ -4,9 +4,11 @@
   "package": "club.theabyss.global.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "server.blocks.BlockMixin",
     "server.commands.TimeCommandMixin",
     "server.data.DataTrackerMixin",
     "server.entites.EntityMixin",
+    "server.entites.LivingEntityMixin",
     "server.entites.MobEntityMixin",
     "server.entites.hostile.CreeperEntityMixin",
     "server.entites.hostile.MagmaCubeEntityMixin",
