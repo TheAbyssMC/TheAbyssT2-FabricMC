@@ -2,6 +2,9 @@ package club.theabyss.global.utils;
 
 import java.util.NoSuchElementException;
 
+/**
+ * @author <a href="https://github.com/zLofro">Lofro</a>
+ */
 public class NullableOptional<T> {
 
     public static <T> NullableOptional<T> of(T value) {

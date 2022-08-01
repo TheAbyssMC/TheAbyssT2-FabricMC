@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.peaceful;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.global.utils.GlobalGameManager;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.AttackGoal;
@@ -29,7 +29,7 @@ public class BatEntityMixin extends MobEntity {
 
     @Override
     public void initGoals() {
-        var day = (TheAbyssManager.getInstance().serverCore().serverGameManager() != null) ? TheAbyssManager.getInstance().serverCore().serverGameManager().day() : 0;
+        var day = GlobalGameManager.getNowDay();
         if (day >= 7) {
             targetSelector.add(0, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
             goalSelector.add(0, new AttackGoal(this));

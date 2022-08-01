@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.neutral;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.global.utils.GlobalGameManager;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -30,7 +30,7 @@ public class BeeEntityMixin extends MobEntity {
 
     @Inject(at = @At("HEAD"), method = "initGoals")
     public void addAttackGoal(CallbackInfo ci) {
-        var day = (TheAbyssManager.getInstance().serverCore().serverGameManager() != null) ? TheAbyssManager.getInstance().serverCore().serverGameManager().day() : 0;
+        var day = GlobalGameManager.getNowDay();
         if (day >= 7) {
             targetSelector.add(0, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
             goalSelector.add(0, new MeleeAttackGoal(((BeeEntity) (Object) this), 1.0D, false));

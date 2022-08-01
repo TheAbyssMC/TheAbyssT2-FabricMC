@@ -1,7 +1,7 @@
 package club.theabyss.server.game.entity;
 
-import club.theabyss.TheAbyssManager;
 import club.theabyss.global.interfaces.entity.IMobEntity;
+import club.theabyss.global.interfaces.entity.skeleton.IAbstractSkeletonEntity;
 import club.theabyss.server.game.ServerGameManager;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -21,7 +21,10 @@ public class EntityManager {
             if (entity instanceof MobEntity mobEntity) {
                 var mob = ((IMobEntity)mobEntity);
                 mob.reloadGoals();
-                if (entity instanceof AbstractSkeletonEntity skeletonEntity) skeletonEntity.updateAttackType();
+                if (entity instanceof AbstractSkeletonEntity skeletonEntity) {
+                    skeletonEntity.updateAttackType();
+                    ((IAbstractSkeletonEntity)skeletonEntity).initEquipment$0(skeletonEntity.getWorld().getLocalDifficulty(skeletonEntity.getBlockPos()));
+                }
                 mob.reloadDataTracker();
             }
         }));

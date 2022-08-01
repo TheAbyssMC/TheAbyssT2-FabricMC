@@ -9,6 +9,8 @@ import club.theabyss.server.game.skilltree.enums.Skills;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import java.util.Objects;
+
 public class SkillTreeManager implements Restorable {
 
     private final TheAbyssServerManager serverManager;
@@ -47,7 +49,7 @@ public class SkillTreeManager implements Restorable {
     public static void updatePlayerHealth(ServerPlayerEntity player) {
         var skillTreeManager = TheAbyssManager.getInstance().serverCore().skillTreeManager();
 
-        player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(skillTreeManager.getSkillLevel(player, Skills.Health) * 2 + 20);
+        Objects.requireNonNull(player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).setBaseValue(skillTreeManager.getSkillLevel(player, Skills.Health) * 2 + 20);
     }
 
     /**
