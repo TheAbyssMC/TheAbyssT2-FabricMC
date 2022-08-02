@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "server.blocks.BlockMixin",
+    "server.blocks.CactusBlockMixin",
     "server.commands.TimeCommandMixin",
     "server.data.DataTrackerMixin",
     "server.entites.EntityMixin",
