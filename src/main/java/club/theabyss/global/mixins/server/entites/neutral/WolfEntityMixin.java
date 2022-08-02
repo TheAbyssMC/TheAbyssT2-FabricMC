@@ -6,6 +6,8 @@ import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +23,11 @@ public class WolfEntityMixin extends MobEntity {
 
     protected WolfEntityMixin(EntityType<? extends MobEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void init(EntityType<?> entityType, World world, CallbackInfo ci) {
+        if (GlobalGameManager.getNowDay() >=7) addStatusEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, Integer.MAX_VALUE, 4));
     }
 
     @Inject(at = @At("RETURN"), method = "createWolfAttributes")

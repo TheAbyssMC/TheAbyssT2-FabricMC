@@ -13,6 +13,7 @@
     "server.entites.hostile.CreeperEntityMixin",
     "server.entites.hostile.MagmaCubeEntityMixin",
     "server.entites.hostile.skeleton.AbstractSkeletonEntityMixin",
+    "server.entites.hostile.skeleton.WitherSkeletonEntityMixin",
     "server.entites.neutral.BeeEntityMixin",
     "server.entites.neutral.DolphinEntityMixin",
     "server.entites.neutral.GoatEntityMixin",
