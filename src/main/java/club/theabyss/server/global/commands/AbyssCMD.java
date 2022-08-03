@@ -28,7 +28,7 @@ public class AbyssCMD {
 
     private static int runRemainBloodmoon(CommandContext<ServerCommandSource> commandContext) throws CommandSyntaxException {
         var player = commandContext.getSource().getPlayer();
-        var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+        var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
         if (bloodMoonManager.isActive()) {
             player.sendMessage(ChatFormatter.stringFormatWithPrefixToText("&7Queda " + bloodMoonManager.getFormattedRemainingTime() + " de BloodMoon."), false);
@@ -40,13 +40,13 @@ public class AbyssCMD {
 
     private static int runDay(CommandContext<ServerCommandSource> commandContext) throws CommandSyntaxException {
         var player = commandContext.getSource().getPlayer();
-        player.sendMessage(ChatFormatter.stringFormatWithPrefixToText("&7El día actual es &6" + TheAbyssManager.getInstance().serverCore().serverGameManager().day() + "&7."), false);
+        player.sendMessage(ChatFormatter.stringFormatWithPrefixToText("&7El día actual es &6" + TheAbyssManager.getInstance().serverManager().serverGameManager().day() + "&7."), false);
 
         return 1;
     }
 
     private static int getDeathMessage(CommandContext<ServerCommandSource> commandContext) {
-        var deathMessages = TheAbyssManager.getInstance().serverCore().deathMessagesManager().deathMessages().deathMessages();
+        var deathMessages = TheAbyssManager.getInstance().serverManager().deathMessagesManager().deathMessages().deathMessages();
 
         try {
             var player = commandContext.getSource().getPlayer();
@@ -59,7 +59,7 @@ public class AbyssCMD {
     }
 
     private static int setDeathMessage(CommandContext<ServerCommandSource> commandContext, String message) {
-        var deathMessages = TheAbyssManager.getInstance().serverCore().deathMessagesManager().deathMessages().deathMessages();
+        var deathMessages = TheAbyssManager.getInstance().serverManager().deathMessagesManager().deathMessages().deathMessages();
 
         try {
             deathMessages.put(commandContext.getSource().getPlayer().getUuid(), message);
@@ -72,7 +72,7 @@ public class AbyssCMD {
     }
 
     private static int clearDeathMessage(CommandContext<ServerCommandSource> commandContext) {
-        var deathMessages = TheAbyssManager.getInstance().serverCore().deathMessagesManager().deathMessages().deathMessages();
+        var deathMessages = TheAbyssManager.getInstance().serverManager().deathMessagesManager().deathMessages().deathMessages();
 
         try {
             deathMessages.remove(commandContext.getSource().getPlayer().getUuid());

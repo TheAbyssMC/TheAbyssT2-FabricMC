@@ -1,4 +1,4 @@
-package club.theabyss.client.render.models.spiders;
+package club.theabyss.client.render.models.entities.spiders;
 
 import club.theabyss.server.game.entity.entities.spiders.WeaverSpiderEntity;
 import net.minecraft.client.model.*;

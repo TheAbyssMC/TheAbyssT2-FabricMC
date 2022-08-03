@@ -8,7 +8,7 @@ import club.theabyss.server.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.server.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.server.global.utils.timedTitle.TimedActionBar;
 import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
-import club.theabyss.server.game.entity.events.ServerPlayerEntityEvents;
+import club.theabyss.server.game.entity.events.player.ServerPlayerEntityEvents;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.sound.SoundCategory;
@@ -29,7 +29,7 @@ public class BloodMoonListeners {
 
     private static void onPlayerDeath() {
         ServerPlayerEntityEvents.PlayerDeath.EVENT.register((player, damageSource) -> {
-            var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+            var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
             var world = player.getWorld();
             var name = player.getName().asString();
@@ -84,7 +84,7 @@ public class BloodMoonListeners {
 
     private static void onBloodMoonStart() {
         BloodMoonEvents.BloodMoonStarted.EVENT.register(manager -> {
-            var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+            var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
             if (bloodMoonManager.updateBossBarTask == null) bloodMoonManager.updateBossBarTask();
 
@@ -95,7 +95,7 @@ public class BloodMoonListeners {
 
     private static void onBloodMoonEnd() {
         BloodMoonEvents.BloodMoonEnded.EVENT.register(manager -> {
-            var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+            var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
             var server = manager.getServerCore().serverGameManager().minecraftServer();
 

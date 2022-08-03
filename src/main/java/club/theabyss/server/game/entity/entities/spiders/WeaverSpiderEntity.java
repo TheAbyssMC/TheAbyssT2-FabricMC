@@ -1,5 +1,6 @@
 package club.theabyss.server.game.entity.entities.spiders;
 
+import club.theabyss.server.global.utils.chat.ChatFormatter;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -19,11 +20,12 @@ public class WeaverSpiderEntity extends SpiderEntity {
 
     public WeaverSpiderEntity(EntityType<? extends SpiderEntity> entityType, World world) {
         super(entityType, world);
-        this.setHealth(40f);
+        this.setHealth(60f);
+        setCustomName(ChatFormatter.stringFormatToText("&6Weaver Spider"));
     }
 
     public static DefaultAttributeContainer.Builder createWeaverSpiderAttributes() {
-        return SpiderEntity.createSpiderAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 40).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 18).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.6);
+        return SpiderEntity.createSpiderAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 60).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 18).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.6);
     }
 
     @Override

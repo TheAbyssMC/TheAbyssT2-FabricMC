@@ -45,7 +45,7 @@ public enum Skills {
     }
 
     public static SkillTreeData skillData() {
-        return TheAbyssManager.getInstance().serverCore().skillTreeManager().skillTreeData();
+        return TheAbyssManager.getInstance().serverManager().skillTreeManager().skillTreeData();
     }
 
 }

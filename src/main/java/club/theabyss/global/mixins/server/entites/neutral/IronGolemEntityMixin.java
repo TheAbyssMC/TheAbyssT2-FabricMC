@@ -35,8 +35,8 @@ public class IronGolemEntityMixin extends PathAwareEntity {
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(1, new TrackIronGolemTargetGoal(((IronGolemEntity)(Object)this)));
         this.targetSelector.add(2, new RevengeGoal(this));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false, (entity) -> entity instanceof Monster && !(entity instanceof CreeperEntity)));
-        this.targetSelector.add(4, new UniversalAngerGoal<>(((IronGolemEntity)(Object)this), false));
+        if (day < 7) this.targetSelector.add(3, new ActiveTargetGoal<>(this, MobEntity.class, 5, false, false, (entity) -> entity instanceof Monster && !(entity instanceof CreeperEntity)));
+        if (day < 7) this.targetSelector.add(4, new UniversalAngerGoal<>(((IronGolemEntity)(Object)this), false));
 
         ci.cancel();
     }

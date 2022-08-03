@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.player;
 
-import club.theabyss.server.game.entity.events.ServerPlayerEntityEvents;
+import club.theabyss.server.game.entity.events.player.ServerPlayerEntityEvents;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

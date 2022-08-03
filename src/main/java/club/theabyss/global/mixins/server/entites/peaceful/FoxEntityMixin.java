@@ -1,40 +1,18 @@
 package club.theabyss.global.mixins.server.entites.peaceful;
 
-import club.theabyss.global.utils.GlobalGameManager;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.MobEntity;
+import club.theabyss.global.interfaces.entity.fox.IFoxEntity;
 import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(FoxEntity.class)
-public class FoxEntityMixin extends MobEntity {
+public abstract class FoxEntityMixin implements IFoxEntity {
 
-    protected FoxEntityMixin(EntityType<? extends MobEntity> entityType, World world) {
-        super(entityType, world);
-    }
+    @Shadow abstract void setWalking(boolean walking);
 
-    @Inject(at = @At("RETURN"), method = "createFoxAttributes")
-    private static void addAttackDamageAttribute(CallbackInfoReturnable<DefaultAttributeContainer.Builder> cir) {
-        cir.getReturnValue().add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4.0D);
-    }
-
-    @Inject(at = @At("HEAD"), method = "initGoals")
-    public void addAttackGoal(CallbackInfo ci) {
-        var day = GlobalGameManager.getNowDay();
-        if (day >= 7) {
-            targetSelector.add(0, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-            goalSelector.add(0, new MeleeAttackGoal(((FoxEntity) (Object) this), 1.0D, false));
-        }
+    @Override
+    public void setWalking$0(boolean walking) {
+        setWalking(walking);
     }
 
 }

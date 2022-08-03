@@ -13,7 +13,7 @@ public class GlobalClientListeners {
 
     private static void onClientPause() {
         ClientStateEvents.OnClientPause.EVENT.register(client -> {
-            var serverGameManager = TheAbyssManager.getInstance().serverCore().serverGameManager();
+            var serverGameManager = TheAbyssManager.getInstance().serverManager().serverGameManager();
 
             if (serverGameManager == null) return ActionResult.FAIL;
 
@@ -27,7 +27,7 @@ public class GlobalClientListeners {
 
     private static void onClientResume() {
         ClientStateEvents.OnClientResume.EVENT.register(client -> {
-            var serverGameManager = TheAbyssManager.getInstance().serverCore().serverGameManager();
+            var serverGameManager = TheAbyssManager.getInstance().serverManager().serverGameManager();
 
             if (serverGameManager == null) return ActionResult.FAIL;
 

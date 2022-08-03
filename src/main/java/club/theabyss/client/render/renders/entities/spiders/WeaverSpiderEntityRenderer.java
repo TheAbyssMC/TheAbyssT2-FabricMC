@@ -1,8 +1,8 @@
-package club.theabyss.client.render.renders;
+package club.theabyss.client.render.renders.entities.spiders;
 
 import club.theabyss.client.render.layers.TheAbyssModelLayers;
 import club.theabyss.server.game.entity.entities.spiders.WeaverSpiderEntity;
-import club.theabyss.client.render.models.spiders.WeaverSpiderModel;
+import club.theabyss.client.render.models.entities.spiders.WeaverSpiderModel;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.util.Identifier;

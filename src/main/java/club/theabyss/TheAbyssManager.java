@@ -26,7 +26,7 @@ public class TheAbyssManager implements ModInitializer {
 
 	private static final @Getter Logger logger = LoggerFactory.getLogger("theabyss2");
 
-	private TheAbyssServerManager serverCore;
+	private TheAbyssServerManager serverManager;
 	private TheAbyssClientManager clientManager;
 
 	private static final Gson gson = new GsonBuilder()
@@ -39,7 +39,7 @@ public class TheAbyssManager implements ModInitializer {
 	public void onInitialize() {
 		instance = this;
 
-		this.serverCore = new TheAbyssServerManager(this);
+		this.serverManager = new TheAbyssServerManager(this);
 		this.clientManager = new TheAbyssClientManager();
 
 		CommandRegistries.registerCommands();
@@ -54,22 +54,32 @@ public class TheAbyssManager implements ModInitializer {
 		logger.info("The mod has been enabled successfully.");
 	}
 
+	/**
+	 * @return the mod's server game manager.
+	 */
 	public ServerGameManager serverGameManager() {
-		return serverCore.serverGameManager();
+		return serverManager.serverGameManager();
 	}
 
 	/**
-	 * @return the Gson.
+	 * @return the Gson constant.
 	 */
 	public static Gson gson() {
 		return gson;
 	}
 
 	/**
-	 * @return the server core.
+	 * @return the mod's server manager.
 	 */
-	public TheAbyssServerManager serverCore() {
-		return serverCore;
+	public TheAbyssServerManager serverManager() {
+		return serverManager;
+	}
+
+	/**
+	 * @return the mod's client manager.
+	 */
+	public TheAbyssClientManager clientManager() {
+		return clientManager;
 	}
 
 }

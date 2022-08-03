@@ -47,7 +47,7 @@ public class SkillTreeManager implements Restorable {
     }
 
     public static void updatePlayerHealth(ServerPlayerEntity player) {
-        var skillTreeManager = TheAbyssManager.getInstance().serverCore().skillTreeManager();
+        var skillTreeManager = TheAbyssManager.getInstance().serverManager().skillTreeManager();
 
         Objects.requireNonNull(player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).setBaseValue(skillTreeManager.getSkillLevel(player, Skills.Health) * 2 + 20);
     }

@@ -1,4 +1,4 @@
-package club.theabyss.server.game.entity.events;
+package club.theabyss.server.game.entity.events.player;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
@@ -22,6 +22,22 @@ public class ServerPlayerEntityEvents {
                     return ActionResult.PASS;
                 });
         ActionResult die(ServerPlayerEntity entity, DamageSource source);
+    }
+
+    @FunctionalInterface
+    public interface PlayerResurrect {
+        Event<PlayerResurrect> EVENT = EventFactory.createArrayBacked(PlayerResurrect.class,
+                (listeners) -> (playerEntity) -> {
+                    for (PlayerResurrect listener : listeners) {
+                        ActionResult actionResult = listener.resurrect(playerEntity);
+
+                        if (actionResult != ActionResult.PASS) {
+                            return actionResult;
+                        }
+                    }
+                    return ActionResult.PASS;
+                });
+        ActionResult resurrect(ServerPlayerEntity playerEntity);
     }
 
 }

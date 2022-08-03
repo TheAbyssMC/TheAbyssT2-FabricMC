@@ -62,7 +62,7 @@ public class AbyssStaffCMD {
     }
 
     public static int endBloodMoon(CommandContext<ServerCommandSource> commandContext) {
-        var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+        var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
         if (bloodMoonManager.isActive()) {
             bloodMoonManager.end();
@@ -75,7 +75,7 @@ public class AbyssStaffCMD {
     }
 
     public static int startBloodMoon(CommandContext<ServerCommandSource> commandContext, int duration) {
-        var bloodMoonManager = TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager();
+        var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
         bloodMoonManager.start(duration / 60f, !bloodMoonManager.isActive());
         commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7La BloodMoon ha sido activada con una duración de &b" + duration + " &7minutos."), false);
@@ -163,7 +163,7 @@ public class AbyssStaffCMD {
         }
 
         commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El día ha sido actualizado a &6" + numberOfDay + "&7."), false);
-        TheAbyssManager.getInstance().serverCore().serverGameManager().gameData().setStartDate(LocalDate.parse(s));
+        TheAbyssManager.getInstance().serverManager().serverGameManager().gameData().setStartDate(LocalDate.parse(s));
     }
 
 }

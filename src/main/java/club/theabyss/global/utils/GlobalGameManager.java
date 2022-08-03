@@ -5,11 +5,11 @@ import club.theabyss.TheAbyssManager;
 public class GlobalGameManager {
 
     public static long getNowDay() {
-        return TheAbyssManager.getInstance().serverCore().serverGameManager() != null ? TheAbyssManager.getInstance().serverCore().serverGameManager().day() : 0;
+        return TheAbyssManager.getInstance().serverManager().serverGameManager() != null ? TheAbyssManager.getInstance().serverManager().serverGameManager().day() : 0;
     }
 
     public static boolean isBloodMoonActive() {
-        return TheAbyssManager.getInstance().serverCore().serverGameManager() != null && TheAbyssManager.getInstance().serverCore().serverGameManager().bloodMoonManager().isActive();
+        return TheAbyssManager.getInstance().serverManager().serverGameManager() != null && TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager().isActive();
     }
 
 }

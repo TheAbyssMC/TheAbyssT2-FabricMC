@@ -35,7 +35,7 @@ public abstract class DataTrackerMixin implements IDataTracker {
                 addTrackedData(k, value.isPresent() ? value.get() : entries.defaultValues.get(k));
             });
 
-            TheAbyssManager.getInstance().serverCore().minecraftServer().getPlayerManager().getPlayerList().forEach(p -> p.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(trackedEntity.getId(), trackedEntity.getDataTracker(), true)));
+            TheAbyssManager.getInstance().serverManager().minecraftServer().getPlayerManager().getPlayerList().forEach(p -> p.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(trackedEntity.getId(), trackedEntity.getDataTracker(), true)));
         }
 
         this.lock.writeLock().unlock();

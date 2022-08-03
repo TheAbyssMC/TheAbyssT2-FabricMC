@@ -34,7 +34,7 @@ public class GlobalServerListeners {
         ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
             var player = networkHandler.getPlayer();
 
-            var serverCore = TheAbyssManager.getInstance().serverCore();
+            var serverCore = TheAbyssManager.getInstance().serverManager();
 
             var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
 
@@ -65,7 +65,7 @@ public class GlobalServerListeners {
         ServerPlayConnectionEvents.DISCONNECT.register((networkHandler, server) -> {
             var player = networkHandler.getPlayer();
 
-            var serverCore = TheAbyssManager.getInstance().serverCore();
+            var serverCore = TheAbyssManager.getInstance().serverManager();
             var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
 
             bloodMoonManager.hideBossBar(player);

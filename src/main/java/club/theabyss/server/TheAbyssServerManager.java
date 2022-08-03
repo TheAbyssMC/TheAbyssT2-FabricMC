@@ -12,7 +12,7 @@ import net.minecraft.server.MinecraftServer;
 
 public class TheAbyssServerManager {
 
-    private final TheAbyssManager core;
+    private final TheAbyssManager abyssManager;
 
     private DataManager dataManager;
     private ServerGameManager serverGameManager;
@@ -21,14 +21,14 @@ public class TheAbyssServerManager {
 
     private MinecraftServer minecraftServer;
 
-    public TheAbyssServerManager(final TheAbyssManager core) {
-        this.core = core;
+    public TheAbyssServerManager(final TheAbyssManager abyssManager) {
+        this.abyssManager = abyssManager;
 
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
             this.minecraftServer = server;
 
             try {
-                this.dataManager = new DataManager(core, server);
+                this.dataManager = new DataManager(abyssManager, server);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -71,8 +71,8 @@ public class TheAbyssServerManager {
     /**
      * @return the mod core.
      */
-    public TheAbyssManager core() {
-        return core;
+    public TheAbyssManager abyssManager() {
+        return abyssManager;
     }
 
     /**
