@@ -1,7 +1,7 @@
 package club.theabyss.global.mixins.server.data;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.global.interfaces.entity.IDataTracker;
+import club.theabyss.global.interfaces.server.entity.IDataTracker;
 import club.theabyss.server.global.utils.DataTrackerChanger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.data.DataTracker;

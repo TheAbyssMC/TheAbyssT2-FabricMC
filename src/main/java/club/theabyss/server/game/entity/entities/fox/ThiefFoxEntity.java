@@ -1,6 +1,6 @@
 package club.theabyss.server.game.entity.entities.fox;
 
-import club.theabyss.global.interfaces.entity.fox.IFoxEntity;
+import club.theabyss.global.interfaces.server.entity.fox.IFoxEntity;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -26,9 +26,11 @@ import java.util.Random;
 
 public class ThiefFoxEntity extends FoxEntity implements Monster {
 
+    //TODO IMPROVE AI.
+
     public ThiefFoxEntity(EntityType<? extends ThiefFoxEntity> entityType, World world) {
         super(entityType, world);
-        setCustomName(ChatFormatter.stringFormatToText("&cThief Fox"));
+        setCustomName(ChatFormatter.stringFormatToText("&cThief Fox&r"));
         setHealth(60);
     }
 
@@ -61,9 +63,8 @@ public class ThiefFoxEntity extends FoxEntity implements Monster {
                 stealItem(player, this);
             }
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     private void stealItem(PlayerEntity player, Entity entity) {

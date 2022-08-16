@@ -46,7 +46,8 @@
     "server.world.ServerWorldMixin"
   ],
   "client": [
-    "client.MinecraftClientMixin"
+    "client.MinecraftClientMixin",
+    "client.hud.InGameHudMixin"
   ],
   "server": [
   ],

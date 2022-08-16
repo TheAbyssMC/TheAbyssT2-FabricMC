@@ -2,7 +2,7 @@ package club.theabyss.server.game.skilltree;
 
 import club.theabyss.TheAbyssManager;
 import club.theabyss.global.data.util.JsonConfig;
-import club.theabyss.global.interfaces.data.Restorable;
+import club.theabyss.global.interfaces.server.data.Restorable;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.game.skilltree.data.SkillTreeData;
 import club.theabyss.server.game.skilltree.enums.Skills;

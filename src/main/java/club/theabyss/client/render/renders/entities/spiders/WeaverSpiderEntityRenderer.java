@@ -10,12 +10,12 @@ import net.minecraft.util.Identifier;
 public class WeaverSpiderEntityRenderer extends MobEntityRenderer<WeaverSpiderEntity, WeaverSpiderModel> {
 
     public WeaverSpiderEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new WeaverSpiderModel(context.getPart(TheAbyssModelLayers.MODEL_WEAVER_LAYER)), 0.5f);
+        super(context, new WeaverSpiderModel(context.getPart(TheAbyssModelLayers.WEAVER_SPIDER_MODEL_LAYER)), 0.5f);
     }
 
     @Override
     public Identifier getTexture(WeaverSpiderEntity entity) {
-        return new Identifier("theabyss2", "textures/entities/spiders/weaver.png");
+        return new Identifier("theabyss2", "entities/textures/spiders/weaver.png");
     }
 
 }

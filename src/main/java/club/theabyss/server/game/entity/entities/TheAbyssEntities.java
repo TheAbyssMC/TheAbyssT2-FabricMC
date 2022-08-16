@@ -1,7 +1,9 @@
 package club.theabyss.server.game.entity.entities;
 
 import club.theabyss.server.game.entity.entities.fox.ThiefFoxEntity;
+import club.theabyss.server.game.entity.entities.spiders.BlackWidowSpiderEntity;
 import club.theabyss.server.game.entity.entities.spiders.WeaverSpiderEntity;
+import club.theabyss.server.game.entity.entities.watercreatures.KrakenEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -18,6 +20,14 @@ public class TheAbyssEntities {
                     .build()
     );*/
 
+    public static final EntityType<BlackWidowSpiderEntity> BLACK_WIDOW_SPIDER = Registry.register(
+            Registry.ENTITY_TYPE,
+            new Identifier("theabyss2", "black_widow"),
+            FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, BlackWidowSpiderEntity::new)
+                    .dimensions(EntityDimensions.fixed(1.4f, 1.6f))
+                    .build()
+    );
+
     public static final EntityType<WeaverSpiderEntity> WEAVER_SPIDER = Registry.register(
             Registry.ENTITY_TYPE,
             new Identifier("theabyss2", "weaver_spider"),
@@ -31,6 +41,14 @@ public class TheAbyssEntities {
             new Identifier("theabyss2", "thief_fox"),
             FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, ThiefFoxEntity::new)
                     .dimensions(EntityDimensions.fixed(0.6f, 0.7f))
+                    .build()
+    );
+
+    public static final EntityType<KrakenEntity> KRAKEN = Registry.register(
+            Registry.ENTITY_TYPE,
+            new Identifier("theabyss2", "kraken"),
+            FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, KrakenEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.8f, 1.4f))
                     .build()
     );
 

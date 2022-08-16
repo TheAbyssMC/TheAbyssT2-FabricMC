@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.hostile.skeleton;
 
-import club.theabyss.global.interfaces.entity.skeleton.IAbstractSkeletonEntity;
+import club.theabyss.global.interfaces.server.entity.skeleton.IAbstractSkeletonEntity;
 import club.theabyss.global.utils.GlobalGameManager;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;

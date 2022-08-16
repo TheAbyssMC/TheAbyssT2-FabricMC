@@ -2,7 +2,7 @@ package club.theabyss.server.game.totem;
 
 import club.theabyss.TheAbyssManager;
 import club.theabyss.global.data.util.JsonConfig;
-import club.theabyss.global.interfaces.data.Restorable;
+import club.theabyss.global.interfaces.server.data.Restorable;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.totem.data.TotemData;
 

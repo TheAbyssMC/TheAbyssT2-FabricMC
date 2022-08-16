@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.peaceful;
 
-import club.theabyss.global.interfaces.entity.fox.IFoxEntity;
+import club.theabyss.global.interfaces.server.entity.fox.IFoxEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

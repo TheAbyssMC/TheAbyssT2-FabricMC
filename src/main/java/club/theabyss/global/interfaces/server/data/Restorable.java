@@ -1,4 +1,4 @@
-package club.theabyss.global.interfaces.data;
+package club.theabyss.global.interfaces.server.data;
 
 import club.theabyss.global.data.util.JsonConfig;
 

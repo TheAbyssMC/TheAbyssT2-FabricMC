@@ -1,8 +1,8 @@
 package club.theabyss.global.mixins.server.entites;
 
 
-import club.theabyss.global.interfaces.entity.IDataTracker;
-import club.theabyss.global.interfaces.entity.IMobEntity;
+import club.theabyss.global.interfaces.server.entity.IDataTracker;
+import club.theabyss.global.interfaces.server.entity.IMobEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;

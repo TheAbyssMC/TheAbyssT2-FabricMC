@@ -1,4 +1,4 @@
-package club.theabyss.global.interfaces.data;
+package club.theabyss.global.interfaces.server.data;
 
 /**
  * A class that adds utility method to all managers classes.

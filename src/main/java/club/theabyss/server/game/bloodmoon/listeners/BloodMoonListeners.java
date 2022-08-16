@@ -34,9 +34,9 @@ public class BloodMoonListeners {
             var world = player.getWorld();
             var name = player.getName().asString();
 
-            var day = bloodMoonManager.getServerCore().serverGameManager().day();
+            var day = bloodMoonManager.getServerManager().serverGameManager().day();
 
-            var deathMessages = bloodMoonManager.getServerCore().deathMessagesManager().deathMessages();
+            var deathMessages = bloodMoonManager.getServerManager().deathMessagesManager().deathMessages();
             var deathMessage = deathMessages.deathMessage(player);
 
             player.changeGameMode(GameMode.SPECTATOR);
@@ -88,7 +88,7 @@ public class BloodMoonListeners {
 
             if (bloodMoonManager.updateBossBarTask == null) bloodMoonManager.updateBossBarTask();
 
-            bloodMoonManager.showBossBarToAll(manager.getServerCore().minecraftServer());
+            bloodMoonManager.showBossBarToAll(manager.getServerManager().minecraftServer());
             return ActionResult.PASS;
         });
     }
@@ -97,7 +97,7 @@ public class BloodMoonListeners {
         BloodMoonEvents.BloodMoonEnded.EVENT.register(manager -> {
             var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
-            var server = manager.getServerCore().serverGameManager().minecraftServer();
+            var server = manager.getServerManager().serverGameManager().minecraftServer();
 
             bloodMoonManager.cancelBossBarTask(server);
 

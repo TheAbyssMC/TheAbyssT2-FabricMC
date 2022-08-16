@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BloodMoonManager {
 
-    private final @Getter TheAbyssServerManager serverCore;
+    private final @Getter TheAbyssServerManager serverManager;
 
     private long lastTimeChecked;
 
@@ -43,7 +43,7 @@ public class BloodMoonManager {
     public ScheduledFuture<?> updateBossBarTask = null;
 
     public BloodMoonManager(final TheAbyssServerManager serverCore) {
-        this.serverCore = serverCore;
+        this.serverManager = serverCore;
         executorService = Executors.newSingleThreadScheduledExecutor();
         this.serverBossBar = new ServerBossBar(Text.of(""), BossBar.Color.RED, BossBar.Style.NOTCHED_6);
     }
@@ -114,7 +114,7 @@ public class BloodMoonManager {
         if (animationIsActive) return;
         animationIsActive = true;
 
-        var world = serverCore.serverGameManager().minecraftServer().getOverworld();
+        var world = serverManager.serverGameManager().minecraftServer().getOverworld();
 
         final double realTime = 1000.0 / 20;
         final long gameTime = world.getTimeOfDay();
@@ -144,9 +144,12 @@ public class BloodMoonManager {
 
     /**
      * Starts the BloodMoon.
+     *
+     * @param playEffect defines whether the screen effects should be executed or not.
      */
     public void startBloodMoon(boolean playEffect) {
-        var world = serverCore.serverGameManager().minecraftServer().getOverworld();
+        var minecraftSever = serverManager.minecraftServer();
+        var world = minecraftSever.getOverworld();
 
         world.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false, world.getServer());
 
@@ -168,12 +171,13 @@ public class BloodMoonManager {
 
         String finalSubtitle = subtitle;
 
-        world.getPlayers().forEach(online -> {
+        minecraftSever.getPlayerManager().getPlayerList().forEach(online -> {
             online.playSound(SoundEvents.BLOCK_BEACON_DEACTIVATE, SoundCategory.MASTER, 1F, -18F);
             online.playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.MASTER, 100F, -9.0F);
 
             try {
-                TimedTitle.send(online, ChatFormatter.stringFormatToString("&5&k| &cBLOODMOON &5&k|"), ChatFormatter.stringFormatToString("&cComienza una &4Bloodmoon&c con duración de &c" + finalSubtitle + "&c."), 10, 70, 20);
+                TimedTitle.send(online, ChatFormatter.stringFormatToString("&5&k| &cBLOODMOON &5&k|"),
+                        ChatFormatter.stringFormatToString("&cComienza una &4Bloodmoon&c con duración de &c" + finalSubtitle + "&c."), 10, 70, 20);
             } catch (InvalidTitleTimings e) {
                 e.printStackTrace();
             }
@@ -184,7 +188,7 @@ public class BloodMoonManager {
      * Ends the BloodMoon.
      */
     public void end() {
-        var world = serverCore.serverGameManager().minecraftServer().getOverworld();
+        var world = serverManager.serverGameManager().minecraftServer().getOverworld();
 
         bloodMoonData().setEndsIn(0);
         bloodMoonData().setTotalTime(0);
@@ -239,7 +243,7 @@ public class BloodMoonManager {
      */
     public void updateBossBarTask() {
         if (updateBossBarTask != null) return;
-        updateBossBarTask = BloodMoonManager.executorService.scheduleAtFixedRate(() -> {
+        updateBossBarTask = executorService.scheduleAtFixedRate(() -> {
             var remainBloodMoon = getFormattedRemainingTime();
 
             title = ChatFormatter.stringFormatToText("&c&ka &r☠ &c&lBLOODMOON: " + Formatting.YELLOW + (remainBloodMoon.equals("") ? "No hay una BloodMoon activa en este momento." : remainBloodMoon) + " &r☠ &c&ka");
@@ -335,7 +339,7 @@ public class BloodMoonManager {
      * @return the BloodMoonData instance.
      */
     public BloodMoonData bloodMoonData() {
-        return serverCore.serverGameManager().gameData().bloodMoonData();
+        return serverManager.serverGameManager().gameData().bloodMoonData();
     }
 
 }

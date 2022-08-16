@@ -1,4 +1,4 @@
-package club.theabyss.global.interfaces.entity;
+package club.theabyss.global.interfaces.server.entity;
 
 public interface IMobEntity {
 

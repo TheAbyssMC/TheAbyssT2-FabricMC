@@ -12,8 +12,8 @@ import net.minecraft.util.math.Vec3f;
 
 public class ThiefFoxEntityRenderer extends MobEntityRenderer<ThiefFoxEntity, ThiefFoxModel<ThiefFoxEntity>> {
 
-    private static final Identifier TEXTURE = new Identifier("theabyss2", "textures/entities/fox/thief_fox.png");
-    private static final Identifier SLEEPING_TEXTURE = new Identifier("theabyss2","textures/entities/fox/thief_fox_sleep.png");
+    private static final Identifier TEXTURE = new Identifier("theabyss2", "entities/textures/fox/thief_fox.png");
+    private static final Identifier SLEEPING_TEXTURE = new Identifier("theabyss2","entities/textures/fox/thief_fox_sleep.png");
 
     public ThiefFoxEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new ThiefFoxModel<>(context.getPart(EntityModelLayers.FOX)), 0.4f);

@@ -21,7 +21,7 @@ public class WeaverSpiderEntity extends SpiderEntity {
     public WeaverSpiderEntity(EntityType<? extends SpiderEntity> entityType, World world) {
         super(entityType, world);
         this.setHealth(60f);
-        setCustomName(ChatFormatter.stringFormatToText("&6Weaver Spider"));
+        setCustomName(ChatFormatter.stringFormatToText("&6Weaver Spider&r"));
     }
 
     public static DefaultAttributeContainer.Builder createWeaverSpiderAttributes() {
@@ -48,9 +48,8 @@ public class WeaverSpiderEntity extends SpiderEntity {
             placeCobWeb(world, blockPos, blockEntity);
 
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override

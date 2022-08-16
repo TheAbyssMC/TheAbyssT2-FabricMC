@@ -1,4 +1,4 @@
-package club.theabyss.global.interfaces.entity.skeleton;
+package club.theabyss.global.interfaces.server.entity.skeleton;
 
 import net.minecraft.world.LocalDifficulty;
 

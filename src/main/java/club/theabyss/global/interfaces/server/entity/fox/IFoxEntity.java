@@ -1,4 +1,4 @@
-package club.theabyss.global.interfaces.entity.fox;
+package club.theabyss.global.interfaces.server.entity.fox;
 
 public interface IFoxEntity {
 

@@ -17,9 +17,6 @@ public class ThiefFoxModel<T extends ThiefFoxEntity> extends AnimalModel<T> {
     private final ModelPart rightFrontLeg;
     private final ModelPart leftFrontLeg;
     private final ModelPart tail;
-    private static final int field_32477 = 6;
-    private static final float HEAD_Y_PIVOT = 16.5f;
-    private static final float LEG_Y_PIVOT = 17.5f;
     private float legPitchModifier;
 
     public ThiefFoxModel(ModelPart root) {

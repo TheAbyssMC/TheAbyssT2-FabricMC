@@ -1,7 +1,7 @@
 package club.theabyss.server.game.entity;
 
-import club.theabyss.global.interfaces.entity.IMobEntity;
-import club.theabyss.global.interfaces.entity.skeleton.IAbstractSkeletonEntity;
+import club.theabyss.global.interfaces.server.entity.IMobEntity;
+import club.theabyss.global.interfaces.server.entity.skeleton.IAbstractSkeletonEntity;
 import club.theabyss.server.game.ServerGameManager;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
 import net.minecraft.entity.mob.MobEntity;
