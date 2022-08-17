@@ -1,11 +1,12 @@
 package club.theabyss.server.global.commands;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.server.global.utils.chat.ChatFormatter;
+import club.theabyss.global.utils.GlobalGameManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.game.skilltree.enums.Skills;
 import club.theabyss.server.global.commands.arguments.SkillsArgumentType;
 import club.theabyss.server.global.events.GameDateEvents;
+import club.theabyss.server.global.utils.chat.ChatFormatter;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.LongArgumentType;
@@ -34,6 +35,10 @@ public class AbyssStaffCMD {
                         .then(CommandManager.literal("start")
                                 .then(CommandManager.argument("minutes", IntegerArgumentType.integer())
                                         .executes(context -> startBloodMoon(context, IntegerArgumentType.getInteger(context, "minutes"))))))
+                .then(CommandManager.literal("flashBang")
+                        .then(CommandManager.argument("seconds", IntegerArgumentType.integer())
+                                .then(CommandManager.argument("players", EntityArgumentType.players())
+                                        .executes(context -> executeFlashBang(context, EntityArgumentType.getPlayers(context, "players"), IntegerArgumentType.getInteger(context, "seconds"))))))
                 .then(CommandManager.literal("skillTree")
                         .then(CommandManager.literal("setLevel")
                                 .then(CommandManager.argument("player", EntityArgumentType.players())
@@ -49,6 +54,19 @@ public class AbyssStaffCMD {
                                                         SkillsArgumentType.getSkill(context, "skill")))))));
 
         dispatcher.register(literalArgumentBuilder);
+    }
+
+    public static int executeFlashBang(CommandContext<ServerCommandSource> commandContext, Collection<ServerPlayerEntity> players, int seconds) {
+        try {
+            var flashBangManager = GlobalGameManager.getFlashBangManager();
+
+            if (flashBangManager == null) throw new IllegalStateException("The FlashBangManager isn't loaded yet!");
+
+            players.forEach(player -> flashBangManager.flash(player, seconds));
+            return 0;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static int changeDay(CommandContext<ServerCommandSource> commandContext, int day) {

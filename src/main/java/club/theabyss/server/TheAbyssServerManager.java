@@ -1,12 +1,12 @@
 package club.theabyss.server;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.server.global.utils.customGlyphs.Animation;
-import club.theabyss.server.global.utils.customGlyphs.NoFramesException;
 import club.theabyss.server.data.DataManager;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.deathmessages.DeathMessagesManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
+import club.theabyss.server.global.utils.customGlyphs.Animation;
+import club.theabyss.server.global.utils.customGlyphs.NoFramesException;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 

@@ -6,13 +6,15 @@ import club.theabyss.global.interfaces.server.data.Instantiable;
 import club.theabyss.server.TheAbyssServerManager;
 import net.minecraft.server.MinecraftServer;
 
+import java.io.File;
+
 public class DataManager extends Instantiable<TheAbyssServerManager> {
 
     private final JsonConfig gameData;
     private final JsonConfig deathMessages;
     private final JsonConfig skillTree;
-
     private final JsonConfig totems;
+    private final JsonConfig flashBangData;
 
     public DataManager(final TheAbyssManager core, MinecraftServer server) throws Exception {
         super(core.serverManager());
@@ -23,6 +25,7 @@ public class DataManager extends Instantiable<TheAbyssServerManager> {
         this.deathMessages = (server.isDedicated()) ? JsonConfig.serverConfig("deathMessages.json", folderName, server) : JsonConfig.savesConfig("deathMessages.json", folderName, server);
         this.skillTree = (server.isDedicated()) ? JsonConfig.serverConfig("skillTree.json", folderName, server) : JsonConfig.savesConfig("skillTree.json", folderName, server);
         this.totems = (server.isDedicated()) ? JsonConfig.serverConfig("totems.json", folderName, server) : JsonConfig.savesConfig("totems.json", folderName, server);
+        this.flashBangData = (server.isDedicated()) ? JsonConfig.serverConfig( "flashBang" + File.separatorChar + "flashBangData.json", folderName, server) : JsonConfig.savesConfig("flashBang" + File.separatorChar + "flashBangData.json", folderName, server);
     }
 
     /**
@@ -33,6 +36,7 @@ public class DataManager extends Instantiable<TheAbyssServerManager> {
         instance().deathMessagesManager().save(deathMessages);
         instance().skillTreeManager().save(skillTree);
         instance().serverGameManager().totemManager().save(totems);
+        instance().serverGameManager().flashBangManager().save(flashBangData);
     }
 
     /**
@@ -61,6 +65,13 @@ public class DataManager extends Instantiable<TheAbyssServerManager> {
      */
     public JsonConfig totems() {
         return this.totems;
+    }
+
+    /**
+     * @return the flash bang data.
+     */
+    public JsonConfig flashBangData() {
+        return this.flashBangData;
     }
 
 }

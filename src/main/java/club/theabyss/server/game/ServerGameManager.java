@@ -8,6 +8,7 @@ import club.theabyss.server.data.storage.GameData;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import club.theabyss.server.game.entity.EntityManager;
+import club.theabyss.server.game.mechanics.flashbang.FlashBangServerManager;
 import club.theabyss.server.game.totem.TotemManager;
 import club.theabyss.server.global.events.GameDateEvents;
 import net.minecraft.server.MinecraftServer;
@@ -33,6 +34,8 @@ public class ServerGameManager implements Restorable {
 
     private final TotemManager totemManager;
 
+    private FlashBangServerManager flashBangManager;
+
     private ScheduledExecutorService executorService;
 
     public ServerGameManager(final TheAbyssServerManager serverCore, MinecraftServer server) {
@@ -44,10 +47,9 @@ public class ServerGameManager implements Restorable {
         this.restore(serverCore.dataManager().gameData());
 
         this.bloodMoonManager = new BloodMoonManager(serverCore);
-
         this.entityManager = new EntityManager(this);
-
         this.totemManager = new TotemManager(this);
+        this.flashBangManager = new FlashBangServerManager(this);
 
         elapseDayTimer();
         autoSaveTimer(1);
@@ -140,6 +142,13 @@ public class ServerGameManager implements Restorable {
      */
     public TotemManager totemManager() {
         return totemManager;
+    }
+
+    /**
+     * @return the Flash Bang Manager object.
+     */
+    public FlashBangServerManager flashBangManager() {
+        return flashBangManager;
     }
 
     /**
