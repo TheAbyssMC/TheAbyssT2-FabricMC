@@ -37,8 +37,10 @@ public class AbyssStaffCMD {
                                         .executes(context -> startBloodMoon(context, IntegerArgumentType.getInteger(context, "minutes"))))))
                 .then(CommandManager.literal("flashBang")
                         .then(CommandManager.argument("seconds", IntegerArgumentType.integer())
-                                .then(CommandManager.argument("players", EntityArgumentType.players())
-                                        .executes(context -> executeFlashBang(context, EntityArgumentType.getPlayers(context, "players"), IntegerArgumentType.getInteger(context, "seconds"))))))
+                                .then(CommandManager.argument("opaqueTicks", IntegerArgumentType.integer())
+                                        .then(CommandManager.argument("players", EntityArgumentType.players())
+                                                .executes(context -> executeFlashBang(context, EntityArgumentType.getPlayers(context, "players"), IntegerArgumentType.getInteger(context, "seconds"),
+                                                        IntegerArgumentType.getInteger(context, "opaqueTicks")))))))
                 .then(CommandManager.literal("skillTree")
                         .then(CommandManager.literal("setLevel")
                                 .then(CommandManager.argument("player", EntityArgumentType.players())
@@ -56,13 +58,13 @@ public class AbyssStaffCMD {
         dispatcher.register(literalArgumentBuilder);
     }
 
-    public static int executeFlashBang(CommandContext<ServerCommandSource> commandContext, Collection<ServerPlayerEntity> players, int seconds) {
+    public static int executeFlashBang(CommandContext<ServerCommandSource> commandContext, Collection<ServerPlayerEntity> players, int seconds, int opaqueTicks) {
         try {
             var flashBangManager = GlobalGameManager.getFlashBangManager();
 
             if (flashBangManager == null) throw new IllegalStateException("The FlashBangManager isn't loaded yet!");
 
-            players.forEach(player -> flashBangManager.flash(player, seconds));
+            players.forEach(player -> flashBangManager.flash(player, seconds, opaqueTicks));
             return 0;
         } catch (Exception e) {
             throw new RuntimeException(e);

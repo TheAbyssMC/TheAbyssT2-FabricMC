@@ -7,6 +7,7 @@ import club.theabyss.server.game.deathmessages.DeathMessagesManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.utils.customGlyphs.Animation;
 import club.theabyss.server.global.utils.customGlyphs.NoFramesException;
+import club.theabyss.server.networking.receivers.RegisterServerReceivers;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 
@@ -48,6 +49,8 @@ public class TheAbyssServerManager {
             }
 
             serverGameManager.bloodMoonManager().load();
+
+            RegisterServerReceivers.init();
 
             TheAbyssManager.getLogger().info("The mod's server has been loaded successfully.");
         }));

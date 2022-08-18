@@ -1,11 +1,12 @@
 package club.theabyss.server.global.listeners;
 
 import club.theabyss.TheAbyssManager;
-import club.theabyss.server.global.utils.timedTitle.TimedActionBar;
-import club.theabyss.server.global.utils.timedTitle.TimedTitle;
+import club.theabyss.global.utils.GlobalGameManager;
 import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.events.GameDateEvents;
+import club.theabyss.server.global.utils.timedTitle.TimedActionBar;
+import club.theabyss.server.global.utils.timedTitle.TimedTitle;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.util.ActionResult;
 
@@ -33,10 +34,8 @@ public class GlobalServerListeners {
     private static void onPlayerConnect() {
         ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
             var player = networkHandler.getPlayer();
-
-            var serverCore = TheAbyssManager.getInstance().serverManager();
-
-            var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
+            var serverManager = TheAbyssManager.getInstance().serverManager();
+            var bloodMoonManager = serverManager.serverGameManager().bloodMoonManager();
 
             // Process BloodMoon boss-bar.
             if (bloodMoonManager.isActive()) {
@@ -55,6 +54,15 @@ public class GlobalServerListeners {
             var actionBarQueue = TimedActionBar.actionBarQueue.get(actionBarName);
             if (actionBarQueue != null) {
                 if (actionBarQueue.task == null) TimedActionBar.processActionBars(actionBarName);
+            }
+
+            // Process FlashBang data.
+            var flashBangManager = GlobalGameManager.getFlashBangManager();
+            if (flashBangManager != null) {
+                var opacityData = flashBangManager.getFlashBangData().getFlashBangDataMap().get(player.getUuid());
+                if (opacityData != null) {
+                    flashBangManager.updateData(player, opacityData.getOpacity(), opacityData.getFlashSeconds(), opacityData.getOpaqueTicks());
+                }
             }
 
             SkillTreeManager.updatePlayerHealth(player);

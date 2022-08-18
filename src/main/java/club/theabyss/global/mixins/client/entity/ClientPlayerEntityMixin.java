@@ -1,4 +1,4 @@
-package club.theabyss.global.mixins.client;
+package club.theabyss.global.mixins.client.entity;
 
 import club.theabyss.client.render.flashBang.FlashBangClientManager;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -14,7 +14,5 @@ public class ClientPlayerEntityMixin {
     private void injectOnTick(CallbackInfo ci) {
         FlashBangClientManager.tick();
     }
-
-
 
 }

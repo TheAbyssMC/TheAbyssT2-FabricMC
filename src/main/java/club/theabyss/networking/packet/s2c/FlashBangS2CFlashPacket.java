@@ -13,17 +13,25 @@ public class FlashBangS2CFlashPacket {
     private @Getter final float opacity;
     private @Getter final int flashSeconds;
 
+    private @Getter final int opaqueSeconds;
+
     private final PacketByteBuf packetByteBuf;
 
-    public FlashBangS2CFlashPacket(float opacity, int flashSeconds) {
+    public FlashBangS2CFlashPacket(float opacity, int flashSeconds, int opaqueTicks) {
         this.opacity = opacity;
         this.flashSeconds = flashSeconds;
+        this.opaqueSeconds = opaqueTicks;
         this.packetByteBuf = PacketByteBufs.create();
+    }
+
+    public FlashBangS2CFlashPacket(float opacity, int flashSeconds) {
+        this(opacity, flashSeconds, 0);
     }
 
     public PacketByteBuf write() {
         packetByteBuf.writeFloat(opacity);
         packetByteBuf.writeInt(flashSeconds);
+        packetByteBuf.writeInt(opaqueSeconds);
         return packetByteBuf;
     }
 
