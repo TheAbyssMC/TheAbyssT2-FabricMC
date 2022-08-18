@@ -18,8 +18,10 @@ public class GameRendererMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     private void injectOnRender(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
-        if (client.options.hudHidden)
+        if (client.options.hudHidden) {
             FlashBangClientManager.render(new MatrixStack(), (int) FlashBangClientManager.getOpacity(), client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
+            FlashBangClientManager.renderStaticFrame(FlashBangClientManager.getFramebuffer(), FlashBangClientManager.getOpacity(), client.getWindow().getWidth(), client.getWindow().getHeight());
+        }
     }
 
 }

@@ -22,7 +22,10 @@ public class InGameHudMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     private void injectOnHead(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        if (!client.options.hudHidden) FlashBangClientManager.render(new MatrixStack(), (int) FlashBangClientManager.getOpacity(), scaledWidth, scaledHeight);
+        if (!client.options.hudHidden) {
+            FlashBangClientManager.render(new MatrixStack(), (int) FlashBangClientManager.getOpacity(), scaledWidth, scaledHeight);
+            FlashBangClientManager.renderStaticFrame(FlashBangClientManager.getFramebuffer(), FlashBangClientManager.getOpacity(), client.getWindow().getWidth(), client.getWindow().getHeight());
+        }
     }
 
 }
