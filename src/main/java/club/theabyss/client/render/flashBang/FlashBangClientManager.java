@@ -2,6 +2,7 @@ package club.theabyss.client.render.flashBang;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.ColorHelper;
@@ -22,7 +23,7 @@ public class FlashBangClientManager {
     }
 
     public static void tick() {
-        if (shouldTick) {
+        if (shouldTick && !MinecraftClient.getInstance().isPaused()) {
             if (opaqueTicks <= 0) {
                 opacity -= 255f / (flashSeconds * 20);
             }
@@ -35,7 +36,7 @@ public class FlashBangClientManager {
     }
 
     public static void render(MatrixStack matrices, int opacity, int width, int height) {
-        if (opacity > 0 & shouldTick) DrawableHelper.fill(matrices, 0, 0, width, height, ColorHelper.Argb.getArgb(opacity, 255, 255, 255));
+        if (opacity > 0 && shouldTick) DrawableHelper.fill(matrices, 0, 0, width, height, ColorHelper.Argb.getArgb(opacity, 255, 255, 255));
     }
 
 }

@@ -49,6 +49,7 @@
     "client.MinecraftClientMixin",
     "client.entity.ClientPlayerEntityMixin",
     "client.hud.InGameHudMixin",
+    "client.renderer.GameRendererMixin",
     "client.world.ClientWorldMixin"
   ],
   "server": [
