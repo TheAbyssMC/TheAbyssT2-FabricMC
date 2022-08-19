@@ -10,11 +10,13 @@ public class RegisterClientReceivers {
 
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(FlashBangS2CFlashPacket.ID, (client, handler, buf, responseSender) -> {
+            FlashBangClientManager.reset();
             FlashBangClientManager.setOpacity(buf.readFloat());
             FlashBangClientManager.setFlashSeconds(buf.readInt());
             FlashBangClientManager.setOpaqueTicks(buf.readInt());
             MinecraftClient.getInstance().execute(() -> {
-                FlashBangClientManager.setFramebuffer(FlashBangClientManager.copyColorsFrom(client.getFramebuffer(), new SimpleFramebuffer(client.getWindow().getWidth(), client.getWindow().getHeight(), true, false)));
+                if (client.getWindow().getWidth() > 0 && client.getWindow().getHeight() > 0)
+                    FlashBangClientManager.setFramebuffer(FlashBangClientManager.copyColorsFrom(client.getFramebuffer(), new SimpleFramebuffer(client.getWindow().getWidth(), client.getWindow().getHeight(), true, false)));
                 FlashBangClientManager.setShouldTick(true);
             });
         });

@@ -29,12 +29,13 @@ public class FlashBangClientManager {
     }
 
     public static void tick() {
-        if (shouldTick && !MinecraftClient.getInstance().isPaused()) {
+        if (shouldTick) {
             if (opaqueTicks <= 0) {
                 opacity -= 255f / (flashSeconds * 20);
             }
             opacity = MathHelper.clamp(opacity, 0, 255);
             if (opacity <= 0) {
+                reset();
                 shouldTick = false;
             }
             if (opaqueTicks > 0) opaqueTicks--;
@@ -54,8 +55,8 @@ public class FlashBangClientManager {
     }
 
     public static void renderStaticFrame(Framebuffer framebuffer, float opacity, int width, int height) {
-        if (opacity > 0 && opaqueTicks <= 0 && shouldTick) {
-            float scaledOpacity = opacity / (255f * 4);
+        if (opacity > 0 && opaqueTicks <= 0 && shouldTick && framebuffer != null) {
+            float scaledOpacity = opacity / (255f * 3);
             RenderSystem.backupProjectionMatrix();
 
             var shaderColorModulator = MinecraftClient.getInstance().gameRenderer.blitScreenShader.colorModulator;
