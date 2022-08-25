@@ -64,7 +64,7 @@ public class AbyssStaffCMD {
 
             if (flashBangManager == null) throw new IllegalStateException("The FlashBangManager isn't loaded yet!");
 
-            players.forEach(player -> flashBangManager.flash(player, seconds, opaqueTicks));
+            players.forEach(player -> flashBangManager.flash(player, seconds, opaqueTicks, true));
             return 0;
         } catch (Exception e) {
             throw new RuntimeException(e);

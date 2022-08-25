@@ -56,7 +56,7 @@ public class FlashBangClientManager {
 
     public static void renderStaticFrame(Framebuffer framebuffer, float opacity, int width, int height) {
         if (opacity > 0 && opaqueTicks <= 0 && shouldTick && framebuffer != null) {
-            float scaledOpacity = opacity / (255f * 3);
+            float normalizedOpacity = opacity / (255f * 3);
             RenderSystem.backupProjectionMatrix();
 
             var shaderColorModulator = MinecraftClient.getInstance().gameRenderer.blitScreenShader.colorModulator;
@@ -64,7 +64,7 @@ public class FlashBangClientManager {
 
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            shaderColorModulator.set(1.0f, 1.0f, 1.0f, scaledOpacity);
+            shaderColorModulator.set(1.0f, 1.0f, 1.0f, normalizedOpacity);
             framebuffer.draw(width, height, false);
             RenderSystem.disableBlend();
 

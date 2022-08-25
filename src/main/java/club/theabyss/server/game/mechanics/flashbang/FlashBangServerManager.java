@@ -44,7 +44,7 @@ public class FlashBangServerManager implements Restorable {
         }
     }
 
-    public void flash(ServerPlayerEntity player, int flashSeconds, int opaqueSeconds) {
+    public void flash(ServerPlayerEntity player, int flashSeconds, int opaqueSeconds, boolean showStaticFrame) {
         flashBangDataMap().putIfAbsent(player.getUuid(), new OpacityData());
         var data = flashBangDataMap().get(player.getUuid());
 
@@ -52,11 +52,11 @@ public class FlashBangServerManager implements Restorable {
         data.setFlashSeconds(flashSeconds);
         data.setOpaqueTicks(opaqueSeconds);
 
-        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(data.getOpacity(), flashSeconds, opaqueSeconds).write());
+        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(data.getOpacity(), flashSeconds, opaqueSeconds, showStaticFrame).write());
     }
 
-    public void updateData(ServerPlayerEntity player, float opacity, int flashSeconds, int opaqueSeconds) {
-        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(opacity, flashSeconds, opaqueSeconds).write());
+    public void updateData(ServerPlayerEntity player, float opacity, int flashSeconds, int opaqueSeconds, boolean showStaticImage) {
+        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(opacity, flashSeconds, opaqueSeconds, showStaticImage).write());
     }
 
     public Map<UUID, OpacityData> flashBangDataMap() {

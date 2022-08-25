@@ -61,7 +61,7 @@ public class GlobalServerListeners {
             if (flashBangManager != null) {
                 var opacityData = flashBangManager.getFlashBangData().getFlashBangDataMap().get(player.getUuid());
                 if (opacityData != null) {
-                    flashBangManager.updateData(player, opacityData.getOpacity(), opacityData.getFlashSeconds(), opacityData.getOpaqueTicks());
+                    flashBangManager.updateData(player, opacityData.getOpacity(), opacityData.getFlashSeconds(), opacityData.getOpaqueTicks(), false); // TODO FIND A BETTER SOLUTION.
                 }
             }
 

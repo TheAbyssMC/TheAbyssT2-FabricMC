@@ -34,7 +34,7 @@ public class ServerGameManager implements Restorable {
 
     private final TotemManager totemManager;
 
-    private FlashBangServerManager flashBangManager;
+    private final FlashBangServerManager flashBangManager;
 
     private ScheduledExecutorService executorService;
 

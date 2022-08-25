@@ -9,9 +9,9 @@ import java.util.List;
 
 public enum Skills {
 
-    Health(3),
-    Resistance(3),
-    Strength(3);
+    Health(1),
+    Resistance(1),
+    Strength(1);
 
     public final int day;
     public final List<String> lore;

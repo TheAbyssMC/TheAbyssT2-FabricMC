@@ -50,6 +50,7 @@
     "client.entity.ClientPlayerEntityMixin",
     "client.hud.InGameHudMixin",
     "client.renderer.GameRendererMixin",
+    "client.sound.SoundSystemMixin",
     "client.world.ClientWorldMixin"
   ],
   "server": [
