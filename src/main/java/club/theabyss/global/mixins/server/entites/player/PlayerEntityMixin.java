@@ -24,12 +24,9 @@ public class PlayerEntityMixin {
 
             if (level >= 1) {
                 return (float) (amount * (1 - (level * 0.025)));
-            } else {
-                return amount;
             }
-        } else {
-            return amount;
         }
+        return amount;
     }
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
@@ -43,12 +40,9 @@ public class PlayerEntityMixin {
 
             if (level >= 1) {
                 return (float) (amount * (1+(skillTreeManager.getSkillLevel(serverPlayerEntity, Skills.Strength) * 0.025)));
-            } else {
-                return amount;
             }
-        } else {
-            return amount;
         }
+        return amount;
     }
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
@@ -63,12 +57,8 @@ public class PlayerEntityMixin {
             if (level >= 1) {
                 var damage = (float) (amount * (1+(skillTreeManager.getSkillLevel(serverPlayerEntity, Skills.Strength) * 0.025)));
                 return 1.0F + (EnchantmentHelper.getSweepingMultiplier(((PlayerEntity)(Object) this)) * damage);
-            } else {
-                return amount;
             }
-        } else {
-            return amount;
         }
+        return amount;
     }
-
 }
