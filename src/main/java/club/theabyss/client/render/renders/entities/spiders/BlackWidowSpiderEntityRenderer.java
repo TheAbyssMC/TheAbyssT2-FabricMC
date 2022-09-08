@@ -1,6 +1,7 @@
 package club.theabyss.client.render.renders.entities.spiders;
 
 import club.theabyss.client.render.models.entities.spiders.BlackWidowSpiderModel;
+import club.theabyss.global.utils.TheAbyssConstants;
 import club.theabyss.server.game.entity.entities.spiders.BlackWidowSpiderEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
@@ -14,7 +15,7 @@ public class BlackWidowSpiderEntityRenderer extends GeoEntityRenderer<BlackWidow
 
     @Override
     public Identifier getTextureLocation(BlackWidowSpiderEntity instance) {
-        return new Identifier("theabyss2", "entities/textures/spiders/black_widow.png");
+        return new Identifier(TheAbyssConstants.MOD_ID, "entities/textures/spiders/black_widow.png");
     }
 
 }

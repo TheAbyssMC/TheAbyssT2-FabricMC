@@ -3,6 +3,8 @@ package club.theabyss;
 import club.theabyss.client.TheAbyssClientManager;
 import club.theabyss.global.data.adapters.LocalDateSerializer;
 import club.theabyss.global.registers.CommandRegistries;
+import club.theabyss.global.sounds.TheAbyssSoundEvents;
+import club.theabyss.global.utils.TheAbyssConstants;
 import club.theabyss.server.TheAbyssServerManager;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListeners;
@@ -24,7 +26,7 @@ public class TheAbyssManager implements ModInitializer {
 
 	private static @Getter TheAbyssManager instance;
 
-	private static final @Getter Logger logger = LoggerFactory.getLogger("theabyss2");
+	private static final @Getter Logger logger = LoggerFactory.getLogger(TheAbyssConstants.MOD_ID);
 
 	private TheAbyssServerManager serverManager;
 	private TheAbyssClientManager clientManager;
@@ -47,6 +49,7 @@ public class TheAbyssManager implements ModInitializer {
 		GlobalServerListeners.init();
 		BloodMoonListeners.init();
 
+		TheAbyssSoundEvents.register();
 		AbyssEntityRegistries.register();
 
 		ArgumentTypes.register("theabyss2:skills", SkillsArgumentType.class, new ConstantArgumentSerializer<>(SkillsArgumentType::skills));

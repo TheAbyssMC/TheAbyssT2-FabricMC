@@ -3,11 +3,12 @@ package club.theabyss.server.data.storage;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class DeathMessages {
 
-    private final HashMap<UUID, String> deathMessages;
+    private final Map<UUID, String> deathMessages;
 
     public DeathMessages() {
         this.deathMessages = new HashMap<>();
@@ -20,7 +21,7 @@ public class DeathMessages {
     /**
      * @return the death messages.
      */
-    public HashMap<UUID, String> deathMessages() {
+    public Map<UUID, String> deathMessages() {
         return deathMessages;
     }
 

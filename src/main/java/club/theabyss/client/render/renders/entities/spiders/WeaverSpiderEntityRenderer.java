@@ -1,6 +1,7 @@
 package club.theabyss.client.render.renders.entities.spiders;
 
 import club.theabyss.client.render.layers.TheAbyssModelLayers;
+import club.theabyss.global.utils.TheAbyssConstants;
 import club.theabyss.server.game.entity.entities.spiders.WeaverSpiderEntity;
 import club.theabyss.client.render.models.entities.spiders.WeaverSpiderModel;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -15,7 +16,7 @@ public class WeaverSpiderEntityRenderer extends MobEntityRenderer<WeaverSpiderEn
 
     @Override
     public Identifier getTexture(WeaverSpiderEntity entity) {
-        return new Identifier("theabyss2", "entities/textures/spiders/weaver.png");
+        return new Identifier(TheAbyssConstants.MOD_ID, "entities/textures/spiders/weaver.png");
     }
 
 }

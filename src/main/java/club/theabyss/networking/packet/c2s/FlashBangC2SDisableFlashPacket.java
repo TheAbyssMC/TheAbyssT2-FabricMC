@@ -1,6 +1,7 @@
 package club.theabyss.networking.packet.c2s;
 
 import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.TheAbyssConstants;
 import lombok.Getter;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -12,16 +13,18 @@ import net.minecraft.util.Identifier;
 
 public class FlashBangC2SDisableFlashPacket {
 
-    public static final Identifier ID = new Identifier("flash_bang_c2s_disable_flash");
+    public static final Identifier ID = new Identifier(TheAbyssConstants.MOD_ID,"flash_bang_c2s_disable_flash");
 
     private @Getter final float opacity;
+    private @Getter final float soundVolume;
     private @Getter final int flashSeconds;
     private @Getter final int opaqueSeconds;
 
     private final PacketByteBuf buf;
 
-    public FlashBangC2SDisableFlashPacket(float opacity, int flashSeconds, int opaqueTicks) {
+    public FlashBangC2SDisableFlashPacket(float opacity, float soundVolume, int flashSeconds, int opaqueTicks) {
         this.opacity = opacity;
+        this.soundVolume = soundVolume;
         this.flashSeconds = flashSeconds;
         this.opaqueSeconds = opaqueTicks;
         this.buf = PacketByteBufs.create();
@@ -29,6 +32,7 @@ public class FlashBangC2SDisableFlashPacket {
 
     public PacketByteBuf write() {
         buf.writeFloat(opacity);
+        buf.writeFloat(soundVolume);
         buf.writeInt(flashSeconds);
         buf.writeInt(opaqueSeconds);
         return buf;
@@ -42,6 +46,7 @@ public class FlashBangC2SDisableFlashPacket {
         if (opacityData == null) return;
 
         opacityData.setOpacity(buf.readFloat());
+        opacityData.setSoundVolume(buf.readFloat());
         opacityData.setFlashSeconds(buf.readInt());
         opacityData.setOpaqueTicks(buf.readInt());
     }

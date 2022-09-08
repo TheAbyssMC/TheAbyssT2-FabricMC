@@ -14,7 +14,7 @@ public class ClientWorldMixin {
 
     @Inject(method = "disconnect", at = @At("HEAD"))
     private void injectIntoDisconnect(CallbackInfo ci) {
-        ClientPlayNetworking.send(FlashBangC2SDisableFlashPacket.ID, new FlashBangC2SDisableFlashPacket(FlashBangClientManager.getOpacity(), FlashBangClientManager.getFlashSeconds(), FlashBangClientManager.getOpaqueTicks()).write());
+        ClientPlayNetworking.send(FlashBangC2SDisableFlashPacket.ID, new FlashBangC2SDisableFlashPacket(FlashBangClientManager.getOpacity(), FlashBangClientManager.getSoundVolume(), FlashBangClientManager.getFlashSeconds(), FlashBangClientManager.getOpaqueTicks()).write());
         FlashBangClientManager.reset();
     }
 

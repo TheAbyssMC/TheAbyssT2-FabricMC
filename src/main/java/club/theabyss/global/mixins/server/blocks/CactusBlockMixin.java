@@ -11,7 +11,14 @@ public class CactusBlockMixin {
 
     @ModifyArg(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
     private float modifyCollisionDamage(float amount) {
-        return (GlobalGameManager.getNowDay() >= 7) ? amount * 30f : amount;
+        var day = GlobalGameManager.getNowDay();
+
+        if (day >= 7 && day < 14) {
+            return amount * 30f;
+        } else if (day >= 14) {
+            return Short.MAX_VALUE;
+        }
+        return amount;
     }
 
 }

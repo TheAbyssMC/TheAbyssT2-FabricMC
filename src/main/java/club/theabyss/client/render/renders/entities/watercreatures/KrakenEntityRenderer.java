@@ -2,6 +2,7 @@ package club.theabyss.client.render.renders.entities.watercreatures;
 
 import club.theabyss.client.render.layers.TheAbyssModelLayers;
 import club.theabyss.client.render.models.entities.watercreatures.KrakenEntityModel;
+import club.theabyss.global.utils.TheAbyssConstants;
 import club.theabyss.server.game.entity.entities.watercreatures.KrakenEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -15,7 +16,7 @@ public class KrakenEntityRenderer extends MobEntityRenderer<KrakenEntity, Kraken
 
     @Override
     public Identifier getTexture(KrakenEntity entity) {
-        return new Identifier("theabyss2", "entities/textures/watercreatures/kraken.png");
+        return new Identifier(TheAbyssConstants.MOD_ID, "entities/textures/watercreatures/kraken.png");
     }
 
 }

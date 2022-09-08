@@ -52,11 +52,11 @@ public class FlashBangServerManager implements Restorable {
         data.setFlashSeconds(flashSeconds);
         data.setOpaqueTicks(opaqueSeconds);
 
-        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(data.getOpacity(), flashSeconds, opaqueSeconds, showStaticFrame).write());
+        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(data.getOpacity(), 0, flashSeconds, opaqueSeconds, showStaticFrame).write());
     }
 
-    public void updateData(ServerPlayerEntity player, float opacity, int flashSeconds, int opaqueSeconds, boolean showStaticImage) {
-        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(opacity, flashSeconds, opaqueSeconds, showStaticImage).write());
+    public void updateData(ServerPlayerEntity player, float opacity, float soundVolume, int flashSeconds, int opaqueSeconds, boolean showStaticImage) {
+        ServerPlayNetworking.send(player, FlashBangS2CFlashPacket.ID, new FlashBangS2CFlashPacket(opacity, soundVolume, flashSeconds, opaqueSeconds, showStaticImage).write());
     }
 
     public Map<UUID, OpacityData> flashBangDataMap() {
@@ -66,18 +66,19 @@ public class FlashBangServerManager implements Restorable {
     public static class OpacityData {
 
         private @Getter @Setter float opacity;
+        private @Getter @Setter float soundVolume;
         private @Getter @Setter int flashSeconds;
-
         private @Getter @Setter int opaqueTicks;
 
-        public OpacityData(float opacity, int flashSeconds, int opaqueTicks) {
+        public OpacityData(float opacity, float soundVolume, int flashSeconds, int opaqueTicks) {
             this.opacity = opacity;
+            this.soundVolume = soundVolume;
             this.flashSeconds = flashSeconds;
             this.opaqueTicks = opaqueTicks;
         }
 
         public OpacityData(float opacity, int flashSeconds) {
-            this(opacity, flashSeconds, 0);
+            this(opacity, 0, flashSeconds, 0);
         }
 
         public OpacityData() {

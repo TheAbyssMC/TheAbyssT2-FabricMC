@@ -11,16 +11,15 @@ public class FlashBangS2CFlashPacket {
     public static Identifier ID = new Identifier(TheAbyssConstants.MOD_ID, "flash_bang_s2c_flash");
 
     private @Getter final float opacity;
+    private @Getter final float soundVolume;
     private @Getter final int flashSeconds;
-
     private @Getter final int opaqueSeconds;
-
     private @Getter final boolean showStaticFrame;
-
     private final PacketByteBuf packetByteBuf;
 
-    public FlashBangS2CFlashPacket(float opacity, int flashSeconds, int opaqueTicks, boolean showStaticFrame) {
+    public FlashBangS2CFlashPacket(float opacity, float soundVolume, int flashSeconds, int opaqueTicks, boolean showStaticFrame) {
         this.opacity = opacity;
+        this.soundVolume = soundVolume;
         this.flashSeconds = flashSeconds;
         this.opaqueSeconds = opaqueTicks;
         this.showStaticFrame = showStaticFrame;
@@ -28,7 +27,7 @@ public class FlashBangS2CFlashPacket {
     }
 
     public FlashBangS2CFlashPacket(float opacity, int flashSeconds) {
-        this(opacity, flashSeconds, 0, true);
+        this(opacity, 0, flashSeconds, 0, true);
     }
 
     public PacketByteBuf write() {
@@ -38,6 +37,5 @@ public class FlashBangS2CFlashPacket {
         packetByteBuf.writeBoolean(showStaticFrame);
         return packetByteBuf;
     }
-
 
 }

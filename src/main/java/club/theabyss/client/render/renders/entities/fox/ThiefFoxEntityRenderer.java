@@ -1,6 +1,7 @@
 package club.theabyss.client.render.renders.entities.fox;
 
 import club.theabyss.client.render.models.entities.fox.ThiefFoxModel;
+import club.theabyss.global.utils.TheAbyssConstants;
 import club.theabyss.server.game.entity.entities.fox.ThiefFoxEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -12,8 +13,8 @@ import net.minecraft.util.math.Vec3f;
 
 public class ThiefFoxEntityRenderer extends MobEntityRenderer<ThiefFoxEntity, ThiefFoxModel<ThiefFoxEntity>> {
 
-    private static final Identifier TEXTURE = new Identifier("theabyss2", "entities/textures/fox/thief_fox.png");
-    private static final Identifier SLEEPING_TEXTURE = new Identifier("theabyss2","entities/textures/fox/thief_fox_sleep.png");
+    private static final Identifier TEXTURE = new Identifier(TheAbyssConstants.MOD_ID, "entities/textures/fox/thief_fox.png");
+    private static final Identifier SLEEPING_TEXTURE = new Identifier(TheAbyssConstants.MOD_ID,"entities/textures/fox/thief_fox_sleep.png");
 
     public ThiefFoxEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new ThiefFoxModel<>(context.getPart(EntityModelLayers.FOX)), 0.4f);
