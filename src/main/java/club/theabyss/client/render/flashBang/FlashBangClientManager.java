@@ -1,6 +1,5 @@
 package club.theabyss.client.render.flashBang;
 
-import club.theabyss.TheAbyssManager;
 import club.theabyss.global.sounds.TheAbyssSoundEvents;
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -49,7 +48,6 @@ public class FlashBangClientManager {
                 shouldTick = false;
             }
             if (opaqueTicks > 0) opaqueTicks--;
-            TheAbyssManager.getLogger().info(String.valueOf(soundVolume));
         }
     }
 

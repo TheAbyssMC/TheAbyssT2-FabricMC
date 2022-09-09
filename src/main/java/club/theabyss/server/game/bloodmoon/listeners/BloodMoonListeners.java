@@ -1,15 +1,16 @@
 package club.theabyss.server.game.bloodmoon.listeners;
 
 import club.theabyss.TheAbyssManager;
+import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
+import club.theabyss.server.game.bloodmoon.BloodMoonManager;
+import club.theabyss.server.game.entity.events.player.ServerPlayerEntityEvents;
+import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
 import club.theabyss.server.global.utils.customGlyphs.Animation;
 import club.theabyss.server.global.utils.customGlyphs.NoSuchAnimationException;
 import club.theabyss.server.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.server.global.utils.timedTitle.MinimumStayTimeIsGreaterThatStayTime;
 import club.theabyss.server.global.utils.timedTitle.TimedActionBar;
-import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
-import club.theabyss.server.game.entity.events.player.ServerPlayerEntityEvents;
-import club.theabyss.server.game.skilltree.SkillTreeManager;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -18,9 +19,9 @@ import net.minecraft.world.GameMode;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class BloodMoonListeners {
-
     public static void init() {
         onPlayerDeath();
         onBloodMoonStart();
@@ -39,6 +40,8 @@ public class BloodMoonListeners {
             var deathMessages = bloodMoonManager.getServerManager().deathMessagesManager().deathMessages();
             var deathMessage = deathMessages.deathMessage(player);
 
+            player.setSpawnPoint(player.getWorld().getRegistryKey(), player.getBlockPos(), player.getYaw(), true, false);
+
             player.changeGameMode(GameMode.SPECTATOR);
 
             world.getPlayers().forEach(online -> {
@@ -47,7 +50,7 @@ public class BloodMoonListeners {
 
                 online.sendMessage(ChatFormatter.stringFormatToText("&8" + deathMessage), false);
 
-                online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 50F, -8.0F);
+                BloodMoonManager.executorService.schedule(() -> online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 50F, -8.0F), 50, TimeUnit.MILLISECONDS);
 
                 try {
                     Animation.play(online, "bloodmoonanimation", 20, 0);

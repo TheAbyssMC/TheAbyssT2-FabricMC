@@ -84,7 +84,7 @@ public class LivingEntityMixin {
             case "fallingStalactite" -> "Estalactita";
             case "stalagmite" -> "Estalagmita";
             case "explosion" -> "Explosión";
-            case "badRespawnPoint" -> "Mala posición de respawn (WTF)";
+            case "badRespawnPoint" -> "Respawn Anchor";
             case "mob", "player" -> {
                 var attacker = damageSource.getAttacker();
                 if (attacker == null) {
