@@ -1,9 +1,9 @@
 package club.theabyss.server.game.skilltree;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.global.interfaces.server.data.Restorable;
-import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.TheAbyssServer;
 import club.theabyss.server.game.skilltree.data.SkillTreeData;
 import club.theabyss.server.game.skilltree.enums.Skills;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -13,14 +13,14 @@ import java.util.Objects;
 
 public class SkillTreeManager implements Restorable {
 
-    private final TheAbyssServerManager serverManager;
+    private final TheAbyssServer theAbyssServer;
 
     private SkillTreeData skillTreeData;
 
-    public SkillTreeManager(final TheAbyssServerManager serverManager) {
-        this.serverManager = serverManager;
+    public SkillTreeManager(final TheAbyssServer theAbyssServer) {
+        this.theAbyssServer = theAbyssServer;
 
-        restore(serverManager.dataManager().skillTree());
+        restore(theAbyssServer.dataManager().skillTree());
     }
 
     @Override
@@ -28,13 +28,13 @@ public class SkillTreeManager implements Restorable {
         if (jsonConfig.getJsonObject().entrySet().isEmpty()) {
             this.skillTreeData = new SkillTreeData();
         } else {
-            this.skillTreeData = TheAbyssManager.gson().fromJson(jsonConfig.getJsonObject(), SkillTreeData.class);
+            this.skillTreeData = TheAbyss.gson().fromJson(jsonConfig.getJsonObject(), SkillTreeData.class);
         }
     }
 
     @Override
     public void save(JsonConfig jsonConfig) {
-        jsonConfig.setJsonObject(TheAbyssManager.gson().toJsonTree(skillTreeData).getAsJsonObject());
+        jsonConfig.setJsonObject(TheAbyss.gson().toJsonTree(skillTreeData).getAsJsonObject());
         try {
             jsonConfig.save();
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class SkillTreeManager implements Restorable {
     }
 
     public static void updatePlayerHealth(ServerPlayerEntity player) {
-        var skillTreeManager = TheAbyssManager.getInstance().serverManager().skillTreeManager();
+        var skillTreeManager = TheAbyss.getInstance().serverManager().skillTreeManager();
 
         Objects.requireNonNull(player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).setBaseValue(skillTreeManager.getSkillLevel(player, Skills.Health) * 2 + 20);
     }
@@ -62,8 +62,8 @@ public class SkillTreeManager implements Restorable {
     /**
      * @return the server manager.
      */
-    public TheAbyssServerManager serverManager() {
-        return serverManager;
+    public TheAbyssServer theAbyssServer() {
+        return theAbyssServer;
     }
 
 }

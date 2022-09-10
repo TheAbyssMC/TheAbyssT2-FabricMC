@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.utils.GlobalGameManager;
 import club.theabyss.server.game.entity.events.player.ServerPlayerEntityEvents;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
@@ -40,9 +40,9 @@ public class LivingEntityMixin {
 
     @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;incrementStat(Lnet/minecraft/stat/Stat;)V"))
     private void triggerTotemEvent(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (TheAbyssManager.getInstance().serverManager() == null) return;
+        if (TheAbyss.getInstance().serverManager() == null) return;
 
-        var totemManager = TheAbyssManager.getInstance().serverGameManager().totemManager();
+        var totemManager = TheAbyss.getInstance().serverGameManager().totemManager();
         var serverPlayer = (ServerPlayerEntity)(Object) this;
         var playerName = serverPlayer.getName();
         var uuid = serverPlayer.getUuid();
@@ -53,7 +53,7 @@ public class LivingEntityMixin {
 
         usedTotemsMap.put(uuid, usedTotemsMap.containsKey(uuid) ? usedTotemsMap.get(uuid) + 1 : 1);
 
-        TheAbyssManager.getInstance().serverManager().minecraftServer().getPlayerManager().getPlayerList().forEach(p -> p.sendMessage((ChatFormatter.stringFormatWithPrefixToText("&7El jugador &6" + playerName.asString() + "&7 ha gastado su totem numero &6" + usedTotemsMap.get(uuid) + "&7." + " &8Causa: " + damageCauseName + "&8.")), false));
+        TheAbyss.getInstance().serverManager().minecraftServer().getPlayerManager().getPlayerList().forEach(p -> p.sendMessage((ChatFormatter.stringFormatWithPrefixToText("&7El jugador &6" + playerName.asString() + "&7 ha gastado su totem numero &6" + usedTotemsMap.get(uuid) + "&7." + " &8Causa: " + damageCauseName + "&8.")), false));
 
         ServerPlayerEntityEvents.PlayerResurrect.EVENT.invoker().resurrect(serverPlayer);
     }
@@ -112,7 +112,7 @@ public class LivingEntityMixin {
                 if (attacker == null) {
                     yield "Proyectil (" + projectile.getName().getString() + colorChars + ")";
                 } else {
-                    TheAbyssManager.getLogger().info(String.valueOf(attacker.getName()));
+                    TheAbyss.getLogger().info(String.valueOf(attacker.getName()));
                     yield "Proyectil (" + projectile.getName().getString() + " -> " + attacker.getName().getString() + colorChars + ")";
                 }
             }

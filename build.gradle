@@ -22,7 +22,7 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:0.14.8"
 
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.57.0+1.18.2"
+	modImplementation include ("net.fabricmc.fabric-api:fabric-api:0.57.0+1.18.2")
 
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
@@ -30,7 +30,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok:1.18.24'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.18:3.0.56'
+	modImplementation include ('software.bernie.geckolib:geckolib-fabric-1.18:3.0.56')
 }
 
 processResources {

@@ -1,6 +1,6 @@
 package club.theabyss.server.game.totem;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.global.interfaces.server.data.Restorable;
 import club.theabyss.server.game.ServerGameManager;
@@ -24,13 +24,13 @@ public class TotemManager implements Restorable {
         if (jsonConfig.getJsonObject().entrySet().isEmpty()) {
             this.totemData = new TotemData();
         } else {
-            this.totemData = TheAbyssManager.gson().fromJson(jsonConfig.getJsonObject(), TotemData.class);
+            this.totemData = TheAbyss.gson().fromJson(jsonConfig.getJsonObject(), TotemData.class);
         }
     }
 
     @Override
     public void save(JsonConfig jsonConfig) {
-        jsonConfig.setJsonObject(TheAbyssManager.gson().toJsonTree(totemData).getAsJsonObject());
+        jsonConfig.setJsonObject(TheAbyss.gson().toJsonTree(totemData).getAsJsonObject());
         try {
             jsonConfig.save();
         } catch (Exception e) {

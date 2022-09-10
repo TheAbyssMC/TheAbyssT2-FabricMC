@@ -1,14 +1,14 @@
 package club.theabyss.server.data;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.global.interfaces.server.data.Instantiable;
-import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.TheAbyssServer;
 import net.minecraft.server.MinecraftServer;
 
 import java.io.File;
 
-public class DataManager extends Instantiable<TheAbyssServerManager> {
+public class DataManager extends Instantiable<TheAbyssServer> {
 
     private final JsonConfig gameData;
     private final JsonConfig deathMessages;
@@ -16,7 +16,7 @@ public class DataManager extends Instantiable<TheAbyssServerManager> {
     private final JsonConfig totems;
     private final JsonConfig flashBangData;
 
-    public DataManager(final TheAbyssManager core, MinecraftServer server) throws Exception {
+    public DataManager(final TheAbyss core, MinecraftServer server) throws Exception {
         super(core.serverManager());
 
         final String folderName = "theabyssmanager";

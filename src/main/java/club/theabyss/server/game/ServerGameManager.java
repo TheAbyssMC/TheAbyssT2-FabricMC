@@ -1,9 +1,9 @@
 package club.theabyss.server.game;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.global.interfaces.server.data.Restorable;
-import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.TheAbyssServer;
 import club.theabyss.server.data.storage.GameData;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerGameManager implements Restorable {
 
-    private final TheAbyssServerManager serverCore;
+    private final TheAbyssServer theAbyssServer;
     private final MinecraftServer server;
 
     private GameData gameData;
@@ -38,15 +38,15 @@ public class ServerGameManager implements Restorable {
 
     private ScheduledExecutorService executorService;
 
-    public ServerGameManager(final TheAbyssServerManager serverCore, MinecraftServer server) {
-        this.serverCore = serverCore;
+    public ServerGameManager(final TheAbyssServer theAbyssServer, MinecraftServer server) {
+        this.theAbyssServer = theAbyssServer;
         this.server = server;
 
         executorService = Executors.newSingleThreadScheduledExecutor();
 
-        this.restore(serverCore.dataManager().gameData());
+        this.restore(theAbyssServer.dataManager().gameData());
 
-        this.bloodMoonManager = new BloodMoonManager(serverCore);
+        this.bloodMoonManager = new BloodMoonManager(theAbyssServer);
         this.entityManager = new EntityManager(this);
         this.totemManager = new TotemManager(this);
         this.flashBangManager = new FlashBangServerManager(this);
@@ -69,13 +69,13 @@ public class ServerGameManager implements Restorable {
         if (jsonConfig.getJsonObject().entrySet().isEmpty()) {
             this.gameData = new GameData(new BloodMoonData());
         } else {
-            this.gameData = TheAbyssManager.gson().fromJson(jsonConfig.getJsonObject(), GameData.class);
+            this.gameData = TheAbyss.gson().fromJson(jsonConfig.getJsonObject(), GameData.class);
         }
     }
 
     @Override
     public void save(JsonConfig jsonConfig) {
-        jsonConfig.setJsonObject(TheAbyssManager.gson().toJsonTree(gameData).getAsJsonObject());
+        jsonConfig.setJsonObject(TheAbyss.gson().toJsonTree(gameData).getAsJsonObject());
         try {
             jsonConfig.save();
         } catch (Exception e) {
@@ -104,16 +104,16 @@ public class ServerGameManager implements Restorable {
      */
     private void autoSaveTimer(int rate) {
         executorService.scheduleAtFixedRate(() -> {
-            serverCore.dataManager().save();
-            TheAbyssManager.getLogger().info("The mod's game data has been automatically saved.");
+            theAbyssServer.dataManager().save();
+            TheAbyss.getLogger().info("The mod's game data has been automatically saved.");
         }, rate, rate, TimeUnit.MINUTES);
     }
 
     /**
      * @return the server manager.
      */
-    public TheAbyssServerManager serverManager() {
-        return serverCore;
+    public TheAbyssServer serverManager() {
+        return theAbyssServer;
     }
 
     /**

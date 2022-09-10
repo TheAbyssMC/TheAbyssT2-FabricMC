@@ -1,11 +1,11 @@
 package club.theabyss;
 
-import club.theabyss.client.TheAbyssClientManager;
+import club.theabyss.client.TheAbyssClient;
 import club.theabyss.global.data.adapters.LocalDateSerializer;
 import club.theabyss.global.registers.CommandRegistries;
 import club.theabyss.global.sounds.TheAbyssSoundEvents;
 import club.theabyss.global.utils.TheAbyssConstants;
-import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.TheAbyssServer;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListeners;
 import club.theabyss.server.game.entity.entities.AbyssEntityRegistries;
@@ -22,14 +22,14 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 
-public class TheAbyssManager implements ModInitializer {
+public class TheAbyss implements ModInitializer {
 
-	private static @Getter TheAbyssManager instance;
+	private static @Getter TheAbyss instance;
 
 	private static final @Getter Logger logger = LoggerFactory.getLogger(TheAbyssConstants.MOD_ID);
 
-	private TheAbyssServerManager serverManager;
-	private TheAbyssClientManager clientManager;
+	private TheAbyssServer serverManager;
+	private TheAbyssClient clientManager;
 
 	private static final Gson gson = new GsonBuilder()
 			.registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
@@ -41,8 +41,8 @@ public class TheAbyssManager implements ModInitializer {
 	public void onInitialize() {
 		instance = this;
 
-		this.serverManager = new TheAbyssServerManager(this);
-		this.clientManager = new TheAbyssClientManager();
+		this.serverManager = new TheAbyssServer(this);
+		this.clientManager = new TheAbyssClient();
 
 		CommandRegistries.registerCommands();
 
@@ -74,14 +74,14 @@ public class TheAbyssManager implements ModInitializer {
 	/**
 	 * @return the mod's server manager.
 	 */
-	public TheAbyssServerManager serverManager() {
+	public TheAbyssServer serverManager() {
 		return serverManager;
 	}
 
 	/**
 	 * @return the mod's client manager.
 	 */
-	public TheAbyssClientManager clientManager() {
+	public TheAbyssClient clientManager() {
 		return clientManager;
 	}
 

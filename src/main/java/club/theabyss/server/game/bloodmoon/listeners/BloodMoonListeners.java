@@ -1,6 +1,6 @@
 package club.theabyss.server.game.bloodmoon.listeners;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.server.game.bloodmoon.BloodMoonEvents;
 import club.theabyss.server.game.bloodmoon.BloodMoonManager;
 import club.theabyss.server.game.entity.events.player.ServerPlayerEntityEvents;
@@ -30,7 +30,7 @@ public class BloodMoonListeners {
 
     private static void onPlayerDeath() {
         ServerPlayerEntityEvents.PlayerDeath.EVENT.register((player, damageSource) -> {
-            var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
+            var bloodMoonManager = TheAbyss.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
             var world = player.getWorld();
             var name = player.getName().asString();
@@ -50,7 +50,7 @@ public class BloodMoonListeners {
 
                 online.sendMessage(ChatFormatter.stringFormatToText("&8" + deathMessage), false);
 
-                BloodMoonManager.executorService.schedule(() -> online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 50F, -8.0F), 50, TimeUnit.MILLISECONDS);
+                BloodMoonManager.executorService.schedule(() -> online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 1000F, -8.0F), 50, TimeUnit.MILLISECONDS);
 
                 try {
                     Animation.play(online, "bloodmoonanimation", 20, 0);
@@ -61,7 +61,7 @@ public class BloodMoonListeners {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 50F, 100F);
+                        online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 1000F, 100F);
                     }
                 }, 1000);
             });
@@ -87,7 +87,7 @@ public class BloodMoonListeners {
 
     private static void onBloodMoonStart() {
         BloodMoonEvents.BloodMoonStarted.EVENT.register(manager -> {
-            var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
+            var bloodMoonManager = TheAbyss.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
             if (bloodMoonManager.updateBossBarTask == null) bloodMoonManager.updateBossBarTask();
 
@@ -98,7 +98,7 @@ public class BloodMoonListeners {
 
     private static void onBloodMoonEnd() {
         BloodMoonEvents.BloodMoonEnded.EVENT.register(manager -> {
-            var bloodMoonManager = TheAbyssManager.getInstance().serverManager().serverGameManager().bloodMoonManager();
+            var bloodMoonManager = TheAbyss.getInstance().serverManager().serverGameManager().bloodMoonManager();
 
             var server = manager.getServerManager().serverGameManager().minecraftServer();
 

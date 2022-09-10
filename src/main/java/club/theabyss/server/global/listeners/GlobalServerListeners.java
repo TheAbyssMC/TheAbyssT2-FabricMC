@@ -1,6 +1,6 @@
 package club.theabyss.server.global.listeners;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.utils.GlobalGameManager;
 import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
@@ -34,7 +34,7 @@ public class GlobalServerListeners {
     private static void onPlayerConnect() {
         ServerPlayConnectionEvents.JOIN.register((networkHandler, packetSender, server) -> {
             var player = networkHandler.getPlayer();
-            var serverManager = TheAbyssManager.getInstance().serverManager();
+            var serverManager = TheAbyss.getInstance().serverManager();
             var bloodMoonManager = serverManager.serverGameManager().bloodMoonManager();
 
             // Process BloodMoon boss-bar.
@@ -73,7 +73,7 @@ public class GlobalServerListeners {
         ServerPlayConnectionEvents.DISCONNECT.register((networkHandler, server) -> {
             var player = networkHandler.getPlayer();
 
-            var serverCore = TheAbyssManager.getInstance().serverManager();
+            var serverCore = TheAbyss.getInstance().serverManager();
             var bloodMoonManager = serverCore.serverGameManager().bloodMoonManager();
 
             bloodMoonManager.hideBossBar(player);

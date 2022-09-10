@@ -1,6 +1,6 @@
 package club.theabyss.server.game.skilltree.enums;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.server.game.skilltree.data.SkillTreeData;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -41,11 +41,11 @@ public enum Skills {
     }
 
     public boolean isAvailable() {
-        return TheAbyssManager.getInstance().serverGameManager().day() >= day;
+        return TheAbyss.getInstance().serverGameManager().day() >= day;
     }
 
     public static SkillTreeData skillData() {
-        return TheAbyssManager.getInstance().serverManager().skillTreeManager().skillTreeData();
+        return TheAbyss.getInstance().serverManager().skillTreeManager().skillTreeData();
     }
 
 }

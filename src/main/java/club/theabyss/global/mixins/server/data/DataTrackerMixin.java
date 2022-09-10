@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.data;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.interfaces.server.entity.IDataTracker;
 import club.theabyss.server.global.utils.DataTrackerChanger;
 import net.minecraft.entity.Entity;
@@ -35,7 +35,7 @@ public abstract class DataTrackerMixin implements IDataTracker {
                 addTrackedData(k, value.isPresent() ? value.get() : entries.defaultValues.get(k));
             });
 
-            TheAbyssManager.getInstance().serverManager().minecraftServer().getPlayerManager().getPlayerList().forEach(p -> p.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(trackedEntity.getId(), trackedEntity.getDataTracker(), true)));
+            TheAbyss.getInstance().serverManager().minecraftServer().getPlayerManager().getPlayerList().forEach(p -> p.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(trackedEntity.getId(), trackedEntity.getDataTracker(), true)));
         }
 
         this.lock.writeLock().unlock();

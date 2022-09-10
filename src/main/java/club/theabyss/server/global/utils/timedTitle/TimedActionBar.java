@@ -1,6 +1,6 @@
 package club.theabyss.server.global.utils.timedTitle;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -60,7 +60,7 @@ public class TimedActionBar {
     }
 
     public static void processActionBars(String name) {
-        var server = TheAbyssManager.getInstance().serverGameManager().minecraftServer();
+        var server = TheAbyss.getInstance().serverGameManager().minecraftServer();
 
         if (server == null) throw new IllegalStateException("The current client server does not exist.");
 

@@ -1,6 +1,6 @@
 package club.theabyss.global.data.util;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.data.adapters.LocalDateSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -93,7 +93,7 @@ public class JsonConfig {
     }
 
     public JsonConfig(String filename) throws Exception {
-        this(filename, String.valueOf(FabricLoader.getInstance().getConfigDir()) + File.separatorChar + TheAbyssManager.class.getSimpleName());
+        this(filename, String.valueOf(FabricLoader.getInstance().getConfigDir()) + File.separatorChar + TheAbyss.class.getSimpleName());
     }
 
     public void save() throws Exception {

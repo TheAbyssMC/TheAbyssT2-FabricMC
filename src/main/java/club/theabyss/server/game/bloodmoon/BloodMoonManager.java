@@ -3,7 +3,7 @@ package club.theabyss.server.game.bloodmoon;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
 import club.theabyss.server.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.server.global.utils.timedTitle.TimedTitle;
-import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.TheAbyssServer;
 import club.theabyss.server.game.bloodmoon.types.BloodMoonData;
 import lombok.Getter;
 import net.minecraft.entity.boss.BossBar;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BloodMoonManager {
 
-    private final @Getter TheAbyssServerManager serverManager;
+    private final @Getter TheAbyssServer serverManager;
 
     private long lastTimeChecked;
 
@@ -42,7 +42,7 @@ public class BloodMoonManager {
     private static ScheduledFuture<?> endBloodMoonTask = null;
     public ScheduledFuture<?> updateBossBarTask = null;
 
-    public BloodMoonManager(final TheAbyssServerManager serverCore) {
+    public BloodMoonManager(final TheAbyssServer serverCore) {
         this.serverManager = serverCore;
         executorService = Executors.newSingleThreadScheduledExecutor();
         this.serverBossBar = new ServerBossBar(Text.of(""), BossBar.Color.RED, BossBar.Style.NOTCHED_6);

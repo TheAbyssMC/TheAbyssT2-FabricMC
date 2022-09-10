@@ -1,6 +1,6 @@
 package club.theabyss.server.game.mechanics.flashbang;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.global.interfaces.server.data.Restorable;
 import club.theabyss.networking.packet.s2c.FlashBangS2CFlashPacket;
@@ -30,13 +30,13 @@ public class FlashBangServerManager implements Restorable {
         if (jsonConfig.getJsonObject().entrySet().isEmpty()) {
             this.flashBangData = new FlashBangData();
         } else {
-            this.flashBangData = TheAbyssManager.gson().fromJson(jsonConfig.getJsonObject(), FlashBangData.class);
+            this.flashBangData = TheAbyss.gson().fromJson(jsonConfig.getJsonObject(), FlashBangData.class);
         }
     }
 
     @Override
     public void save(JsonConfig jsonConfig) {
-        jsonConfig.setJsonObject(TheAbyssManager.gson().toJsonTree(flashBangData).getAsJsonObject());
+        jsonConfig.setJsonObject(TheAbyss.gson().toJsonTree(flashBangData).getAsJsonObject());
         try {
             jsonConfig.save();
         } catch (Exception e) {

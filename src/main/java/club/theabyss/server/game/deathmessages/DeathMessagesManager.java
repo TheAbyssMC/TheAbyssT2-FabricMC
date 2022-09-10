@@ -1,20 +1,20 @@
 package club.theabyss.server.game.deathmessages;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.global.data.util.JsonConfig;
 import club.theabyss.global.interfaces.server.data.Restorable;
-import club.theabyss.server.TheAbyssServerManager;
+import club.theabyss.server.TheAbyssServer;
 import club.theabyss.server.data.storage.DeathMessages;
 
 public class DeathMessagesManager implements Restorable {
 
-    private final TheAbyssServerManager serverCore;
+    private final TheAbyssServer theAbyssServer;
     private DeathMessages deathMessages;
 
-    public DeathMessagesManager(final TheAbyssServerManager serverCore) {
-        this.serverCore = serverCore;
+    public DeathMessagesManager(final TheAbyssServer theAbyssServer) {
+        this.theAbyssServer = theAbyssServer;
 
-        this.restore(serverCore.dataManager().deathMessages());
+        this.restore(theAbyssServer.dataManager().deathMessages());
     }
 
     @Override
@@ -22,13 +22,13 @@ public class DeathMessagesManager implements Restorable {
         if (jsonConfig.getJsonObject().entrySet().isEmpty()) {
             this.deathMessages = new DeathMessages();
         } else {
-            this.deathMessages = TheAbyssManager.gson().fromJson(jsonConfig.getJsonObject(), DeathMessages.class);
+            this.deathMessages = TheAbyss.gson().fromJson(jsonConfig.getJsonObject(), DeathMessages.class);
         }
     }
 
     @Override
     public void save(JsonConfig jsonConfig) {
-        jsonConfig.setJsonObject(TheAbyssManager.gson().toJsonTree(deathMessages).getAsJsonObject());
+        jsonConfig.setJsonObject(TheAbyss.gson().toJsonTree(deathMessages).getAsJsonObject());
         try {
             jsonConfig.save();
         } catch (Exception e) {
@@ -44,10 +44,10 @@ public class DeathMessagesManager implements Restorable {
     }
 
     /**
-     * @return the server manager.
+     * @return the mod's server manager.
      */
-    public TheAbyssServerManager serverManager() {
-        return serverCore;
+    public TheAbyssServer theAbyssServer() {
+        return theAbyssServer;
     }
 
 }

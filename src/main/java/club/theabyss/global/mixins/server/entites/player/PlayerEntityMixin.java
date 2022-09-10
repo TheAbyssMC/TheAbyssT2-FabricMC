@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.player;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.server.game.skilltree.enums.Skills;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,7 +15,7 @@ public class PlayerEntityMixin {
 
     @ModifyVariable(method = "applyDamage", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private float modifyAmount(float amount) {
-        var serverManager = TheAbyssManager.getInstance().serverManager();
+        var serverManager = TheAbyss.getInstance().serverManager();
         var skillTreeManager = serverManager.skillTreeManager();
 
         if (((PlayerEntity)(Object)this) instanceof ServerPlayerEntity serverPlayerEntity) {
@@ -31,7 +31,7 @@ public class PlayerEntityMixin {
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
     private float modifyAttackDamageForE(float amount) {
-        var serverManager = TheAbyssManager.getInstance().serverManager();
+        var serverManager = TheAbyss.getInstance().serverManager();
         var skillTreeManager = serverManager.skillTreeManager();
 
         if (((PlayerEntity)(Object)this) instanceof ServerPlayerEntity serverPlayerEntity) {
@@ -47,7 +47,7 @@ public class PlayerEntityMixin {
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), index = 1)
     public float modifyAttackDamageForLE(float amount) {
-        var serverManager = TheAbyssManager.getInstance().serverManager();
+        var serverManager = TheAbyss.getInstance().serverManager();
         var skillTreeManager = serverManager.skillTreeManager();
 
         if (((PlayerEntity)(Object)this) instanceof ServerPlayerEntity serverPlayerEntity) {

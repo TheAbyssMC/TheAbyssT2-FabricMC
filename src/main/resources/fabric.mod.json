@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "club.theabyss.TheAbyssManager"
+      "club.theabyss.TheAbyss"
     ],
     "client": [
-      "club.theabyss.client.TheAbyssClientManager"
+      "club.theabyss.client.TheAbyssClient"
     ]
   },
   "mixins": [

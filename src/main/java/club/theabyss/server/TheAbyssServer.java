@@ -1,6 +1,6 @@
 package club.theabyss.server;
 
-import club.theabyss.TheAbyssManager;
+import club.theabyss.TheAbyss;
 import club.theabyss.server.data.DataManager;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.deathmessages.DeathMessagesManager;
@@ -11,9 +11,9 @@ import club.theabyss.server.networking.receivers.RegisterServerReceivers;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 
-public class TheAbyssServerManager {
+public class TheAbyssServer {
 
-    private final TheAbyssManager abyssManager;
+    private final TheAbyss theAbyss;
 
     private DataManager dataManager;
     private ServerGameManager serverGameManager;
@@ -22,14 +22,14 @@ public class TheAbyssServerManager {
 
     private MinecraftServer minecraftServer;
 
-    public TheAbyssServerManager(final TheAbyssManager abyssManager) {
-        this.abyssManager = abyssManager;
+    public TheAbyssServer(final TheAbyss theAbyss) {
+        this.theAbyss = theAbyss;
 
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
             this.minecraftServer = server;
 
             try {
-                this.dataManager = new DataManager(abyssManager, server);
+                this.dataManager = new DataManager(theAbyss, server);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -52,7 +52,7 @@ public class TheAbyssServerManager {
 
             RegisterServerReceivers.init();
 
-            TheAbyssManager.getLogger().info("The mod's server has been loaded successfully.");
+            TheAbyss.getLogger().info("The mod's server has been loaded successfully.");
         }));
         ServerLifecycleEvents.SERVER_STOPPED.register((server -> {
             try {
@@ -67,15 +67,15 @@ public class TheAbyssServerManager {
 
             serverGameManager.shutDownExecutor();
 
-            TheAbyssManager.getLogger().info("The mod's server has been unloaded successfully.");
+            TheAbyss.getLogger().info("The mod's server has been unloaded successfully.");
         }));
     }
 
     /**
-     * @return the mod core.
+     * @return the mod's main class.
      */
-    public TheAbyssManager abyssManager() {
-        return abyssManager;
+    public TheAbyss theAbyss() {
+        return theAbyss;
     }
 
     /**
