@@ -36,7 +36,7 @@ public class Animation {
             throw new ArrayStoreException("An attempt was made to cast an element of the JSONArray to a Character. However, this action failed because the element was NOT an Integer.");
         }
 
-        if (frames.size() == 0) throw new NoFramesException(animation);
+        if (frames.isEmpty()) throw new NoFramesException(animation);
 
         animations.put(animation, frames.toArray(new Character[0]));
     }

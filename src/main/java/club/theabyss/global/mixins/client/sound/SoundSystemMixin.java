@@ -30,21 +30,21 @@ public abstract class SoundSystemMixin {
 
     @Redirect(method = "tick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundSystem;getAdjustedVolume(Lnet/minecraft/client/sound/SoundInstance;)F"))
     private float redirectTick(SoundSystem instance, SoundInstance sound) {
-        return (FlashBangClientManager.isShouldTick()) ? FlashBangClientManager.getVolumes(sound) * getAdjustedVolume(sound) : getAdjustedVolume(sound);
+        return (FlashBangClientManager.isTicking()) ? FlashBangClientManager.getVolumes(sound) * getAdjustedVolume(sound) : getAdjustedVolume(sound);
     }
 
     @Redirect(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "INVOKE",target = "Lnet/minecraft/client/sound/SoundInstance;getVolume()F"))
     private float redirectVolumeOnPlay(SoundInstance instance) {
-        return (FlashBangClientManager.isShouldTick()) ? FlashBangClientManager.getVolumes(instance) * getAdjustedVolume(instance) : getAdjustedVolume(instance);
+        return (FlashBangClientManager.isTicking()) ? FlashBangClientManager.getVolumes(instance) * getAdjustedVolume(instance) : getAdjustedVolume(instance);
     }
 
     @Redirect(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "INVOKE",target = "Lnet/minecraft/client/sound/SoundSystem;getAdjustedVolume(Lnet/minecraft/client/sound/SoundInstance;)F"))
     private float redirectAdjustedVolumeOnPlay(SoundSystem instance, SoundInstance sound) {
-        return (FlashBangClientManager.isShouldTick()) ? FlashBangClientManager.getVolumes(sound) * getAdjustedVolume(sound) : getAdjustedVolume(sound);
+        return (FlashBangClientManager.isTicking()) ? FlashBangClientManager.getVolumes(sound) * getAdjustedVolume(sound) : getAdjustedVolume(sound);
     }
 
     public void updateCustomVolume() {
-        if (!started || !FlashBangClientManager.isShouldTick()) return;
+        if (!started || !FlashBangClientManager.isTicking()) return;
         sources.forEach((source2, sourceManager) -> {
             float f = FlashBangClientManager.getVolumes(source2) * getAdjustedVolume(source2);
             sourceManager.run(source -> {

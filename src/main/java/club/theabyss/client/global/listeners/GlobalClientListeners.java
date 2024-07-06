@@ -19,7 +19,8 @@ public class GlobalClientListeners {
 
             if (serverGameManager.minecraftServer().isDedicated()) return ActionResult.PASS;
 
-            serverGameManager.bloodMoonManager().pause();
+            serverGameManager.bloodMoonManager().pauseBloodMoon();
+            serverGameManager.bloodMoonManager().pauseNaturalBloodMoon();
 
             return ActionResult.PASS;
         });
@@ -33,7 +34,8 @@ public class GlobalClientListeners {
 
             if (serverGameManager.minecraftServer().isDedicated()) return ActionResult.PASS;
 
-            serverGameManager.bloodMoonManager().resume();
+            serverGameManager.bloodMoonManager().resumeBloodMoon();
+            serverGameManager.bloodMoonManager().resumeNaturalBloodMoon();
 
             return ActionResult.PASS;
         });

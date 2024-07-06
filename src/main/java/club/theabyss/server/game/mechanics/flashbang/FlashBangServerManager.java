@@ -63,12 +63,14 @@ public class FlashBangServerManager implements Restorable {
         return flashBangData.getFlashBangDataMap();
     }
 
+    @Getter
+    @Setter
     public static class OpacityData {
 
-        private @Getter @Setter float opacity;
-        private @Getter @Setter float soundVolume;
-        private @Getter @Setter int flashSeconds;
-        private @Getter @Setter int opaqueTicks;
+        private float opacity;
+        private float soundVolume;
+        private int flashSeconds;
+        private int opaqueTicks;
 
         public OpacityData(float opacity, float soundVolume, int flashSeconds, int opaqueTicks) {
             this.opacity = opacity;

@@ -19,7 +19,7 @@ public class RegisterClientReceivers {
             MinecraftClient.getInstance().execute(() -> {
                 if (showStaticImage && client.getWindow().getWidth() > 0 && client.getWindow().getHeight() > 0)
                     FlashBangClientManager.setFramebuffer(FlashBangClientManager.copyColorsFrom(client.getFramebuffer(), new SimpleFramebuffer(client.getWindow().getWidth(), client.getWindow().getHeight(), true, false)));
-                FlashBangClientManager.setShouldTick(true);
+                FlashBangClientManager.setTicking(true);
             });
         });
     }

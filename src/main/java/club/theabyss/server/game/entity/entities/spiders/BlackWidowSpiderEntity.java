@@ -124,10 +124,7 @@ public class BlackWidowSpiderEntity extends SpiderEntity implements IAnimatable 
         private double targetZ;
         private int updateCountdownTicks;
         private int coolDown;
-
-        private final int attackIntervalTicks = 20;
         private long lastUpdateTime;
-        private static final long MAX_ATTACK_TIME = 20L;
 
         public BlackWidowAttackGoal(BlackWidowSpiderEntity mob, double speed, boolean pauseWhenMobIdle) {
             this.mob = mob;

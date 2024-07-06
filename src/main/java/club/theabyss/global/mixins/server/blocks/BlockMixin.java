@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.blocks;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import net.minecraft.block.Block;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +14,7 @@ public class BlockMixin {
 
     @Inject(method = "dropExperience", at = @At("HEAD"), cancellable = true)
     private void manageExperienceDrops(ServerWorld world, BlockPos pos, int size, CallbackInfo ci) {
-        if (GlobalGameManager.getNowDay() >= 7) ci.cancel();
+        if (GlobalDataAccess.getNowDay() >= 7) ci.cancel();
     }
 
 }

@@ -1,7 +1,7 @@
 package club.theabyss.server.global.commands;
 
 import club.theabyss.TheAbyss;
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.game.skilltree.enums.Skills;
 import club.theabyss.server.global.commands.arguments.SkillsArgumentType;
@@ -60,7 +60,7 @@ public class AbyssStaffCMD {
 
     public static int executeFlashBang(CommandContext<ServerCommandSource> commandContext, Collection<ServerPlayerEntity> players, int seconds, int opaqueTicks) {
         try {
-            var flashBangManager = GlobalGameManager.getFlashBangManager();
+            var flashBangManager = GlobalDataAccess.getFlashBangManager();
 
             if (flashBangManager == null) throw new IllegalStateException("The FlashBangManager isn't loaded yet!");
 
@@ -154,36 +154,27 @@ public class AbyssStaffCMD {
         }
     }
 
-    private static void setDays(CommandContext<ServerCommandSource> commandContext, int date) {
-        int numberOfDay;
+    private static void setDays(CommandContext<ServerCommandSource> commandContext, long day) {
+        var startDate = LocalDate.now().minusDays(day);
+        var month = startDate.getMonthValue();
+        var startDay = startDate.getDayOfMonth();
 
-        try {
-            numberOfDay = Math.max(0, Math.min(60, date));
-        } catch (NumberFormatException ex) {
-            commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&cNecesitas ingresar un número válido."), false);
-            return;
-        }
-
-        var add = LocalDate.now().minusDays(numberOfDay);
-        var month = add.getMonthValue();
-        var day = add.getDayOfMonth();
-
-        String s;
+        String stringDate;
 
         if (month < 10) {
-            s = add.getYear() + "-0" + month + "-";
+            stringDate = startDate.getYear() + "-0" + month + "-";
         } else {
-            s = add.getYear() + "-" + month + "-";
+            stringDate = startDate.getYear() + "-" + month + "-";
         }
 
-        if (day < 10) {
-            s = s + "0" + day;
+        if (startDay < 10) {
+            stringDate = stringDate + "0" + startDay;
         } else {
-            s = s + day;
+            stringDate = stringDate + startDay;
         }
 
-        commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El día ha sido actualizado a &6" + numberOfDay + "&7."), false);
-        TheAbyss.getInstance().serverManager().serverGameManager().gameData().setStartDate(LocalDate.parse(s));
+        TheAbyss.getInstance().serverManager().serverGameManager().gameData().setStartDate(LocalDate.parse(stringDate));
+        commandContext.getSource().sendFeedback(ChatFormatter.stringFormatWithPrefixToText("&7El día ha sido actualizado a &6" + day + "&7."), false);
     }
 
 }

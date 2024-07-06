@@ -1,7 +1,7 @@
 package club.theabyss.global.mixins.server.entites;
 
 import club.theabyss.TheAbyss;
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import club.theabyss.server.game.entity.events.player.ServerPlayerEntityEvents;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
 import net.minecraft.entity.EntityType;
@@ -13,6 +13,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,7 +28,7 @@ public class LivingEntityMixin {
 
     @Inject(method = "dropLoot", at = @At("HEAD"), cancellable = true)
     private void modifyLoot(DamageSource source, boolean causedByPlayer, CallbackInfo ci) {
-        if (!(GlobalGameManager.getNowDay() >= 7)) return;
+        if (!(GlobalDataAccess.getNowDay() >= 7)) return;
 
         var entity = ((LivingEntity)(Object)this);
         var entityType = ((LivingEntity)(Object)this).getType();
@@ -58,6 +59,7 @@ public class LivingEntityMixin {
         ServerPlayerEntityEvents.PlayerResurrect.EVENT.invoker().resurrect(serverPlayer);
     }
 
+    @Unique
     private String getDamageCauseName(DamageSource damageSource, String colorChars) {
         return switch(damageSource.getName()) {
             case "inFire", "onFire" -> "Fuego";

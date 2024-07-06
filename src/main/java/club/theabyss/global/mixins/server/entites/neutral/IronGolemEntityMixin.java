@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.neutral;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.mob.CreeperEntity;
@@ -24,7 +24,7 @@ public class IronGolemEntityMixin extends PathAwareEntity {
 
     @Inject(at = @At("HEAD"), method = "initGoals", cancellable = true)
     public void addAttackGoal(CallbackInfo ci) {
-        var day = GlobalGameManager.getNowDay();
+        var day = GlobalDataAccess.getNowDay();
         if (day >= 7) targetSelector.add(0, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
         this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.add(2, new WanderNearTargetGoal(this, 0.9D, 32.0F));

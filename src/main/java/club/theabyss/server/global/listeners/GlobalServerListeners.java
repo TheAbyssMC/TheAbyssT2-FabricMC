@@ -1,7 +1,7 @@
 package club.theabyss.server.global.listeners;
 
 import club.theabyss.TheAbyss;
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.skilltree.SkillTreeManager;
 import club.theabyss.server.global.events.GameDateEvents;
@@ -57,7 +57,7 @@ public class GlobalServerListeners {
             }
 
             // Process FlashBang data.
-            var flashBangManager = GlobalGameManager.getFlashBangManager();
+            var flashBangManager = GlobalDataAccess.getFlashBangManager();
             if (flashBangManager != null) {
                 var opacityData = flashBangManager.getFlashBangData().getFlashBangDataMap().get(player.getUuid());
                 if (opacityData != null) {
@@ -81,7 +81,7 @@ public class GlobalServerListeners {
             // Process TimedTitle.
             var titleName = player.getName().asString();
             var titleQueue = TimedTitle.titleQueue.get(titleName);
-            if (!(titleQueue == null || titleQueue.task == null || titleQueue.titles.size() == 0)) {
+            if (!(titleQueue == null || titleQueue.task == null || titleQueue.titles.isEmpty())) {
                 titleQueue.task.cancel();
                 titleQueue.task = null;
                 var titleTimePassed = new Date().getTime() - titleQueue.lastTask;
@@ -89,26 +89,26 @@ public class GlobalServerListeners {
                 if (titleTimePassed >= titleCurrent.fadeIn) {
                     titleCurrent.fadeIn = 0;
                     if (titleTimePassed < titleCurrent.minimumStayTime) { // Should never happen
-                        titleCurrent.minimumStayTime -= titleTimePassed;
-                        titleCurrent.stayTime -= titleTimePassed;
+                        titleCurrent.minimumStayTime -= (int) titleTimePassed;
+                        titleCurrent.stayTime -= (int) titleTimePassed;
                     } else {
                         titleQueue.titles.remove(0);
                     }
                 } else {
-                    titleCurrent.fadeIn -= titleTimePassed; // This is not a perfect solution, but is the best possible one
+                    titleCurrent.fadeIn -= (int) titleTimePassed; // This is not a perfect solution, but is the best possible one
                 }
             }
 
             // Process TimedActionBar.
             var actionBarName = player.getName().asString();
             var actionBarQueue = TimedActionBar.actionBarQueue.get(actionBarName);
-            if (!(actionBarQueue == null || actionBarQueue.task == null || actionBarQueue.actionBars.size() == 0)) {
+            if (!(actionBarQueue == null || actionBarQueue.task == null || actionBarQueue.actionBars.isEmpty())) {
                 actionBarQueue.task.cancel();
                 actionBarQueue.task = null;
                 var actionBarTimePassed = new Date().getTime() - actionBarQueue.lastTask;
                 var current = actionBarQueue.actionBars.get(0);
                 if (actionBarTimePassed < current.stayTime) { // Should never happen
-                    current.stayTime -= actionBarTimePassed;
+                    current.stayTime -= (int) actionBarTimePassed;
                 } else {
                     actionBarQueue.actionBars.remove(0);
                 }

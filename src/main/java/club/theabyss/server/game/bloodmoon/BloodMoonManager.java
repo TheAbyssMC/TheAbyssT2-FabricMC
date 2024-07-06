@@ -1,5 +1,6 @@
 package club.theabyss.server.game.bloodmoon;
 
+import club.theabyss.global.utils.GlobalDataAccess;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
 import club.theabyss.server.global.utils.timedTitle.InvalidTitleTimings;
 import club.theabyss.server.global.utils.timedTitle.TimedTitle;
@@ -28,31 +29,46 @@ public class BloodMoonManager {
 
     private final @Getter TheAbyssServer serverManager;
 
-    private long lastTimeChecked;
+    private long lastTimeCheckedBloodMoon;
+
+    private long lastTimeCheckedNaturalBloodMoon;
 
     private boolean animationIsActive = false;
 
-    private boolean paused = false;
+    private boolean bloodMoonPaused = false;
+
+    private boolean naturalBloodMoonPaused = false;
 
     public ServerBossBar serverBossBar;
 
     private Text title;
 
-    public static ScheduledExecutorService executorService;
+    public static ScheduledExecutorService bloodMoonExecutorService;
+    public static ScheduledExecutorService naturalBloodMoonExecutorService;
     private static ScheduledFuture<?> endBloodMoonTask = null;
     public ScheduledFuture<?> updateBossBarTask = null;
+    private ScheduledFuture<?> naturalBloodMoonTask = null;
 
     public BloodMoonManager(final TheAbyssServer serverCore) {
         this.serverManager = serverCore;
-        executorService = Executors.newSingleThreadScheduledExecutor();
+        bloodMoonExecutorService = Executors.newSingleThreadScheduledExecutor();
+        naturalBloodMoonExecutorService = Executors.newSingleThreadScheduledExecutor();
         this.serverBossBar = new ServerBossBar(Text.of(""), BossBar.Color.RED, BossBar.Style.NOTCHED_6);
     }
 
     public void load() {
-        lastTimeChecked = new Date().getTime();
+        lastTimeCheckedBloodMoon = new Date().getTime();
+        lastTimeCheckedNaturalBloodMoon = new Date().getTime();
         var endsIn = bloodMoonData().getEndsIn();
+        var naturalBloodMoonIn = bloodMoonData().getNaturalBloodMoonIn();
         if (endsIn > 0) {
             startBloodMoon(false);
+        } else {
+            if (naturalBloodMoonIn == 0) {
+                scheduleNaturalBloodMoon();
+            } else if (naturalBloodMoonIn > 0) {
+                createNaturalBloodMoonTask(naturalBloodMoonIn);
+            }
         }
     }
 
@@ -155,11 +171,13 @@ public class BloodMoonManager {
 
         BloodMoonEvents.BloodMoonStarted.EVENT.invoker().start(this);
 
+        cancelNaturalBloodMoonTask();
+
         var endsIn = bloodMoonData().getEndsIn();
-        lastTimeChecked = new Date().getTime();
+        lastTimeCheckedBloodMoon = new Date().getTime();
 
         if (endBloodMoonTask != null) endBloodMoonTask.cancel(false);
-        endBloodMoonTask = executorService.schedule(this::end, endsIn / 1000, TimeUnit.SECONDS);
+        endBloodMoonTask = bloodMoonExecutorService.schedule(this::end, endsIn / 1000, TimeUnit.SECONDS);
 
         world.setTimeOfDay(18000);
 
@@ -198,6 +216,8 @@ public class BloodMoonManager {
         world.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(true, world.getServer());
 
         BloodMoonEvents.BloodMoonEnded.EVENT.invoker().end(this);
+
+        scheduleNaturalBloodMoon();
     }
 
     /**
@@ -214,9 +234,9 @@ public class BloodMoonManager {
         long now = new Date().getTime();
 
         var endsIn = bloodMoonData().getEndsIn();
-        endsIn -= now - lastTimeChecked;
+        endsIn -= now - lastTimeCheckedBloodMoon;
 
-        lastTimeChecked = now;
+        lastTimeCheckedBloodMoon = now;
         bloodMoonData().setEndsIn(endsIn);
         return endsIn;
     }
@@ -243,7 +263,7 @@ public class BloodMoonManager {
      */
     public void updateBossBarTask() {
         if (updateBossBarTask != null) return;
-        updateBossBarTask = executorService.scheduleAtFixedRate(() -> {
+        updateBossBarTask = bloodMoonExecutorService.scheduleAtFixedRate(() -> {
             var remainBloodMoon = getFormattedRemainingTime();
 
             title = ChatFormatter.stringFormatToText("&c&ka &r☠ &c&lBLOODMOON: " + Formatting.YELLOW + (remainBloodMoon.equals("") ? "No hay una BloodMoon activa en este momento." : remainBloodMoon) + " &r☠ &c&ka");
@@ -269,32 +289,59 @@ public class BloodMoonManager {
     /**
      * Resumes all the BloodMoon logic if it has been paused before.
      */
-    public void resume() {
-        if (!paused) return;
-        lastTimeChecked = new Date().getTime();
+    public void resumeBloodMoon() {
+        if (!bloodMoonPaused) return;
+        lastTimeCheckedBloodMoon = new Date().getTime();
         getMillisToEnd();
-        assert executorService == null;
-        executorService = Executors.newSingleThreadScheduledExecutor();
+        assert bloodMoonExecutorService == null;
+        bloodMoonExecutorService = Executors.newSingleThreadScheduledExecutor();
         assert endBloodMoonTask == null;
-        endBloodMoonTask = executorService.schedule(this::end, bloodMoonData().getEndsIn() / 1000, TimeUnit.SECONDS);
+        endBloodMoonTask = bloodMoonExecutorService.schedule(this::end, bloodMoonData().getEndsIn() / 1000, TimeUnit.SECONDS);
         assert updateBossBarTask == null;
         updateBossBarTask();
-        paused = false;
+        bloodMoonPaused = false;
     }
 
     /**
      * Pauses all the BloodMoon logic.
      */
-    public void pause() {
-        if (paused) return;
+    public void pauseBloodMoon() {
+        if (bloodMoonPaused) return;
         if (endBloodMoonTask != null) endBloodMoonTask.cancel(false);
         if (updateBossBarTask != null) updateBossBarTask.cancel(false);
         endBloodMoonTask = null;
         updateBossBarTask = null;
-        executorService.shutdownNow();
-        executorService = null;
+        bloodMoonExecutorService.shutdownNow();
+        bloodMoonExecutorService = null;
         getMillisToEnd();
-        paused = true;
+        bloodMoonPaused = true;
+    }
+
+    /**
+     * Pauses all the Natural BloodMoon logic.
+     */
+    public void pauseNaturalBloodMoon() {
+        if (naturalBloodMoonPaused) return;
+        if (naturalBloodMoonTask != null) naturalBloodMoonTask.cancel(false);
+        naturalBloodMoonTask = null;
+        naturalBloodMoonExecutorService.shutdownNow();
+        bloodMoonExecutorService = null;
+        getNaturalBloodMoonRemainingTime();
+        naturalBloodMoonPaused = true;
+    }
+
+    /**
+     * Resumes all the Natural BloodMoon logic.
+     */
+    public void resumeNaturalBloodMoon() {
+        if (!naturalBloodMoonPaused) return;
+        lastTimeCheckedNaturalBloodMoon = new Date().getTime();
+        getNaturalBloodMoonRemainingTime();
+        assert naturalBloodMoonExecutorService == null;
+        naturalBloodMoonExecutorService = Executors.newSingleThreadScheduledExecutor();
+        assert naturalBloodMoonTask == null;
+        naturalBloodMoonTask = naturalBloodMoonExecutorService.schedule(() -> createNaturalBloodMoonTask(bloodMoonData().getNaturalBloodMoonIn()), bloodMoonData().getNaturalBloodMoonIn() / 20, TimeUnit.SECONDS);
+        naturalBloodMoonPaused = false;
     }
 
     /**
@@ -333,6 +380,71 @@ public class BloodMoonManager {
         if (!serverBossBar.getPlayers().contains(player)) {
             serverBossBar.addPlayer(player);
         }
+    }
+
+    public void cancelNaturalBloodMoonTask() {
+        if (naturalBloodMoonTask != null) naturalBloodMoonTask.cancel(true);
+        naturalBloodMoonTask = null;
+    }
+
+    private void scheduleNaturalBloodMoon() {
+        if (naturalBloodMoonTask != null) return;
+
+        double minDaysBeforeNaturalBloodMoon; // Inclusive
+        double maxDaysBeforeNaturalBloodMoon; // Exclusive
+
+        if (GlobalDataAccess.getNowDay() >= 14) {
+            maxDaysBeforeNaturalBloodMoon = 10;
+            minDaysBeforeNaturalBloodMoon = 6;
+        } else {
+            minDaysBeforeNaturalBloodMoon = 8;
+            maxDaysBeforeNaturalBloodMoon = 12;
+        }
+
+        var naturalBloodMoonIn = 24_000 * (long) (minDaysBeforeNaturalBloodMoon +
+                Math.random()*(maxDaysBeforeNaturalBloodMoon -1/* -1 to make the maxNumber exclusive */ - minDaysBeforeNaturalBloodMoon)
+                - 1 /* -1 to counteract the +24_000 in the next line */);
+
+        naturalBloodMoonIn += /* 18_000 + 24_000 */ 42_000 -  serverManager.serverGameManager().minecraftServer().getOverworld().getTime();
+
+        bloodMoonData().setNaturalBloodMoonIn(naturalBloodMoonIn);
+
+        createNaturalBloodMoonTask(naturalBloodMoonIn);
+    }
+
+    public void createNaturalBloodMoonTask(long naturalBloodMoonIn) {
+        if (isActive()) return;
+        cancelNaturalBloodMoonTask();
+
+        naturalBloodMoonTask = naturalBloodMoonExecutorService.schedule(this::startNaturalBloodMoon, (naturalBloodMoonIn / 20), TimeUnit.SECONDS);
+
+        lastTimeCheckedNaturalBloodMoon = new Date().getTime();
+    }
+
+    private void startNaturalBloodMoon() {
+        double naturalBloodMoonDuration;
+
+        long day = GlobalDataAccess.getNowDay();
+
+        if (day >= 7 && day < 14) {
+            naturalBloodMoonDuration = 0.75;
+        } else if (day >= 14) {
+            naturalBloodMoonDuration = 1;
+        } else {
+            naturalBloodMoonDuration = 0.5;
+        }
+
+        serverManager.serverGameManager().minecraftServer().getOverworld().setTimeOfDay(18_000);
+
+        this.start(naturalBloodMoonDuration, false, true);
+    }
+
+    public long getNaturalBloodMoonRemainingTime() {
+        long now = new Date().getTime();
+        // This counter is read in ticks, but it still works because the real time scheduler is calculated correctly
+        bloodMoonData().setNaturalBloodMoonIn(bloodMoonData().getNaturalBloodMoonIn() - ((now - lastTimeCheckedNaturalBloodMoon) / 50)); /* 20*(now - lastTimeChecked) / 1000 */;
+        lastTimeCheckedNaturalBloodMoon = now;
+        return bloodMoonData().getNaturalBloodMoonIn();
     }
 
     /**

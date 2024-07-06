@@ -9,6 +9,8 @@ import club.theabyss.server.TheAbyssServer;
 import club.theabyss.server.game.ServerGameManager;
 import club.theabyss.server.game.bloodmoon.listeners.BloodMoonListeners;
 import club.theabyss.server.game.entity.entities.AbyssEntityRegistries;
+import club.theabyss.server.game.item.groups.TheAbyssItemGroups;
+import club.theabyss.server.game.item.items.TheAbyssItems;
 import club.theabyss.server.global.commands.arguments.SkillsArgumentType;
 import club.theabyss.server.global.listeners.GlobalServerListeners;
 import com.google.gson.Gson;
@@ -28,8 +30,8 @@ public class TheAbyss implements ModInitializer {
 
 	private static final @Getter Logger logger = LoggerFactory.getLogger(TheAbyssConstants.MOD_ID);
 
-	private TheAbyssServer serverManager;
-	private TheAbyssClient clientManager;
+	private TheAbyssServer theAbyssServer;
+	private TheAbyssClient theAbyssClient;
 
 	private static final Gson gson = new GsonBuilder()
 			.registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
@@ -41,8 +43,8 @@ public class TheAbyss implements ModInitializer {
 	public void onInitialize() {
 		instance = this;
 
-		this.serverManager = new TheAbyssServer(this);
-		this.clientManager = new TheAbyssClient();
+		this.theAbyssServer = new TheAbyssServer(this);
+		this.theAbyssClient = new TheAbyssClient();
 
 		CommandRegistries.registerCommands();
 
@@ -51,6 +53,8 @@ public class TheAbyss implements ModInitializer {
 
 		TheAbyssSoundEvents.register();
 		AbyssEntityRegistries.register();
+		TheAbyssItemGroups.registerItemGroups();
+		TheAbyssItems.registerModItems();
 
 		ArgumentTypes.register("theabyss2:skills", SkillsArgumentType.class, new ConstantArgumentSerializer<>(SkillsArgumentType::skills));
 
@@ -61,7 +65,7 @@ public class TheAbyss implements ModInitializer {
 	 * @return the mod's server game manager.
 	 */
 	public ServerGameManager serverGameManager() {
-		return serverManager.serverGameManager();
+		return theAbyssServer.serverGameManager();
 	}
 
 	/**
@@ -75,14 +79,14 @@ public class TheAbyss implements ModInitializer {
 	 * @return the mod's server manager.
 	 */
 	public TheAbyssServer serverManager() {
-		return serverManager;
+		return theAbyssServer;
 	}
 
 	/**
 	 * @return the mod's client manager.
 	 */
 	public TheAbyssClient clientManager() {
-		return clientManager;
+		return theAbyssClient;
 	}
 
 }

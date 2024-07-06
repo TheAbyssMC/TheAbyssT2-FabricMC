@@ -50,7 +50,7 @@ public class BloodMoonListeners {
 
                 online.sendMessage(ChatFormatter.stringFormatToText("&8" + deathMessage), false);
 
-                BloodMoonManager.executorService.schedule(() -> online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 1000F, -8.0F), 50, TimeUnit.MILLISECONDS);
+                BloodMoonManager.bloodMoonExecutorService.schedule(() -> online.playSound(SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.MASTER, 1000F, -8.0F), 50, TimeUnit.MILLISECONDS);
 
                 try {
                     Animation.play(online, "bloodmoonanimation", 20, 0);

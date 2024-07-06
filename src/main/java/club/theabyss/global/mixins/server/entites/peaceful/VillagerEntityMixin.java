@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.peaceful;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -29,7 +29,7 @@ public class VillagerEntityMixin extends MobEntity {
 
     @Override
     public void initGoals() {
-        var day = GlobalGameManager.getNowDay();
+        var day = GlobalDataAccess.getNowDay();
         if (day >= 7) {
             targetSelector.add(0, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
             goalSelector.add(0, new MeleeAttackGoal(((VillagerEntity) (Object) this), 1.0D, false));

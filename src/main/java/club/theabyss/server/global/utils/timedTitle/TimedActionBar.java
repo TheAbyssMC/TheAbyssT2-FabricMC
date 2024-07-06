@@ -69,7 +69,7 @@ public class TimedActionBar {
 
         Queue queue = actionBarQueue.get(name);
         if (queue == null) return;
-        if (queue.actionBars.size() == 0) {
+        if (queue.actionBars.isEmpty()) {
             actionBarQueue.remove(name);
             return;
         }
@@ -84,7 +84,7 @@ public class TimedActionBar {
                 if (time >= current.stayTime || (time >= current.minimumStayTime && queue.actionBars.size() > 1)) {
                     queue.task.cancel();
                     queue.actionBars.remove(0);
-                    if (queue.actionBars.size() == 0)
+                    if (queue.actionBars.isEmpty())
                         p.sendMessage(ChatFormatter.stringFormatToText(""), true);
                     processActionBars(name);
                 } else if (time % 1000 == 0) {

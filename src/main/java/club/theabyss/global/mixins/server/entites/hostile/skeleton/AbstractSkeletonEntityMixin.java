@@ -1,7 +1,7 @@
 package club.theabyss.global.mixins.server.entites.hostile.skeleton;
 
 import club.theabyss.global.interfaces.server.entity.skeleton.IAbstractSkeletonEntity;
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ public abstract class AbstractSkeletonEntityMixin implements IAbstractSkeletonEn
     @ModifyArg(method = "initEquipment", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/mob/AbstractSkeletonEntity;equipStack(Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/item/ItemStack;)V"), index = 1)
     private ItemStack addPoweredBow(ItemStack stack) {
         var random = new Random();
-        var day = GlobalGameManager.getNowDay();
+        var day = GlobalDataAccess.getNowDay();
 
         if (day >= 7 && day < 14) {
             stack.addEnchantment(Enchantments.POWER, random.nextInt(10, 30));

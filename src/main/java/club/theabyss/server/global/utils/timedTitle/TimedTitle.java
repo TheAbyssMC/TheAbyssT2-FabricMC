@@ -70,7 +70,7 @@ public class TimedTitle {
 
         var queue = titleQueue.get(name);
         if (queue == null) return;
-        if (queue.titles.size() == 0) {
+        if (queue.titles.isEmpty()) {
             titleQueue.remove(name);
             return;
         }

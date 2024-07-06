@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -52,12 +53,14 @@ public abstract class MobEntityMixin extends LivingEntity implements IMobEntity 
         }
     }
 
+    @Unique
     public boolean shouldDropEquipment(MobEntity mobEntity, EquipmentSlot equipmentSlot) {
         var itemStack = mobEntity.getEquippedStack(equipmentSlot);
 
         return isValidItem(itemStack);
     }
 
+    @Unique
     public boolean isValidItem(ItemStack itemStack) {
         if (itemStack.isEmpty()) return false;
 
@@ -66,6 +69,7 @@ public abstract class MobEntityMixin extends LivingEntity implements IMobEntity 
         return hasValidEnchantments(enchantments);
     }
 
+    @Unique
     public boolean hasValidEnchantments(Map<Enchantment, Integer> enchantments) {
         AtomicBoolean isValid = new AtomicBoolean(true);
         enchantments.forEach((enchantment, integer) -> {

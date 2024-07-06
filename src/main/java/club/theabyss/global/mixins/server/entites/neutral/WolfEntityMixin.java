@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.neutral;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -27,7 +27,7 @@ public class WolfEntityMixin extends MobEntity {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(EntityType<?> entityType, World world, CallbackInfo ci) {
-        if (GlobalGameManager.getNowDay() >=7) addStatusEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, Integer.MAX_VALUE, 4));
+        if (GlobalDataAccess.getNowDay() >=7) addStatusEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, Integer.MAX_VALUE, 4));
     }
 
     @Inject(at = @At("RETURN"), method = "createWolfAttributes")
@@ -37,7 +37,7 @@ public class WolfEntityMixin extends MobEntity {
 
     @Inject(at = @At("HEAD"), method = "initGoals")
     public void addAttackGoal(CallbackInfo ci) {
-        var day = GlobalGameManager.getNowDay();
+        var day = GlobalDataAccess.getNowDay();
         if (day >= 7) {
             targetSelector.add(0, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
             goalSelector.add(0, new MeleeAttackGoal(((WolfEntity) (Object) this), 1.0D, false));

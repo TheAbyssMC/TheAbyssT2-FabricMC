@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.hostile.skeleton;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.AbstractSkeletonEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
@@ -17,7 +17,7 @@ public class WitherSkeletonEntityMixin {
 
     @Inject(method = "initEquipment", at = @At("HEAD"), cancellable = true)
     private void modifyEquipment(LocalDifficulty difficulty, CallbackInfo ci) {
-        if (GlobalGameManager.getNowDay() < 7) return;
+        if (GlobalDataAccess.getNowDay() < 7) return;
 
         ((AbstractSkeletonEntity)(Object)this).equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
         ci.cancel();

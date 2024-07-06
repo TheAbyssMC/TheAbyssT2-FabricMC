@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.peaceful;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -30,7 +30,7 @@ public class OcelotEntityMixin extends MobEntity {
 
     @Inject(at = @At("HEAD"), method = "initGoals")
     public void addAttackGoal(CallbackInfo ci) {
-        var day = GlobalGameManager.getNowDay();
+        var day = GlobalDataAccess.getNowDay();
         if (day >= 7) {
             targetSelector.add(0, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
             goalSelector.add(0, new MeleeAttackGoal(((OcelotEntity) (Object) this), 1.0D, false));

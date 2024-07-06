@@ -11,6 +11,7 @@ import club.theabyss.server.game.entity.EntityManager;
 import club.theabyss.server.game.mechanics.flashbang.FlashBangServerManager;
 import club.theabyss.server.game.totem.TotemManager;
 import club.theabyss.server.global.events.GameDateEvents;
+import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameRules;
 
@@ -36,13 +37,13 @@ public class ServerGameManager implements Restorable {
 
     private final FlashBangServerManager flashBangManager;
 
-    private ScheduledExecutorService executorService;
+    private @Getter ScheduledExecutorService serverGameExecutorService;
 
     public ServerGameManager(final TheAbyssServer theAbyssServer, MinecraftServer server) {
         this.theAbyssServer = theAbyssServer;
         this.server = server;
 
-        executorService = Executors.newSingleThreadScheduledExecutor();
+        serverGameExecutorService = Executors.newSingleThreadScheduledExecutor();
 
         this.restore(theAbyssServer.dataManager().gameData());
 
@@ -61,7 +62,7 @@ public class ServerGameManager implements Restorable {
         to make sure all the entities are affected, because this class (ServerGameManager) is loaded right before
         the server is ready to tick for the first time (this means the entities are not loaded at that time).
          */
-        executorService.schedule(EntityManager::reloadEntities, 1, TimeUnit.SECONDS);
+        serverGameExecutorService.schedule(EntityManager::reloadEntities, 1, TimeUnit.SECONDS);
     }
 
     @Override
@@ -84,15 +85,15 @@ public class ServerGameManager implements Restorable {
     }
 
     public void shutDownExecutor() {
-        executorService.shutdownNow();
-        executorService = null;
+        serverGameExecutorService.shutdownNow();
+        serverGameExecutorService = null;
     }
 
     /**
      * Creates a task that updates the mod's new time every day.
      */
     private void elapseDayTimer() {
-        executorService.schedule(() -> {
+        serverGameExecutorService.schedule(() -> {
             GameDateEvents.DayHasElapsedEvent.EVENT.invoker().changeDay(day());
             elapseDayTimer();
         }, 1 + ChronoUnit.MINUTES.between(LocalDateTime.now(), LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(1)), TimeUnit.MINUTES);
@@ -103,7 +104,7 @@ public class ServerGameManager implements Restorable {
      * @param rate of time which the function will be executed.
      */
     private void autoSaveTimer(int rate) {
-        executorService.scheduleAtFixedRate(() -> {
+        serverGameExecutorService.scheduleAtFixedRate(() -> {
             theAbyssServer.dataManager().save();
             TheAbyss.getLogger().info("The mod's game data has been automatically saved.");
         }, rate, rate, TimeUnit.MINUTES);

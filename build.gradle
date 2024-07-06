@@ -19,16 +19,16 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.14.8"
+	mappings "net.fabricmc:yarn:1.18.2+build.4"
+	modImplementation "net.fabricmc:fabric-loader:0.14.22"
 
-	modImplementation include ("net.fabricmc.fabric-api:fabric-api:0.57.0+1.18.2")
+	modImplementation include ("net.fabricmc.fabric-api:fabric-api:0.76.0+1.18.2")
 
-	compileOnly 'org.projectlombok:lombok:1.18.24'
-	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+	compileOnly 'org.projectlombok:lombok:1.18.26'
+	annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
-	testCompileOnly 'org.projectlombok:lombok:1.18.24'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+	testCompileOnly 'org.projectlombok:lombok:1.18.26'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 
 	modImplementation include ('software.bernie.geckolib:geckolib-fabric-1.18:3.0.56')
 }

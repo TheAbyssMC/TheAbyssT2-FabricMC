@@ -1,6 +1,6 @@
 package club.theabyss.global.mixins.server.entites.hostile;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import club.theabyss.global.utils.NullableOptional;
 import club.theabyss.server.global.utils.DataTrackerChanger;
 import net.minecraft.entity.EntityType;
@@ -23,7 +23,7 @@ public class CreeperEntityMixin {
     @Shadow @Final private static TrackedData<Boolean> CHARGED;
 
     private static final Supplier<NullableOptional<Boolean>> func = () -> {
-        var day = GlobalGameManager.getNowDay();
+        var day = GlobalDataAccess.getNowDay();
         return ((day >= 7) ? NullableOptional.of(true) : NullableOptional.absent());
     };
 

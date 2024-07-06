@@ -1,6 +1,6 @@
 package club.theabyss.networking.packet.c2s;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.global.utils.GlobalDataAccess;
 import club.theabyss.global.utils.TheAbyssConstants;
 import lombok.Getter;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -39,7 +39,7 @@ public class FlashBangC2SDisableFlashPacket {
     }
 
     public static void registerReceiver(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-        var flashBangManager = GlobalGameManager.getFlashBangManager();
+        var flashBangManager = GlobalDataAccess.getFlashBangManager();
         if (flashBangManager == null) throw new IllegalStateException("The FlashBangManager is null.");
 
         var opacityData = flashBangManager.getFlashBangData().getFlashBangDataMap().get(player.getUuid());

@@ -3,7 +3,7 @@ package club.theabyss.global.utils;
 import club.theabyss.TheAbyss;
 import club.theabyss.server.game.mechanics.flashbang.FlashBangServerManager;
 
-public class GlobalGameManager {
+public class GlobalDataAccess {
 
     public static long getNowDay() {
         return TheAbyss.getInstance().serverManager().serverGameManager() != null ? TheAbyss.getInstance().serverManager().serverGameManager().day() : 0;

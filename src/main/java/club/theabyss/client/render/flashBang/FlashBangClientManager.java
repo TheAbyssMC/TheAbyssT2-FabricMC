@@ -19,7 +19,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class FlashBangClientManager {
 
-    private @Getter @Setter static boolean shouldTick = false;
+    private @Getter @Setter static boolean ticking = false;
     private @Getter @Setter static float opacity = 0f;
     private @Getter @Setter static float soundVolume = 0f;
     private @Getter @Setter static int flashSeconds = 0;
@@ -27,7 +27,7 @@ public class FlashBangClientManager {
     private @Getter @Setter static Framebuffer framebuffer;
 
     public static void reset() {
-        shouldTick = false;
+        ticking = false;
         opacity = 0;
         soundVolume = 0;
         flashSeconds = 0;
@@ -36,7 +36,7 @@ public class FlashBangClientManager {
     }
 
     public static void tick() {
-        if (shouldTick) {
+        if (ticking) {
             if (opaqueTicks <= 0) {
                 opacity -= 255f / (flashSeconds * 20);
                 soundVolume += 1.0f / (flashSeconds * 20);
@@ -45,7 +45,7 @@ public class FlashBangClientManager {
             soundVolume = MathHelper.clamp(soundVolume, 0.0f, 1.0f);
             if (opacity <= 0) {
                 reset();
-                shouldTick = false;
+                ticking = false;
             }
             if (opaqueTicks > 0) opaqueTicks--;
         }
@@ -60,7 +60,7 @@ public class FlashBangClientManager {
     }
 
     public static void playFlashSound(ClientPlayerEntity clientPlayer, ClientWorld clientWorld) {
-        if (shouldTick) clientWorld.playSound(clientPlayer, clientPlayer.getX(), clientPlayer.getY(), clientPlayer.getZ(), TheAbyssSoundEvents.FLASHBANG_STATIC,  SoundCategory.MASTER, 0.1f, 1.0f);
+        if (ticking) clientWorld.playSound(clientPlayer, clientPlayer.getX(), clientPlayer.getY(), clientPlayer.getZ(), TheAbyssSoundEvents.FLASHBANG_STATIC,  SoundCategory.MASTER, 0.1f, 1.0f);
     }
 
     public static float getVolumes(SoundInstance sound) {
@@ -74,11 +74,11 @@ public class FlashBangClientManager {
     }
 
     public static void render(MatrixStack matrices, int opacity, int width, int height) {
-        if (opacity > 0 && shouldTick) DrawableHelper.fill(matrices, 0, 0, width, height, ColorHelper.Argb.getArgb(opacity, 255, 255, 255));
+        if (opacity > 0 && ticking) DrawableHelper.fill(matrices, 0, 0, width, height, ColorHelper.Argb.getArgb(opacity, 255, 255, 255));
     }
 
     public static void renderStaticFrame(Framebuffer framebuffer, float opacity, int width, int height) {
-        if (opacity > 0 && opaqueTicks <= 0 && shouldTick && framebuffer != null) {
+        if (opacity > 0 && opaqueTicks <= 0 && ticking && framebuffer != null) {
             float normalizedOpacity = opacity / (255f * 3);
             RenderSystem.backupProjectionMatrix();
 

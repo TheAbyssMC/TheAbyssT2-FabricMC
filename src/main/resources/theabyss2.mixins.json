@@ -24,6 +24,7 @@
     "server.entites.neutral.PolarBearEntityMixin",
     "server.entites.neutral.WolfEntityMixin",
     "server.entites.neutral.ZombifiedPiglinEntityMixin",
+    "server.entites.neutral.brain.GoatBrainMixin",
     "server.entites.peaceful.AxolotlEntityMixin",
     "server.entites.peaceful.BatEntityMixin",
     "server.entites.peaceful.CatEntityMixin",
@@ -43,6 +44,7 @@
     "server.entites.peaceful.VillagerEntityMixin",
     "server.entites.player.PlayerEntityMixin",
     "server.entites.player.ServerPlayerEntityMixin",
+    "server.items.ItemGroupMixin",
     "server.world.ServerWorldMixin"
   ],
   "client": [

@@ -1,6 +1,7 @@
 package club.theabyss.global.mixins.server.world;
 
-import club.theabyss.global.utils.GlobalGameManager;
+import club.theabyss.TheAbyss;
+import club.theabyss.global.utils.GlobalDataAccess;
 import club.theabyss.server.global.utils.chat.ChatFormatter;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,13 +36,13 @@ public class ServerWorldMixin {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/SleepManager;canSkipNight(I)Z"))
     private boolean canSkipNight(SleepManager instance, int percentage) {
-        if (GlobalGameManager.getNowDay() >= 7) {
+        if (GlobalDataAccess.getNowDay() >= 7) {
             players.forEach(p -> {
                 if (p.isSleeping()) p.sendMessage(ChatFormatter.stringFormatWithPrefixToText("&cNo puedes dormir a partir del día 7."), true);
             });
             return false;
         } else {
-            if (GlobalGameManager.isBloodMoonActive()) {
+            if (GlobalDataAccess.isBloodMoonActive()) {
                 players.forEach(p -> {
                     if (p.isSleeping()) p.sendMessage(ChatFormatter.stringFormatWithPrefixToText("&cNo puedes dormir durante una BloodMoon."), true);
                 });
@@ -50,6 +51,23 @@ public class ServerWorldMixin {
                 return sleepManager.canSkipNight(percentage);
             }
         }
+    }
+
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;setTimeOfDay(J)V"))
+    private void handleNaturalBloodMoonSchedule(ServerWorld instance, long l) {
+        var bloodMoonManager = TheAbyss.getInstance().serverGameManager().bloodMoonManager();
+        var naturalBloodMoonIn = bloodMoonManager.bloodMoonData().getNaturalBloodMoonIn();
+        var skipAmount = 24_000 - instance.getTime();
+
+        if (skipAmount >= bloodMoonManager.getNaturalBloodMoonRemainingTime()) {
+            skipAmount = naturalBloodMoonIn;
+        }
+        naturalBloodMoonIn -= skipAmount;
+        bloodMoonManager.bloodMoonData().setNaturalBloodMoonIn(naturalBloodMoonIn);
+
+        bloodMoonManager.createNaturalBloodMoonTask(naturalBloodMoonIn);
+
+        worldProperties.setTimeOfDay(l);
     }
 
 }
