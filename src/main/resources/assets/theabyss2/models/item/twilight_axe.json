@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures":{
+    "layer0": "theabyss2:item/twilight_axe"
+  }
+}

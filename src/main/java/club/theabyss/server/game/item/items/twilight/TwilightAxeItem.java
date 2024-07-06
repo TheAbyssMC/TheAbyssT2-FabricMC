@@ -6,8 +6,8 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -15,10 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TwilightSwordItem extends SwordItem {
+public class TwilightAxeItem extends AxeItem {
 
-    public TwilightSwordItem(int baseDamage, float attackSpeed, Settings settings) {
-        super(new TwilightToolMaterial(), baseDamage, attackSpeed, settings);
+    public TwilightAxeItem(float f, float g, Settings settings) {
+        super(new TwilightToolMaterial(), f, g, settings);
     }
 
     @Override
@@ -31,12 +31,12 @@ public class TwilightSwordItem extends SwordItem {
 
     @Override
     public Text getName() {
-        return ChatFormatter.stringFormatToText("&6Twilight Sword");
+        return ChatFormatter.stringFormatToText("&6Twilight Axe");
     }
 
     @Override
     public Text getName(ItemStack itemStack) {
-        return ChatFormatter.stringFormatToText("&6Twilight Sword");
+        return ChatFormatter.stringFormatToText("&6Twilight Axe");
     }
 
     @Override

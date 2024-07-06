@@ -3,6 +3,7 @@ package club.theabyss.client;
 import club.theabyss.client.global.listeners.GlobalClientListeners;
 import club.theabyss.client.networking.receivers.RegisterClientReceivers;
 import club.theabyss.client.render.RenderRegistries;
+import club.theabyss.server.global.utils.AbyssModelPredicateProvider;
 import net.fabricmc.api.ClientModInitializer;
 
 public class TheAbyssClient implements ClientModInitializer {
@@ -12,6 +13,7 @@ public class TheAbyssClient implements ClientModInitializer {
         RegisterClientReceivers.init();
         GlobalClientListeners.init();
         RenderRegistries.register();
+        AbyssModelPredicateProvider.registerAbyssModels();
     }
 
 }

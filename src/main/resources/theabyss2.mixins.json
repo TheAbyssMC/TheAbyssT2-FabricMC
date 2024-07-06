@@ -44,6 +44,7 @@
     "server.entites.peaceful.VillagerEntityMixin",
     "server.entites.player.PlayerEntityMixin",
     "server.entites.player.ServerPlayerEntityMixin",
+    "server.entites.projectile.ArrowEntityEntityMixin",
     "server.items.ItemGroupMixin",
     "server.world.ServerWorldMixin"
   ],

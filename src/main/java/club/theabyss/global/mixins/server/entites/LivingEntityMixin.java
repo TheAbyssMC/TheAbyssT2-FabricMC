@@ -66,26 +66,26 @@ public class LivingEntityMixin {
             case "lightningBolt" -> "Rayo";
             case "lava" -> "Lava";
             case "hotFloor" -> "Suelo incandescente.";
-            case "inWall" -> "Sofocaci髇";
+            case "inWall" -> "Sofocaci贸n";
             case "cramming" -> "Cramming";
             case "drown" -> "Ahogamiento";
             case "starve" -> "Hambre";
             case "cactus" -> "Cactus";
-            case "fall" -> "Ca韉a";
-            case "flyIntoWall" -> "Energ韆 cin閠ica";
-            case "outOfWorld" -> "Vac韔";
-            case "generic" -> "Gen閞ico";
+            case "fall" -> "Ca铆da";
+            case "flyIntoWall" -> "Energ铆a cin茅tica";
+            case "outOfWorld" -> "Vac铆o";
+            case "generic" -> "Gen茅rico";
             case "magic" -> "Magia";
             case "wither" -> "Wither";
             case "anvil" -> "Yunque";
             case "fallingBlock" -> "Falling Block";
-            case "dragonBreath" -> "Aliento de drag髇";
+            case "dragonBreath" -> "Aliento de drag贸n";
             case "dryOut" -> "Secado";
             case "sweetBerryBush" -> "Bayas dulces";
-            case "freeze" -> "Congelaci髇";
+            case "freeze" -> "Congelaci贸n";
             case "fallingStalactite" -> "Estalactita";
             case "stalagmite" -> "Estalagmita";
-            case "explosion" -> "Explosi髇";
+            case "explosion" -> "Explosi贸n";
             case "badRespawnPoint" -> "Respawn Anchor";
             case "mob", "player" -> {
                 var attacker = damageSource.getAttacker();
@@ -128,7 +128,7 @@ public class LivingEntityMixin {
                 var attacker = damageSource.getAttacker();
                 assert attacker != null;
 
-                yield "Explosi髇 (" + attacker.getName().getString() + colorChars + ")";
+                yield "Explosi贸n (" + attacker.getName().getString() + colorChars + ")";
             }
             default -> "Desconocido.";
         };

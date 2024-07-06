@@ -12,7 +12,7 @@ public class TwilightToolMaterial implements ToolMaterial {
 
     @Override
     public float getMiningSpeedMultiplier() {
-        return 15;
+        return 40;
     }
 
     @Override

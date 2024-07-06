@@ -38,7 +38,7 @@ public class ServerWorldMixin {
     private boolean canSkipNight(SleepManager instance, int percentage) {
         if (GlobalDataAccess.getNowDay() >= 7) {
             players.forEach(p -> {
-                if (p.isSleeping()) p.sendMessage(ChatFormatter.stringFormatWithPrefixToText("&cNo puedes dormir a partir del día 7."), true);
+                if (p.isSleeping()) p.sendMessage(ChatFormatter.stringFormatWithPrefixToText("&cNo puedes dormir a partir del dÃ­a 7."), true);
             });
             return false;
         } else {

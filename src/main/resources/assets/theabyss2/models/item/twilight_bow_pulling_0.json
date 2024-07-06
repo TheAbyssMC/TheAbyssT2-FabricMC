@@ -1,0 +1,6 @@
+{
+    "parent": "theabyss2:item/twilight_bow",
+    "textures": {
+        "layer0": "theabyss2:item/twilight_bow_pulling_0"
+    }
+}
