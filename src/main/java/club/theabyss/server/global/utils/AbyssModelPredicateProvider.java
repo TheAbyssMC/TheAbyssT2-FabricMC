@@ -9,8 +9,13 @@ import net.minecraft.util.Identifier;
 public class AbyssModelPredicateProvider {
 
     public static void registerAbyssModels() {
-        registerBow(TheAbyssItems.TWILIGHT_BOW);
+        registerBowModels();
+        registerTridentModels();
         TheAbyss.getLogger().info("The model predicates have been registered successfully.");
+    }
+
+    private static void registerBowModels() {
+        registerBow(TheAbyssItems.TWILIGHT_BOW);
     }
 
     private static void registerBow(Item bow) {
@@ -27,6 +32,14 @@ public class AbyssModelPredicateProvider {
 
         ModelPredicateProviderRegistry.register(bow, new Identifier("pulling"),
                 (stack, world, entity, seed) -> entity != null && entity.isUsingItem() && entity.getActiveItem() == stack ? 1.0f : 0.0f);
+    }
+
+    private static void registerTridentModels() {
+        registerTrident(TheAbyssItems.TWILIGHT_TRIDENT);
+    }
+
+    private static void registerTrident(Item trident) {
+        ModelPredicateProviderRegistry.register(trident, new Identifier("throwing"), (itemStack, clientWorld, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F);
     }
 
 }

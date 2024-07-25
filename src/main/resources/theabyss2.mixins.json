@@ -45,6 +45,8 @@
     "server.entites.player.PlayerEntityMixin",
     "server.entites.player.ServerPlayerEntityMixin",
     "server.entites.projectile.ArrowEntityEntityMixin",
+    "server.entites.projectile.ProjectileEntityMixin",
+    "server.entites.projectile.TridentEntityMixin",
     "server.items.ItemGroupMixin",
     "server.world.ServerWorldMixin"
   ],
@@ -52,7 +54,12 @@
     "client.MinecraftClientMixin",
     "client.entity.ClientPlayerEntityMixin",
     "client.hud.InGameHudMixin",
+    "client.renderer.ClientPlayNetworkHandlerMixin",
     "client.renderer.GameRendererMixin",
+    "client.renderer.ItemRendererAccessor",
+    "client.renderer.ItemRendererMixin",
+    "client.renderer.ModelLoaderMixin",
+    "client.renderer.TridentEntityRendererMixin",
     "client.sound.SoundSystemMixin",
     "client.world.ClientWorldMixin"
   ],

@@ -17,6 +17,7 @@ public class TheAbyssItems {
     public static Item TWILIGHT_SHOVEL;
     public static Item TWILIGHT_HOE;
     public static Item TWILIGHT_BOW;
+    public static Item TWILIGHT_TRIDENT;
 
     public static void registerModItems() {
         TWILIGHT_SWORD = registerItem("twilight_sword", new TwilightSwordItem(4, -2.4f, new FabricItemSettings().group(TheAbyssItemGroups.TWILIGHT_ITEMS).fireproof()));
@@ -25,6 +26,7 @@ public class TheAbyssItems {
         TWILIGHT_SHOVEL = registerItem("twilight_shovel", new TwilightShovelItem(1.5f, -3f, new FabricItemSettings().group(TheAbyssItemGroups.TWILIGHT_ITEMS).fireproof()));
         TWILIGHT_HOE = registerItem("twilight_hoe", new TwilightHoeItem(-4, 0, new FabricItemSettings().group(TheAbyssItemGroups.TWILIGHT_ITEMS).fireproof()));
         TWILIGHT_BOW = registerItem("twilight_bow", new TwilightBowItem(new FabricItemSettings().group(TheAbyssItemGroups.TWILIGHT_ITEMS).fireproof().maxCount(1)));
+        TWILIGHT_TRIDENT = registerItem("twilight_trident", new TwilightTridentItem(new FabricItemSettings().group(TheAbyssItemGroups.TWILIGHT_ITEMS).fireproof().maxCount(1)));
         TheAbyss.getLogger().info("The mod items have been registered successfully.");
     }
 
